@@ -1,15 +1,19 @@
+const express = require('express');
 const app = express();
 const Joi = require('joi');
 const mongo = require('mongodb');
 const bcrypt = require('bcrypt');
-const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', '../views/');
+app.set('views', '../frontend/views/');
+
+app.get('/', (req, res) => {
+    res.render('index.ejs');
+});
 
 const signupRoutes = require('./signupRoutes');
 const authorizationRoutes = require('./authorizationRoutes');
