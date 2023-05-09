@@ -9,7 +9,7 @@ const MongoStore = require('connect-mongo');
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', '../frontend/views/');
+app.set('views', './frontend/views/');
 
 app.get('/', (req, res) => {
     res.render('index.ejs');
