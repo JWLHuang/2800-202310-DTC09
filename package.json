@@ -11,5 +11,15 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.22",
     "openai": "^3.2.1"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "2800-202310-dtc09",
+  "description": "COMP 2800 Project - Eric Deau, Jacky Huang, Derek Woo, Nathan Yau",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
 }
