@@ -5,14 +5,37 @@ const mongo = require('mongodb');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const dotenv = require('dotenv');
+const { findUser } = require('./findUser');
+const usersModel = require("./models/usersModel");
 
+require('dotenv').config();
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', '../frontend/views/');
 
-app.get('/', (req, res) => {
-    res.render('index.ejs');
+var dbStore = MongoStore.create({
+    mongoUrl: (`${process.env.MONGODB_PROTOCOL}://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}`),
+    collection: "sessions",
+    crypto: {
+        secret: process.env.MONGODB_SESSION_SECRET
+    },
+});
+
+app.use(session({
+    secret: process.env.NODE_SESSION_SECRET,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24,
+    },
+    store: dbStore,
+    saveUninitialized: false,
+    resave: true
+}));
+
+app.get("/", async (req, res) => {
+    const user = await findUser({ email: req.session.email, });
+    res.render("index.ejs", user ? { user: user } : { user: null });
 });
 
 const signupRoutes = require('./signupRoutes');
