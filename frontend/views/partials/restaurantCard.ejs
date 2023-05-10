@@ -1,0 +1,29 @@
+<%- include('restaurantFunctions') %>
+
+    <div class="row p-4" style="border-bottom: 1px solid grey;">
+        <div class="col-1">
+            <img src="https://picsum.photos/100/100?random" alt="restaurant image">
+        </div>
+        <div class="col-md-auto">
+            <div class="row">
+                <h1 style="padding: 0;">
+                    <%= restaurant.Name %>
+                </h1>
+            </div>
+            <div class="row">
+                <%= restaurant.Address %>
+            </div>
+            <div class="row">
+                <% if (restaurant.Award !=="Bib Gourmand" ) { %>
+                    <%= restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %>
+                        <% } else { %>
+                            <p style="padding: 0;">
+                                <%= restaurant.Award %>
+                            </p>
+                            <% } %>
+            </div>
+            <div class="row">
+                <%= restaurant.Price %>
+            </div>
+        </div>
+    </div>
