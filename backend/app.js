@@ -15,13 +15,13 @@ const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', './frontend/views/');
-app.use(express.static(__dirname + '/../frontend/script'))
-app.use(express.static(__dirname + '/../frontend/style'))
+// app.use(express.static(__dirname + '/../frontend/script'))
+// app.use(express.static(__dirname + '/../frontend/style'))
 app.use(express.static(__dirname + '/../frontend/public'))
 
 // importing static files for navigation links
-const footerLinks = require("../frontend/script/footerLinks");
-const navbarLinks = require("../frontend/script/navbarLinks");
+const footerLinks = require("../frontend/public/script/footerLinks");
+const navbarLinks = require("../frontend/public/script/navbarLinks");
 
 // middleware to set global variables for header and footer links
 app.use("/", (req, res, next) => {
