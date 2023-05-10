@@ -7,8 +7,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
 const { findUser } = require("./findUser");
-const usersModel = require("./models/usersModel");
-const url = require("url");
+const url = require('url');
 
 require("dotenv").config();
 const port = process.env.PORT || 3000;
