@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo');
 const dotenv = require('dotenv');
 const { findUser } = require('./findUser');
 const usersModel = require("./models/usersModel");
+const restaurantModel = require("./models/restaurantModel");
 const url = require('url');
 
 
@@ -44,6 +45,11 @@ app.use(session({
     saveUninitialized: false,
     resave: true
 }));
+
+app.get("/testRestaurant", async (req, res) => {
+    const restaurant = await restaurantModel.findOne({ Name: "Forum" });
+    res.render("restaurant.ejs", restaurant ? { restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254 } : { restaurant: null });
+});
 
 app.get("/", async (req, res) => {
     const user = await findUser({ email: req.session.email, });
