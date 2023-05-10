@@ -1,1 +1,103 @@
-<h1>restaurant page</h1>
+<%- include('partials/header') %>
+<%- include('partials/restaurantFunctions') %>
+<script src="restaurant.js"></script>
+<link rel="stylesheet" href="restaurant.css">
+
+<div class="container">
+  <div class="row mt-3">
+    <div class="col">
+      <div id="restaurantName">
+        <h1><%= locals.restaurant.Name ? restaurant.Name : "Restaurant name not available" %></h1>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <div id="restaurantImg"><% if (locals.restaurant.ImgUrl) { %>
+        <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>" <% } else { %> </div>
+        Image not available
+        <% } %>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col" id="restaurantDetails">
+        <div id="starRating"><%= locals.restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %></div>
+        <div id="priceRating"><%= locals.restaurant.Price ? restaurant.Price : "Price rating not available" %></div>
+        <div id="cuisineType"><%= locals.restaurant.Cuisine ? restaurant.Cuisine : "Cuisine type not available" %></div>
+        <div id="restaurantPhone"><% if (locals.restaurant.PhoneNumber) { %>
+          Phone: <a href="tel:<%= restaurant.PhoneNumber %>"><%= restaurant.PhoneNumber %></a>
+          <% } else { %>
+          Phone number not available
+          <% } %>
+        </div>
+        <div id="restaurantWebsite"><% if (locals.restaurant.WebsiteUrl) { %>
+          <a href="<%= restaurant.WebsiteUrl %>">Visit website</a>
+          <% } else { %>
+          Website not available
+          <% } %>
+        </div>
+      </div>
+      <div class="col">
+        <div id="restaurantInfo">
+          <div id="openHours">
+            <% if (locals.restaurant.OpenHours) { %>
+            <p>Open today from:<br /> <%= restaurant.OpenHours %>
+              <% } else { %>
+              Hours not available</p>
+            <% } %>
+          </div>
+          <div id="map"><% if (locals.restaurant.Longitude && locals.restaurant.Latitude) { %>
+            <iframe id="mapFrame" height="125" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>&amp;layer=mapnik&amp;marker=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"></iframe>
+            <% } else { %>
+            Map not available
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3" id="buttonContainers">
+      <div class="col" id="menuButtonContainer">
+        <div id="menuButton"><button class="btn btn-secondary w-100">Menu</button></div>
+      </div>
+      <div class="col">
+        <div id="directionsButtonContainer">
+          <div id="directionsButton"><% if (locals.restaurant.Longitude && locals.restaurant.Latitude && userLatitude && userLongitude) { %>
+            <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=<%= userLatitude %>%2C<%= userLongitude %>%3B<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>#map=15/<%=userLatitude%>/<%=userLongitude%>"><button class="btn btn-secondary w-100">Directions</button></a>
+            <% } else { %>
+            <button class="btn btn-secondary w-100" disabled>Directions not available</button>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <div id="reviewButton"><button class="btn btn-secondary">Write a Review</button></div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <h3>Latest Reviews</h3>
+        <div id="reviewCards">
+          <div class="card text-center">
+            <div class="card-header">
+              Review Title
+            </div>
+            <div class="card-body">
+              <img src="https://picsum.photos/500/300" class="card-img-top" alt="reviewImage">
+              <h5 class="card-title">★★★☆☆</h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, voluptate!</p>
+              <a href="#" class="btn btn-primary">Like this review?</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted by Username on 01/01/2021
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<%- include('partials/footer') %>
