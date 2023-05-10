@@ -1,44 +1,114 @@
-<h3>This is Profile Page.</h3><!DOCTYPE html>
-<html lang="en">
+<%- include('partials/header') %>
+    <script src="profile.js"></script>
+    <link rel="stylesheet" href="profile.css">
+    <%- include("svgIcons") %>
 
-<head>
-    <title>TableTrek - My Profile</title>
-    <meta name="TableTrek - My Profile" content="My 2800 App">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-
-<body class="container">
-    <main>
-        <%- include("svgIcons.ejs") %>
-            <div class="user container-fluid">
+        <main class="container">
+            <div class="user">
                 <h1 class="text-center my-5">User Profile</h1>
+
                 <div>
-                    <svg class="bi d-block mx-auto mb-1" width="240" height="240">
+                    <svg class="bi d-block mx-auto mb-1" width="180" height="180">
                         <use xlink:href="#people-circle"></use>
                     </svg>
                     <h3 class="text-center mt-4">
-                        <%=name%>
+                        <%=profile.name%>
                     </h3>
                 </div>
-                <div class="email mt-5">
-                    <h6>RegisteredEmail</h6>
-                    <p>
-                        <%= email %>
-                    </p>
-                </div>
-                <div class="d-flex justify-content-end container-fluid">
-                    <button type="button" class="btn btn-primary justify-content-end">Edit</button>
+
+                <ul class="nav nav-tabs">
+
+                    <li class="nav-item tab rounded" id="nav-profile">
+                        <a class="nav-link nav-profile active">Profile</a>
+                    </li>
+
+                    <li class="nav-item tab" id="nav-perferences">
+                        <a class="nav-link nav-perferences"> Dietary Preferences</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-expanded="false">Setting</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Reset Password</a></li>
+                            <li><a class="dropdown-item" href="#">Change Email</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="#">Deactivate Account</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <div class="tab-content mt-4 mx-3" id="nav-tabContent">
+
+                    <div class="tab-pane fade nav-profile active show">
+                        <div id="about-me">
+                            <h6>About me</h6>
+                            <p>
+                                <%- profile.about_me.replace(/\n/g, "<br>" ) %>
+                            </p>
+                        </div>
+                        <div class="email mt-3">
+                            <h6>Registered Email</h6>
+                            <p>
+                                <%= profile.email %>
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-end container-fluid">
+                            <button type="button" class="btn btn-primary justify-content-end edit-button"
+                                id="editUserInfo">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade nav-perferences">
+                        <div id="Dietary Preferences">
+                            <h6>Dietary Preferences</h6>
+                            <%= profile.dietary_perferences %>
+                        </div>
+                        <div class="mt-3" id="User Preference">
+                            <h6>User Preferences</h6>
+                            <span>Food</span><br>
+                            <span>Service</span><br>
+                            <span>Atmosphere</span><br>
+                            <span>Value for Money</span>
+                        </div>
+
+
+                        <div class="d-flex justify-content-end container-fluid">
+                            <button type="button" class="btn btn-primary justify-content-end edit-button"
+                                id="editUserPreference">Edit</button>
+                        </div>
+                    </div>
                 </div>
                 </form>
             </div>
-    </main>
-</body>
+        </main>
 
-</html>
+        <div id="edit-modal" class="modal fade show d-none" tabindex="-1">
+            <div id="modal-frame">
+                <div class="modal-content modal-content-css">
+                    <form action="/profileUpdate" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="pokemon-info-Title"></h5>
+                            <button type="button" class="close close-modal">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">About me:</label>
+                                    <textarea class="form-control" id="message-text" style="height:180px" name="about_me"
+                                        placeholder="Tell us more about you!"></textarea>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary px-4">Save</button>
+                            <button type="button" class="btn btn-danger close-modal">Discards</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show d-none" id="backdrop"></div>
+        <%- include('partials/footer') %>
