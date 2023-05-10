@@ -1,7 +1,10 @@
-<h1>This is the index page</h1>
-<a href="/404">404 page</a>
-<% if (user) { %>
+<%- include('partials/header') %>
+
+    <h1>This is the index page</h1>
+    <a href="/404">404 page</a>    <% if (user) { %>
 <a href="/logout">Logout</a>
 <% } else { %>
 <a href="/login">Login page</a>
 <% } %>
+
+    <%- include('partials/footer') %>
