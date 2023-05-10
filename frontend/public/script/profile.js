@@ -1,5 +1,5 @@
 function toggleTab(id) {
-    console.log(id)
+
     $('.nav-link').removeClass('active')
     $('.tab-pane').removeClass('active')
     $(`.${id}`).addClass('active')
@@ -8,6 +8,7 @@ function toggleTab(id) {
 
 
 const setup = () => {
+    console.log("run")
     $('body').on('click', '.tab', function () {
         toggleTab(this.id);
     })
