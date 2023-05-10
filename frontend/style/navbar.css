@@ -9,12 +9,16 @@ body {
 .offcanvas-header {
     padding-bottom: .5rem;
     border-bottom: 1px solid #e5e5e5;
-    background-color: #2c698d;
+    background-color: #bae8e8;
     color: white;
 }
 
+.offcanvas-body {
+    background-color: #e3f6f5;
+}
+
 .offcanvas-body .nav-link {
-    color: black !important;
+    color: #272643 !important;
 }
 
 .offcanvas-backdrop.show {

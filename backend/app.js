@@ -29,6 +29,7 @@ app.use("/", (req, res, next) => {
   res.locals.socialLinks = footerLinks.socialLinks;
   res.locals.beforeLoginNav = navbarLinks.beforeLoginNav;
   res.locals.afterLoginNav = navbarLinks.afterLoginNav;
+  res.locals.currentURL = url.parse(req.url).pathname;
   next();
 });
 
