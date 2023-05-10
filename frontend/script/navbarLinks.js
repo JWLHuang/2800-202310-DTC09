@@ -50,7 +50,7 @@ const afterLogin = [
     {
         name: 'Sign Out',
         link: '/logout',
-        icon: 'bi bi-box-arrow-right'
+        icon: 'bi bi-box-arrow-left'
     },
     {
         name: 'Contact Us',

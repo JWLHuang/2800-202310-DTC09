@@ -27,10 +27,12 @@
                             <li class="nav-item">
                                 <% if (link.link===currentURL) { %>
                                     <a href="<%= link.link %>" class="nav-link active" aria-current="page">
+                                        <i class="<%=link.icon%>"></i>
                                         <%= link.name %>
                                     </a>
                                     <% } else { %>
                                         <a href="<%= link.link %>" class="nav-link">
+                                            <i class="<%=link.icon%>"></i>
                                             <%= link.name %>
                                         </a>
                             </li>
@@ -42,10 +44,12 @@
                                                 <% if (link.link===currentURL) { %>
                                                     <a href="<%= link.link %>" class="nav-link active"
                                                         aria-current="page">
+                                                        <i class="<%=link.icon%>"></i>
                                                         <%= link.name %>
                                                     </a>
                                                     <% } else { %>
                                                         <a href="<%= link.link %>" class="nav-link">
+                                                            <i class="<%=link.icon%>"></i>
                                                             <%= link.name %>
                                                         </a>
                                             </li>

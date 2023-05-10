@@ -14,11 +14,19 @@ body {
 }
 
 .offcanvas-body {
-    background-color: #e3f6f5;
+    background-color: #272643;
+}
+
+.active {
+    color: #bae8e8 !important;
 }
 
 .offcanvas-body .nav-link {
-    color: #272643 !important;
+    color: #272643;
+}
+
+.offcanvas-body .nav-link:hover {
+    color: #bae8e8 !important;
 }
 
 .offcanvas-backdrop.show {
