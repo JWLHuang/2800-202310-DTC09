@@ -8,12 +8,24 @@ const MongoStore = require('connect-mongo');
 const dotenv = require('dotenv');
 const { findUser } = require('./findUser');
 const usersModel = require("./models/usersModel");
+const url = require('url');
+
 
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', '../frontend/views/');
+app.set('views', './frontend/views/');
+
+// importing static files for navigation links
+const footerLinks = require('../frontend/footerLinks');
+
+// middleware to set global variables for header and footer links
+app.use('/', (req, res, next) => {
+    res.locals.footerLinks = footerLinks.footerLinks;
+    res.locals.socialLinks = footerLinks.socialLinks;
+    next();
+});
 
 var dbStore = MongoStore.create({
     mongoUrl: (`${process.env.MONGODB_PROTOCOL}://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}`),
@@ -43,6 +55,7 @@ const authorizationRoutes = require('./authorizationRoutes');
 const profileRoutes = require('./profileRoutes');
 const restaurantListRoutes = require('./restaurantListRoutes');
 const restPasswordRoutes = require('./restPasswordRoutes');
+
 
 app.use(signupRoutes);
 app.use(authorizationRoutes);
