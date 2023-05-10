@@ -9,7 +9,7 @@ const MongoStore = require("connect-mongo");
 
 const router = express.Router();
 
-var { database } = require("./database");
+const { database } = require("./database");
 const mongodb_database = process.env.MONGODB_DATABASE;
 const userCollection = database.db(mongodb_database).collection("users");
 

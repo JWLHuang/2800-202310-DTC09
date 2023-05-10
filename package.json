@@ -13,7 +13,7 @@
     "openai": "^3.2.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node ./backend/server.js"
   },
   "name": "2800-202310-dtc09",
   "description": "COMP 2800 Project - Eric Deau, Jacky Huang, Derek Woo, Nathan Yau",

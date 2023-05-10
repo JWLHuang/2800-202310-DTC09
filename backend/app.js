@@ -14,7 +14,7 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', '../frontend/views/');
+app.set('views', './frontend/views/');
 app.use(express.static(__dirname + '/../frontend/script'))
 app.use(express.static(__dirname + '/../frontend/style'))
 
