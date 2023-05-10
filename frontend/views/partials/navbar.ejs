@@ -15,10 +15,20 @@
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                <div data-bs-theme="dark">
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
+                <% if (user) { %>
+                    <a href='/profile'><img src="stockphoto.jpg" class="rounded-circle align-middle"
+                            style="width:30px; height: 30px;" /></a>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+                        <%= user.name %>
+                    </h5>
+                    <% } else { %>
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                        <% } %>
+                            <!-- <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5> -->
+                            <div data-bs-theme="dark">
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
