@@ -4,7 +4,9 @@ const userSchema = new mongoose.Schema({
     email: String,
     name: String,
     password: String,
-    type: String
+    type: String,
+    about_me: String,
+    dietary_perferences: Array
 });
 
 const userModule = mongoose.model("users", userSchema);
