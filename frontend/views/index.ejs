@@ -1,12 +1,17 @@
 <%- include('partials/header') %>
+    <main>
 
-    <h1>This is the index page</h1>
-    <a href="/404">404 page</a>    <% if (user) { %>
-<a href="/logout">Logout</a>
-<a href="/resetPassword">Reset Password</a>
-<% } else { %>
-<a href="/login">Login page</a>
-<% } %>
-    <a href="/signup">Signup page</a>
+        <div class="container">
+            <h1>This is the index page</h1>
+            <a href="/404">404 page</a>
+            <% if (user) { %>
+                <a href="/logout">Logout</a>
+                <a href="/resetPassword">Reset Password</a>
+                <% } else { %>
+                    <a href="/login">Login page</a>
+                    <% } %>
+                        <a href="/signup">Signup page</a>
+        </div>
+    </main>
 
     <%- include('partials/footer') %>
