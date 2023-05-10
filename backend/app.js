@@ -20,12 +20,15 @@ app.use(express.static(__dirname + '/../frontend/style'))
 app.use(express.static(__dirname + '/../frontend/public'))
 
 // importing static files for navigation links
-const footerLinks = require("../frontend/footerLinks");
+const footerLinks = require("../frontend/script/footerLinks");
+const navbarLinks = require("../frontend/script/navbarLinks");
 
 // middleware to set global variables for header and footer links
 app.use("/", (req, res, next) => {
   res.locals.footerLinks = footerLinks.footerLinks;
   res.locals.socialLinks = footerLinks.socialLinks;
+  res.locals.beforeLoginNav = navbarLinks.beforeLoginNav;
+  res.locals.afterLoginNav = navbarLinks.afterLoginNav;
   next();
 });
 

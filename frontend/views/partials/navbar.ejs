@@ -22,7 +22,27 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
+                    <% if (!user) { %>
+                        <% locals.beforeLoginNav.forEach((link)=> { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%= link.link %>"><i
+                                        class="<%= link.icon %> text-dark p-2"></i>
+                                    <%= link.name %>
+                                </a>
+                            </li>
+                            <% }) %>
+                                <% } else { %>
+                                    <% locals.afterLoginNav.forEach((link)=> { %>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="<%= link.link %>"><i
+                                                    class="<%= link.icon %> text-dark p-2"></i>
+                                                <%= link.name %>
+                                            </a>
+                                        </li>
+                                        <% }) %>
+                                            <% } %>
+
+                                                <!-- <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/"><i
                                 class='bi bi-house-door-fill text-dark p-2'></i>Home</a>
                     </li>
@@ -38,7 +58,7 @@
                         <a class="nav-link" href="/contact"><i
                                 class="bi bi-telephone-outbound-fill text-dark p-2"></i>Contact
                             Us</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
