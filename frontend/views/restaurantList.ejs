@@ -1,0 +1,31 @@
+<%- include('partials/header.ejs') %>
+    <div class="container">
+        <% restaurants.forEach(function(restaurant) { %>
+            <div class="row">
+                <div class="col-12">
+                    <h1>
+                        <%= restaurant.Name %>
+                    </h1>
+                    <p>
+                        <%= restaurant.Address %>
+                    </p>
+                    <p>
+                        <%= restaurant.Location %>
+                    </p>
+                    <p>
+                        <%= restaurant.Price %>
+                    </p>
+                    <p>
+                        <%= restaurant.Cuisine %>
+                    </p>
+                    <p>
+                        <%= restaurant.PhoneNumber %>
+                    </p>
+                    <p>
+                        <%= restaurant.WebsiteUrl %>
+                    </p>
+                </div>
+            </div>
+            <% }) %>
+    </div>
+    <%- include('partials/footer.ejs') %>

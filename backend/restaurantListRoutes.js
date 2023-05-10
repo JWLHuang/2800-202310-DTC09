@@ -3,6 +3,15 @@ const router = express.Router();
 const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 
+router.get('/restaurantList', async (req, res) => {
+    const user = await findUser({ email: req.session.email });
+    const restaurants = await restaurantModel.find({
+        FacilitiesAndServices: /Vegetarian/i
+    });
+    console.log(restaurants)
+    res.render('restaurantList.ejs', { user: user, restaurants: restaurants });
+});
+
 router.get('/restaurant', (req, res) => {
     res.render('restaurant.ejs');
 });
