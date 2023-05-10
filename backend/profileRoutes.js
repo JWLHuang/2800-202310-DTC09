@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { searchByEmail } = require('./searchProfile')
+const { findUser } = require("./findUser");
 const usersModel = require("./models/usersModel");
 const Joi = require("joi");
 
@@ -9,9 +9,13 @@ const schema = Joi.object({
 });
 
 router.get('/profile', async (req, res) => {
-    profile = await searchByEmail(req.session.email)
-    console.log(profile[0].dietary_perferences)
-    res.render('profile.ejs', { 'profile': profile[0] });
+    if (!req.session.authenticated) {
+        return res.redirect('/login');
+    }
+    const user = await findUser({ email: req.session.email });
+    console.log(user)
+    console.log(user.dietary_preferences)
+    res.render('profile.ejs', { 'user': user });
 });
 
 router.post('/profileUpdate', async (req, res) => {
@@ -24,6 +28,7 @@ router.post('/profileUpdate', async (req, res) => {
             console.log('About me field updated');
             res.redirect('/profile');
         }).catch((err) => {
+            console.log(err);
             console.log('About me field not updated');
         });
     }
