@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema({
     password: String,
     type: String,
     about_me: String,
-    dietary_preferences: Array
+    dietary_preferences: Array,
+    service: Number,
+    food: Number,
+    price: Number,
+    atmosphere: Number,
+    cleanliness: Number,
+    accessibility: Number
 });
 
 const userModule = mongoose.model("users", userSchema);
