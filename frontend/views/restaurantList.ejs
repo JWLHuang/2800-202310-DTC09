@@ -1,13 +1,26 @@
 <%- include('partials/header.ejs') %>
 
-    <div class="container-fluid">
+<div class="container">
+  <% if (locals.errorMsg) { %>
+  <div class="alert alert-danger" role="alert">
+    <%= errorMsg %>
+  </div>
+  <% } %>
+  <div class="row">
+    <div class="col">
+      <div class="container-fluid">
         <% restaurants.forEach((restaurant)=> { %>
-            <%- include('partials/restaurantCard', {restaurant: restaurant}) %>
-                <% }) %>
+        <%- include('partials/restaurantCard', {restaurant: restaurant}) %>
+        <% }) %>
+      </div>
     </div>
-    <div class="container">
-        <div class="d-grid p-4">
-            <button class="btn btn-primary" type="button">Change Filter</button>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="d-grid p-4">
+        <button class="btn btn-primary" type="button">Change Filter</button>
+      </div>
     </div>
-    <%- include('partials/footer.ejs') %>
+  </div>
+</div>
+<%- include('partials/footer.ejs') %>
