@@ -37,7 +37,6 @@ const setup = () => {
         $('body').removeClass('stop-scrolling')
         // $('#shinyForm').prop('checked', false);
     });
-    $('.mobileSelect').mobileSelect();
 }
 
 $(document).ready(setup)
