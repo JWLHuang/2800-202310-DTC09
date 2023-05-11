@@ -12,12 +12,8 @@ router.get('/restaurants', async (req, res) => {
     res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants } : { user: user, restaurants: null });
 });
 
-router.get('/restaurant', (req, res) => {
-    res.render('restaurant.ejs');
-});
-
-router.get("/testRestaurant", async (req, res) => {
-    const restaurant = await restaurantModel.findOne({ Name: "Forum" });
+router.get('/restaurant/:id', async (req, res) => {
+    const restaurant = await restaurantModel.findOne({ _id: req.params.id });
     const user = await findUser({ email: req.session.email });
     res.render("restaurant.ejs", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254 } : { user: user, restaurant: null });
 });
