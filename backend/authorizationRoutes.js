@@ -8,7 +8,8 @@ const { findUser } = require("./findUser");
 
 router.get('/login', async (req, res) => {
     const user = await findUser({ email: req.session.email });
-    res.render('login.ejs', user ? { user: user } : { user: null });
+    user ? res.locals.user = user : res.locals.user = null;
+    res.render('login.ejs');
 });
 
 const loginSchema = Joi.object(
@@ -21,8 +22,9 @@ router.use(express.urlencoded({ extended: false }))
 router.post("/login", async (req, res) => {
     const validationResult = loginSchema.validate(req.body);
     if (validationResult.error != null) {
-        // res.render("authError", { errorType: "Login", errorMsg: validationResult.error.details[0].message })
-        console.log(validationResult.error.details[0].message)
+        const user = await findUser({ email: req.session.email });
+        user ? res.locals.user = user : res.locals.user = null;
+        res.render('login.ejs', { errorMsg: validationResult.error.details[0].message });
     } else {
         const result = await usersModel.findOne({
             email: req.body.email,
@@ -33,8 +35,9 @@ router.post("/login", async (req, res) => {
             console.log("User logged in");
             res.redirect("/");
         } else {
-            // res.render("authError", { errorType: "Login", errorMsg: "Invalid email/password combination." })
-            console.log("Invalid email/password combination.")
+            const user = await findUser({ email: req.session.email });
+            user ? res.locals.user = user : res.locals.user = null;
+            res.render('login.ejs', { errorMsg: "Invalid email/password combination." });
         }
     };
 });
