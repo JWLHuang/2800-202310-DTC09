@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const usersModel = require("./models/usersModel");
+const { findUser } = require("./findUser");
 
 const signupSchema = Joi.object(
     {
@@ -12,8 +13,9 @@ const signupSchema = Joi.object(
         type: Joi.boolean(),
     });
 
-router.get('/signup', (req, res) => {
-    res.render('signup.ejs');
+router.get('/signup', async (req, res) => {
+    const user = await findUser({ email: req.session.email });
+    res.render('signup.ejs', user ? { user: user } : { user: null });
 });
 
 router.use(express.urlencoded({ extended: false }))
