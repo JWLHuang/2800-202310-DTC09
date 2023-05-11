@@ -2,6 +2,11 @@
 
 <%- include('partials/header.ejs') %>
 <div class="container">
+  <% if (locals.errorMsg) { %>
+  <div class="alert alert-danger mb-5 mt-0" role="alert">
+    <%= errorMsg %>
+  </div>
+  <% } %>
   <div class="row">
     <div class="col text-center">
       <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24">
