@@ -1,0 +1,12 @@
+<div id=<%=link.id%> class="mt-3">
+    <h6 class="mb-3">
+        <%=link.heading%>
+    </h6>
+    <% if (user[link.id]) { %>
+        <% user[link.id].forEach((item)=> {%>
+            <h6 class="btn-<%- item %> btn-sm mx-1 text-uppercase inline-block align-self-center"><%- item %></h6>
+            <%})%>
+                <% } else {%>
+                    <p>Update your User Preferences now</p>
+                    <% } %>
+</div>
