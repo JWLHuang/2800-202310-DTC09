@@ -4,9 +4,11 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const usersModel = require("./models/usersModel");
 const { authenticatedOnly } = require("./authorizationMiddleware");
+const { findUser } = require("./findUser");
 
-router.get('/login', (req, res) => {
-    res.render('login.ejs');
+router.get('/login', async (req, res) => {
+    const user = await findUser({ email: req.session.email });
+    res.render('login.ejs', user ? { user: user } : { user: null });
 });
 
 const loginSchema = Joi.object(
