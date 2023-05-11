@@ -22,4 +22,16 @@ router.get("/testRestaurant", async (req, res) => {
     res.render("restaurant.ejs", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254 } : { user: user, restaurant: null });
 });
 
+router.get("/filterRestaurants", async (req, res) => {
+    const user = await findUser({ email: req.session.email });
+    const cuisine = await restaurantModel.distinct("Cuisine");
+    const price = await restaurantModel.distinct("Price");
+    const award = await restaurantModel.distinct("Award");
+    res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award });
+});
+
+router.post("/filterRestaurantsResults", async (req, res) => {
+    console.log(req.body);
+})
+    
 module.exports = router;
