@@ -1,0 +1,17 @@
+<div id=<%=link.id%> class="mt-3">
+    <h6 class="mb-3">
+        <%=link.heading%>
+    </h6>
+    <div class="d-flex justify-content-between mb-2 ">
+        <% for (const key in diningCriteria) { %>
+            <span class="align-self-center block">
+                <% if (key.startsWith('option')) { %>
+                    <%=diningCriteria[key].charAt(0).toUpperCase() + diningCriteria[key].slice(1) %>
+                        <% } %>
+            </span>
+            <span class="btn-success px-2">
+            <%=user[diningCriteria[key]]%>
+        </span>
+        <span>|</span>
+                <% }%>
+    </div>

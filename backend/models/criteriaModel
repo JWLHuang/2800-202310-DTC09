@@ -1,0 +1,16 @@
+const mongoose = require("mongoose");
+
+const criteriaSchema = new mongoose.Schema({
+    category: String,
+    option01: String,
+    option02: String,
+    option03: String,
+    option04: String,
+    option05: String,
+    option06: String,
+    option07: String
+});
+
+const criteriaModule = mongoose.model("factors", criteriaSchema);
+
+module.exports = criteriaModule

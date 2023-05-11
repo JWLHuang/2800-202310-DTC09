@@ -1,0 +1,17 @@
+<% for (const [key, value] of Object.entries(profileInfo)) { %>
+    <div class="tab-pane <%=key%>">
+        <% profileInfo[key].forEach(function(link) { %>
+            <%- include(key, {link: link}) %>
+                <% }); %>
+                    <div class="d-flex justify-content-end container-fluid">
+                        <button type="button" class="btn btn-primary justify-content-end edit<%=key%>">Edit</button>
+                    </div>
+    </div>
+    <div id="edit<%=key%>" class="modal show edit-modal d-none" tabindex="-1">
+        <div id="modal-frame">
+            <div class="modal-content modal-content-css">
+                <%- include(key+"Edit") %>
+            </div>
+        </div>
+    </div>
+    <% } %>
