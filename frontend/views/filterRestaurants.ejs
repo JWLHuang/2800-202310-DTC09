@@ -13,10 +13,10 @@
             <h1 class="text-center mb-5">What do you feel like eating today?</h1>
             <form action="/filterRestaurantsResults" method="POST">
                 <div class="form-group mb-4">
-                    <label>Cuisine Type</label>
+                    <h6>Cuisine Type</h6>
                     <div class="mb-3 hidden-block cuisine">
                         <select class="cuisineType" name="Cuisine" style="width:100%;">
-                            <option value="" selected disabled hidden>Choose the cuisine type</option>
+                            <option value="" selected disabled hidden>Choose a cuisine type</option>
                             <% cuisine.forEach((item)=> {%>
                                 <option value="<%= item %>">
                                     <%=item%>
@@ -26,10 +26,10 @@
                     </div>
                 </div>
                 <div class="form-group mb-4">
-                    <label>Price</label>
-                    <div class="mb-3 hidden-block cuisine">
+                    <h6>Price</h6>
+                    <div class="mb-3 hidden-block price">
                         <select class="cuisineType" name="Price" style="width:100%;">
-                            <option value="" selected disabled hidden>Choose the price range</option>
+                            <option value="" selected disabled hidden>Choose a price range</option>
                             <% price.forEach((item)=> {%>
                                 <option value="<%= item %>">
                                     <%=item%>
@@ -39,10 +39,10 @@
                     </div>
                 </div>
                 <div class="form-group mb-4">
-                    <label>Michelin Stars</label>
-                    <div class="mb-3 hidden-block cuisine">
+                    <h6>Michelin Stars</h6>
+                    <div class="mb-3 hidden-block stars">
                         <select class="cuisineType" name="Award" style="width:100%;">
-                            <option value="" selected disabled hidden>Choose the Michelin Stars Rating</option>
+                            <option value="" selected disabled hidden>Choose a Michelin Stars Rating</option>
                             <% award.forEach((item)=> {%>
                                 <option value="<%= item %>">
                                     <%=item%>
@@ -52,19 +52,35 @@
                     </div>
                 </div>
                 <div class="form-group mb-4">
-                    <label>Which meal ?</label>
-                    <div class="mb-3 hidden-block cuisine">
+                    <h6>Which meal ?</h6>
+                    <div class="mb-3 hidden-block meal">
                         <select class="cuisineType" name="Meal" style="width:100%;">
-                            <option value="" selected disabled hidden>Choose meanl type</option>
+                            <option value="" selected disabled hidden>Choose a meal type</option>
                             <option value="breakfast">Breakfast</option>
                             <option value="lunch">Lunch</option>
                             <option value="dinner">Dinner</option>
                         </select>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group mb-4">
+                    <h6>Location</h6>
+                    <div class="mb-3 hidden-block location">
+                        <select class="cuisineType" name="Location" style="width:100%;">
+                            <option value="" selected disabled hidden>Choose a location</option>
+                            <% location.forEach((item)=> {%>
+                                <option value="<%= item %>">
+                                    <%=item%>
+                                </option>
+                                <%})%>
+                        </select>
+                    </div>
                 </div>
+                <% if (typeof errorMessage !=='undefined' ) { %>
+                        <div class="btn-danger text-center rounded py-1"><%= errorMessage %></div>
+                    <% } %>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
             </form>
             <div class="erroMessage"></div>
         </main>

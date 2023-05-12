@@ -54,17 +54,29 @@ router.get('/restaurant/:id?', async (req, res) => {
     }
 });
 
-router.get("/filterRestaurants", async (req, res) => {
-    const user = await findUser({ email: req.session.email });
-    const cuisine = await restaurantModel.distinct("Cuisine");
-    const price = await restaurantModel.distinct("Price");
-    const award = await restaurantModel.distinct("Award");
-    res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award });
+router.get("/filterRestaurants/:message?", async (req, res) => {
+    try {
+        const user = await findUser({ email: req.session.email });
+        const cuisine = await restaurantModel.distinct("Cuisine");
+        const price = await restaurantModel.distinct("Price");
+        const award = await restaurantModel.distinct("Award");
+        const location = await restaurantModel.distinct("Location");
+        if (req.params.message === "error") {
+            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected"  });
+        }
+        res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location});
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 router.post("/filterRestaurantsResults", async (req, res) => {
     let filterData = req.body;
+    if (Object.keys(filterData).length === 0 || filterData === undefined) {
+        return res.redirect("/filterRestaurants/error");
+    }
     res.redirect(`/restaurants?filter=${encodeURIComponent(JSON.stringify(filterData))}`);
 })
+
 
 module.exports = router;
