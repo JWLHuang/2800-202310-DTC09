@@ -3,6 +3,14 @@ const router = express.Router();
 const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 
+const findRestaurants = async (user, searchQuery, res, errorMsg) => {
+    try {
+        const restaurants = await restaurantModel.find(searchQuery);
+        res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
@@ -20,12 +28,7 @@ router.get('/restaurants', async (req, res) => {
                     [field]: { $regex: filterData[field], $options: "i" }
                 }))
             }
-            try {
-                const restaurants = await restaurantModel.find(searchQuery);
-                res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-            } catch (err) {
-                console.log(err);
-            }
+            findRestaurants(user, searchQuery, res, errorMsg);
         } else {
             const searchTerms = user.dietary_preferences
             const searchQuery = {
@@ -42,12 +45,7 @@ router.get('/restaurants', async (req, res) => {
                     }
                 ]
             }
-            try {
-                const restaurants = await restaurantModel.find(searchQuery);
-                res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-            } catch (err) {
-                console.log(err);
-            }
+            findRestaurants(user, searchQuery, res, errorMsg);
         }
     } catch (err) {
         console.log(err);
@@ -68,7 +66,6 @@ router.get('/restaurant/:id?', async (req, res) => {
     } catch (error) {
         req.session.error = "Restaurant not found";
         res.redirect("/filterRestaurants")
-
     }
 });
 

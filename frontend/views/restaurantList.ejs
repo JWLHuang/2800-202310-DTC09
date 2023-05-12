@@ -9,8 +9,8 @@
         <div class="row">
           <div class="col">
             <div class="container-fluid">
-              <% for(var i=0; i<5; i++) { %>
-                <%- include('partials/restaurantCard', {restaurant: restaurants[i]}) %>
+              <% for( i=0; i<Math.min(restaurants.length, 5); i++) { %>
+                <%- include('partials/restaurantCard.ejs', {restaurant: restaurants[i]}) %>
                   <% } %>
             </div>
           </div>
