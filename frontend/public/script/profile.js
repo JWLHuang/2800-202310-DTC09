@@ -17,9 +17,11 @@ const setup = () => {
     } else {
         $(`.navProfile`).addClass('active')
     }
+
     $('body').on('click', '.tab', function () {
         toggleTab(this.id);
     })
+    
     $('body').on('click', '.editnavProfile', async function () {
         $('#editnavProfile').removeClass('d-none');
         $('#backdrop').removeClass('d-none');
