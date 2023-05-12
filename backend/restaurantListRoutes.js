@@ -10,26 +10,31 @@ router.get('/restaurants', async (req, res) => {
     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
     try {
         const user = await findUser({ email: req.session.email });
-        const searchTerms = user.dietary_preferences
-        const searchQuery = {
-            $and: [
-                {
-                    $or: searchTerms.map((term) => ({
-                        "Dietary Restrictions": { $regex: term, $options: "i" }
-                    }))
-                },
-                {
-                    $and: Object.keys(filterData).map((field) => ({
-                        [field]: { $regex: filterData[field], $options: "i" }
-                    }))
-                }
-            ]
-        }
-        try {
-            const restaurants = await restaurantModel.find(searchQuery);
-            res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-        } catch (err) {
-            console.log(err);
+        if (!user) {
+            return res.redirect("/login")
+        } else {
+            const searchTerms = user.dietary_preferences
+            const searchQuery = {
+                $and: [
+                    {
+                        $or: searchTerms.map((term) => ({
+                            "Dietary Restrictions": { $regex: term, $options: "i" }
+                        }))
+                    },
+                    {
+                        $and: Object.keys(filterData).map((field) => ({
+                            [field]: { $regex: filterData[field], $options: "i" }
+                        }))
+                    }
+                ]
+            }
+            console.log(searchQuery);
+            try {
+                const restaurants = await restaurantModel.find(searchQuery);
+                res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
+            } catch (err) {
+                console.log(err);
+            }
         }
     } catch (err) {
         console.log(err);
@@ -62,9 +67,9 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         const award = await restaurantModel.distinct("Award");
         const location = await restaurantModel.distinct("Location");
         if (req.params.message === "error") {
-            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected"  });
+            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected" });
         }
-        res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location});
+        res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location });
     } catch (err) {
         console.log(err);
     }
