@@ -63,6 +63,9 @@ router.get('/restaurant/:id?', async (req, res) => {
 
 router.get("/filterRestaurants/:message?", async (req, res) => {
     try {
+        if (!req.session.authenticated) {
+            return res.redirect('/login');
+        }
         const user = await findUser({ email: req.session.email });
         const cuisine = await restaurantModel.distinct("Cuisine");
         const price = await restaurantModel.distinct("Price");
