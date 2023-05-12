@@ -14,6 +14,18 @@ router.get('/restaurants', async (req, res) => {
         const user = await findUser({ email: req.session.email });
         if (!user) {
             return res.redirect("/login")
+        } else if (user.dietary_preferences.length === 0) {
+            const searchQuery = {
+                $and: Object.keys(filterData).map((field) => ({
+                    [field]: { $regex: filterData[field], $options: "i" }
+                }))
+            }
+            try {
+                const restaurants = await restaurantModel.find(searchQuery);
+                res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
+            } catch (err) {
+                console.log(err);
+            }
         } else {
             const searchTerms = user.dietary_preferences
             const searchQuery = {
@@ -30,7 +42,6 @@ router.get('/restaurants', async (req, res) => {
                     }
                 ]
             }
-            console.log(searchQuery);
             try {
                 const restaurants = await restaurantModel.find(searchQuery);
                 res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
