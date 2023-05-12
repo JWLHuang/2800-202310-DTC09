@@ -25,23 +25,28 @@
 }
 
 #restaurantDetails {
-    padding: 15px;
+    padding: 10px;
     background-color: #e3f6f5;
-    margin: 10px 10px 0px 10px;
+    margin: 10px 0px 0px 10px;
 }
 
 #menuButtonContainer {    
     background-color: #e3f6f5;
 }
 
-#menuButtonContainer, #directionsButtonContainer {
-    margin: 0px 10px 10px 10px;
-    padding: 0px 15px 15px 15px;
+#menuButtonContainer {
+    margin: 0px 0px 10px 10px;
+    padding: 0px 10px 10px 10px;
+}
+
+#directionsButtonContainer {
+    margin: 0px;
+    padding: 0px;
 }
 
 #restaurantInfo {
-    padding: 15px;
-    margin: 10px;
+    padding: 0px;
+    margin: 0px 0px 10px 0px;
 }
 
 #restaurantDetails div, #restaurantInfo div {
