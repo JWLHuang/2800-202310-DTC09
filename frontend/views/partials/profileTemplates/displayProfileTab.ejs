@@ -1,0 +1,26 @@
+<% for (const [key, value] of Object.entries(profileInfo)) { %>
+    <div class="tab-pane <%=key%>">
+        <% profileInfo[key].forEach(function(link) { %>
+            <%- include(key, {link: link}) %>
+                <% }); %>
+                <% if (typeof errorProfileEdit !=='undefined' && key == "navProfile") { %>
+                    <div class="btn-danger text-center rounded py-1 my-3"><%= errorProfileEdit %></div>
+                <% } %>
+                <% if (typeof errorPreferencesEdit !=='undefined' && key == "navPreferences") { %>
+                    <div class="btn-danger text-center rounded py-1 my-3"><%= errorPreferencesEdit %></div>
+                <% } %>
+                <% if (typeof errorFactorEdit !=='undefined' && key == "navFactors") { %>
+                    <div class="btn-danger text-center rounded py-1 my-3"><%= errorFactorEdit %></div>
+                <% } %>
+                    <div class="d-flex justify-content-end container-fluid">
+                        <button type="button" class="btn btn-primary justify-content-end edit<%=key%>">Edit</button>
+                    </div>
+    </div>
+    <div id="edit<%=key%>" class="modal show edit-modal d-none" tabindex="-1">
+        <div id="modal-frame" style="height:unset!important">
+            <div class="modal-content modal-content-css">
+                <%- include(key+"Edit") %>
+            </div>
+        </div>
+    </div>
+    <% } %>

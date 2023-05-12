@@ -1,0 +1,22 @@
+<%
+createStarRating = function(Award) {
+    let rating
+
+    if (Award === "Bib Gourmands") {
+        return "Bib Gourmands"
+    } else {
+        rating = parseInt(Award.charAt(0))
+    }
+
+    let starRating = "";
+
+    for (let i = 0; i < rating; i++) {
+        starRating += "★";
+    }
+    for (let i = 0; i < 3 - rating; i++) {
+        starRating += "☆";
+    }
+
+    return starRating;
+}
+%>

@@ -1,0 +1,86 @@
+#modal-frame {
+    position: fixed !important;
+    bottom: 0;
+    width: min(96%, 700px);
+    height: 60vh;
+    margin-left: max(calc((100% - 700px) / 2), 2%);
+}
+
+.edit-modal {
+    display: block;
+}
+
+.modal-content-css {
+    height: 100%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.stop-scrolling {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.nav-link.navProfile,
+.nav-link.navPreferences, .nav-link.navFactors {
+    padding: 5px 8px;
+}
+
+.nav-item.dropdown {
+    padding: 5px 10px !important;
+}
+
+.navPreferences.active {
+    color: black !important;
+}
+
+.navFactors.active {
+    color: black !important;
+}
+
+.btn-vegan {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-vegan:hover {
+    background-color: #3e8e41;
+}
+
+.btn-gluten-free {
+    background-color: #80811d;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-nut-free {
+    background-color: #128f16;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    /* .nav-item.dropdown {
+        display: none;
+    } */
+
+    /* .btn-vegan,
+    .btn-gluten-free,
+    .btn-nut-free {
+        padding: 5px 5px;
+        font-size: 12px;
+    } */
+}

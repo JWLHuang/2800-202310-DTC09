@@ -1,0 +1,21 @@
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+    email: String,
+    name: String,
+    password: String,
+    type: String,
+    about_me: String,
+    dietary_preferences: Array,
+    service: Number,
+    food: Number,
+    price: Number,
+    atmosphere: Number,
+    cleanliness: Number,
+    accessibility: Number,
+    extAuth: Boolean,
+});
+
+const userModule = mongoose.model("users", userSchema);
+
+module.exports = userModule

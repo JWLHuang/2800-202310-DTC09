@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+}
+
+button#submit {
+    background-color: #272643!important;
+    border: 0px;
+    padding: 10px 20px 10px 20px;
+    margin-right: auto!important;
+    margin-left: auto!important;
+    text-transform: uppercase;
+}
+
+label {
+    text-transform: lowercase;
+    margin-left: 10px;
+}
+
+#passwordReset a {
+    color: #000000!important;
+}
+
+input#email, input#password {
+    padding-left: 25px!important;
+}
+
+#title h1 {
+    text-transform: uppercase;
+    font-size: 1.2em!important;
+    font-weight: 700!important;
+}
+
+#extAuthBtn {
+    border: 2px solid #000000;
+    text-transform: uppercase;
+}
+
+#extAuthBtn:hover {
+    border: 2px solid #000000!important;
+    color: #FFFFFF!important;
+    background-color: #272643!important;
+}

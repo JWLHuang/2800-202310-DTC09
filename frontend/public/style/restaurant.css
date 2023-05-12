@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+}
+
+#restaurantName {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px;
+    text-align: center;
+}
+
+#restaurantImg img {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+    border-radius: 20px;
+    object-position: center;
+}
+
+#reviewImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+}
+
+#restaurantDetails {
+    padding: 10px;
+    background-color: #e3f6f5;
+    margin: 10px 0px 0px 10px;
+}
+
+#menuButtonContainer {    
+    background-color: #e3f6f5;
+}
+
+#menuButtonContainer {
+    margin: 0px 0px 10px 10px;
+    padding: 0px 10px 10px 10px;
+}
+
+#directionsButtonContainer {
+    margin: 0px;
+    padding: 0px;
+}
+
+#restaurantInfo {
+    padding: 0px;
+    margin: 0px 0px 10px 0px;
+}
+
+#restaurantDetails div, #restaurantInfo div {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#starRating {
+    font-size: 24px;
+}
+
+#mapFrame {
+    width: 100%;
+}

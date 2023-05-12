@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="pokemon-info-Title">Edit <%=user.name%>'s Profile</h5>
+    <button type="button" class="close close-modal">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<form action="/profileUpdate" method="POST">
+    <div class="modal-body">
+        <div class="card-body">
+            <label for="message-text" class="col-form-label">About me:</label>
+            <textarea class="form-control" id="message-text" name="about_me"
+                placeholder="Tell us more about you!"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary px-4">Save</button>
+        <button type="button" class="btn btn-danger close-modal">Discards</button>
+    </div>
+</form>
