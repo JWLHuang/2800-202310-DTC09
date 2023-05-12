@@ -36,6 +36,7 @@ router.post("/signup", async (req, res) => {
             name: req.body.name,
             password: bcrypt.hashSync(req.body.password, 10),
             type: "user",
+            extAuth: false,
         };
         await usersModel.create(newUser).then(() => {
             console.log("User created");
