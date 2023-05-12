@@ -10,7 +10,9 @@
     "mongoose": "^7.1.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.22",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth": "^2.0.0"
   },
   "scripts": {
     "start": "node ./backend/server.js"
@@ -19,7 +21,6 @@
   "description": "COMP 2800 Project - Eric Deau, Jacky Huang, Derek Woo, Nathan Yau",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
   "author": "",
   "license": "ISC"
 }
