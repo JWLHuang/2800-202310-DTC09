@@ -62,12 +62,14 @@ const authorizationRoutes = require("./authorizationRoutes");
 const profileRoutes = require("./profileRoutes");
 const restaurantListRoutes = require("./restaurantListRoutes");
 const resetPasswordRoutes = require('./resetPasswordRoutes');
+const extAuthRoutes = require('./extAuthRoutes');
 
 app.use(signupRoutes);
 app.use(authorizationRoutes);
 app.use(profileRoutes);
 app.use(restaurantListRoutes);
 app.use(resetPasswordRoutes);
+app.use(extAuthRoutes);
 
 function handle404(req, res, _) {
   res.status(404).render("404.ejs");

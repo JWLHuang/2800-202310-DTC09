@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     price: Number,
     atmosphere: Number,
     cleanliness: Number,
-    accessibility: Number
+    accessibility: Number,
+    extAuth: Boolean,
 });
 
 const userModule = mongoose.model("users", userSchema);

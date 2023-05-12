@@ -22,3 +22,18 @@ button#submit {
     font-size: 1.2em!important;
     font-weight: 700!important;
 }
+
+#extAuthBtn {
+    border: 2px solid #000000;
+    text-transform: uppercase;
+}
+
+#extAuthBtn:hover {
+    border: 2px solid #000000!important;
+    color: #FFFFFF!important;
+    background-color: #272643!important;
+}
+
+input#email, input#password, input#name {
+    padding-left: 25px!important;
+}
