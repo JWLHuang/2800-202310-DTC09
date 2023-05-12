@@ -1,214 +1,197 @@
 <%- include('partials/header') %>
-    <main>
-        <link rel="stylesheet" href="./style/index.css">
-        <!-- import boostrap 5.0.0-alpha1 -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-            rel="stylesheet">
-        <!-- import bootstrap 5.0.0-alpha1 javascript -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+<main>
+  <link rel="stylesheet" href="./style/index.css">
+  <!-- import boostrap 5.0.0-alpha1 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+  <!-- import bootstrap 5.0.0-alpha1 javascript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
 
-    </main>
-    <!-- start landing page layout  -->
-    <div class="container" id="welcome">
-        <% if (user) { %>
-            <h2>Welcome back, <%= user.name %>
-            </h2>
-            <% } else { %>
-                <h2>Welcome to TableTrek!</h2>
-                <% } %>
-    </div>
-    <div class="container">
-        <a href="/filterRestaurants" class="btn btn-primary">Get Started</a>
-    </div>
+</main>
+<!-- start landing page layout  -->
+<div class="container mb-2" id="welcome">
+  <% if (user) { %>
+  <h2>Welcome back, <%= user.name %>
+  </h2>
+  <% } else { %>
+  <h2>Welcome to TableTrek!</h2>
+  <% } %>
+</div>
+<div class="container mt-4">
+  <a href="/filterRestaurants" class="btn btn-primary">Get Started</a>
+</div>
 
 
-    <div class="container">
-        <h4>Featured Restaurants:</h4>
+<div class="container mt-5">
+  <h4>Featured Restaurants:</h4>
+</div>
+<!-- Featured restaurant carousel -->
+<div id="carouselExampleCaptions" class="carousel slide px-4" data-bs-ride="false">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="./images/site_resources/restaurant01.jpg" class="d-block w-100" alt="imageOne">
+      <div class="carousel-caption">
+        <h5>Restaurant 1</h5>
+        <p>Insert cuisine type & rating.</p>
+      </div>
     </div>
-    <!-- Featured restaurant carousel -->
-    <div id="carouselExampleCaptions" class="carousel slide px-4" data-bs-ride="false">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
+    <div class="carousel-item">
+      <img src="./images/site_resources/restaurant02.jpg" class="d-block w-100" alt="imageTwo">
+      <div class="carousel-caption">
+        <h5>Restaurant 2</h5>
+        <p>Insert cuisine type & rating.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="./images/site_resources/restaurant03.jpg" class="d-block w-100" alt="imageThree">
+      <div class="carousel-caption">
+        <h5>Restaurant 3</h5>
+        <p>Insert cuisine type & rating.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<div class="container d-flex justify-content-end">
+  <div class="row">
+    <div class="col">
+      <a href="#" style="text-decoration: none">More</a>
+    </div>
+  </div>
+</div>
+
+<!-- Only shows history if user is logged in -->
+<% if (user) { %>
+<!-- Restaurant history card slide -->
+<section class="pt-5 pb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-8">
+        <h3 class="mb-3">Previously Viewed Restaurants </h3>
+      </div>
+      <div class="col-4 text-right">
+        <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+
+          < </a>
+            <a class="btn btn-primary mb-3 " href="#carouselExampleIndicators2" role="button" data-slide="next">
+              >
+            </a>
+      </div>
+      <div class="col-12">
+        <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="./images/site_resources/restaurant01.jpg" class="d-block w-100" alt="imageOne">
-                <div class="carousel-caption">
-                    <h5>Restaurant 1</h5>
-                    <p>Insert cuisine type & rating.</p>
+              <div class="row">
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant01.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 1</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+
+                  </div>
                 </div>
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant01.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 2</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant01.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 3</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/site_resources/restaurant02.jpg" class="d-block w-100" alt="imageTwo">
-                <div class="carousel-caption">
-                    <h5>Restaurant 2</h5>
-                    <p>Insert cuisine type & rating.</p>
+              <div class="row">
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant02.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 4</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+                  </div>
                 </div>
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant02.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 5</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant02.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 6</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/site_resources/restaurant03.jpg" class="d-block w-100" alt="imageThree">
-                <div class="carousel-caption">
-                    <h5>Restaurant 3</h5>
-                    <p>Insert cuisine type & rating.</p>
+              <div class="row">
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant03.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 7</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+
+                  </div>
                 </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    <div class="container d-flex justify-content-end">
-        <div class="row">
-            <div class="col">
-                <a href="#" style="text-decoration: none">More</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Only shows history if user is logged in -->
-    <% if (user) { %>
-        <!-- Restaurant history card slide -->
-        <section class="pt-5 pb-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        <h3 class="mb-3">Previously Viewed Restaurants </h3>
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant03.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 8</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
                     </div>
-                    <div class="col-4 text-right">
-                        <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button"
-                            data-slide="prev">
-                            < </a>
-                                <a class="btn btn-primary mb-3 " href="#carouselExampleIndicators2" role="button"
-                                    data-slide="next">
-                                    >
-                                </a>
-                    </div>
-                    <div class="col-12">
-                        <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="row">
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant01.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 1</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant01.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 2</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant01.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 3</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant02.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 4</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant02.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 5</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant02.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 6</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant03.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 7</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant03.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 8</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 px-0">
-                                            <div class="card">
-                                                <img class="img-fluid" alt="100%x280"
-                                                    src="./images/site_resources/restaurant03.jpg">
-                                                <div class="card-body">
-                                                    <p class="card-title">Restaurant 9</p>
-                                                    <a href="#" style="text-decoration: none;">Read More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+                <div class="col-4 px-0">
+                  <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="./images/site_resources/restaurant03.jpg">
+                    <div class="card-body">
+                      <p class="card-title">Restaurant 9</p>
+                      <a href="#" style="text-decoration: none;">Read More</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
-        <% } %>
-            <%- include('partials/footer') %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>
+<%- include('partials/footer') %>

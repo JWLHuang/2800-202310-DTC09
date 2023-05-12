@@ -11,7 +11,11 @@ router.get("/login", async (req, res) => {
     delete req.session.error;
     const user = await findUser({ email: req.session.email });
     user ? res.locals.user = user : res.locals.user = null;
-    res.render("login.ejs", { errorMsg: errorMsg });
+    if (user) {
+        res.redirect("/");
+    } else {
+        res.render("login.ejs", { errorMsg: errorMsg });
+    }
 });
 
 const loginSchema = Joi.object(

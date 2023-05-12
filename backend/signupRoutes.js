@@ -16,7 +16,11 @@ const signupSchema = Joi.object(
 router.get('/signup', async (req, res) => {
     const user = await findUser({ email: req.session.email });
     user ? res.locals.user = user : res.locals.user = null;
-    res.render('signup.ejs');
+    if (user) {
+        res.redirect("/");
+    } else {
+        res.render('signup.ejs');
+    }
 });
 
 router.use(express.urlencoded({ extended: false }))

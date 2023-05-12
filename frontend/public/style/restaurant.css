@@ -17,6 +17,13 @@
     object-position: center;
 }
 
+#reviewImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+}
+
 #restaurantDetails {
     padding: 15px;
     background-color: #e3f6f5;
