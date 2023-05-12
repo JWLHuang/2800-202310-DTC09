@@ -19,7 +19,7 @@ const factorsSchema = Joi.object({
     accessibility: Joi.number().min(1).max(5).required()
 });
 
-router.get('/profile', async (req, res) => {
+router.get('/profile/:message?', async (req, res) => {
     if (!req.session.authenticated) {
         return res.redirect('/login');
     }
@@ -28,30 +28,41 @@ router.get('/profile', async (req, res) => {
     const diningCriteria = await criteriaModel.findOne({ 'category': 'Dining Experience Factors' }, { category: 0, _id: 0 })
     const diningDict = diningCriteria.toObject()
     const dietaryDict = dietaryPreferences.toObject()
+    if (req.params.message === "errorProfileEdit") {
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorProfileEdit: "Invalid Input for 'about me' section"  });
+    } else if (req.params.message === "errorDietaryPreferences") {
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorPreferencesEdit: "Please pick at least one dietary preference"  });
+    } else if (req.params.message === "errorDiningCriteria") {
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorFactorEdit: "Must rank all criteria"  });
+    }
     res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict });
 });
 
 router.post('/profileUpdate', async (req, res) => {
     const { error, value } = profileSchema.validate(req.body);
     if (error) {
-        console.log('About me field is invalid');
+        return res.redirect("/profile/errorProfileEdit");
     }
     else {
-        usersModel.updateOne({ email: req.session.email }, { about_me: req.body.about_me }).then((_) => {
+        try {
+            await usersModel.updateOne({ email: req.session.email }, { about_me: req.body.about_me })
             res.redirect('/profile');
-        }).catch((err) => {
+        } catch (err) {
             console.log(err);
-        });
+        }
     }
 })
 
 router.post('/updateDietaryPreferences', async (req, res) => {
-    console.log(req.body.dietaryPreferences);
-    usersModel.updateOne({ email: req.session.email }, { dietary_preferences: req.body.dietaryPreferences }).then((_) => {
+    if (Object.keys(req.body).length === 0 || req.body === undefined) {
+        return res.redirect("/profile/errorDietaryPreferences");
+    }
+    try {
+        await usersModel.updateOne({ email: req.session.email }, { dietary_preferences: req.body.dietaryPreferences })
         res.redirect('/profile');
-    }).catch((err) => {
+    } catch (err) {
         console.log(err);
-    })
+    }
 });
 
 router.post('/updateDiningCriteria', async (req, res) => {
@@ -61,16 +72,15 @@ router.post('/updateDiningCriteria', async (req, res) => {
     }
     const { error, value } = factorsSchema.validate(ratings);
     if (error) {
-        console.log(error);
+        return res.redirect("/profile/errorDiningCriteria");
     }
     else {
-        usersModel.updateOne({ email: req.session.email }, ratings).then((_) => {
+        try {
+            await usersModel.updateOne({ email: req.session.email }, ratings)
             res.redirect('/profile');
-        }
-        ).catch((err) => {
+        } catch (err) {
             console.log(err);
         }
-        )
     }
 });
 

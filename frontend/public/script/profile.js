@@ -7,7 +7,16 @@ function toggleTab(id) {
 
 
 const setup = () => {
-    $(`.navProfile`).addClass('active')
+    const path = window.location.pathname;
+    const profileError = path.split('/profile/')[1];
+    console.log(profileError)
+    if (profileError === "errorDietaryPreferences") {
+        $(`.navPreferences`).addClass('active')
+    } else if (profileError === "errorDiningCriteria") {
+        $(`.navFactors`).addClass('active')
+    } else {
+        $(`.navProfile`).addClass('active')
+    }
     $('body').on('click', '.tab', function () {
         toggleTab(this.id);
     })
