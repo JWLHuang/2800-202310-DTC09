@@ -50,18 +50,20 @@ router.get('/restaurant/:id?', async (req, res) => {
         if (restaurant) {
             res.render("restaurant", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254 } : { user: user, restaurant: null });
         } else {
-            req.session.error = "No restaurant selected";
-            res.redirect("/restaurants")
+            req.session.error = "Restaurant not found";
+            res.redirect("/filterRestaurants")
         }
 
     } catch (error) {
         req.session.error = "Restaurant not found";
-        res.redirect("/restaurants")
+        res.redirect("/filterRestaurants")
 
     }
 });
 
 router.get("/filterRestaurants/:message?", async (req, res) => {
+    const errorMsg = req.session.error ? req.session.error : null;
+    delete req.session.error;
     try {
         if (!req.session.authenticated) {
             return res.redirect('/login');
@@ -72,9 +74,9 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         const award = await restaurantModel.distinct("Award");
         const location = await restaurantModel.distinct("Location");
         if (req.params.message === "error") {
-            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected" });
+            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
         }
-        res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location });
+        res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
     }
