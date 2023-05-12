@@ -7,6 +7,8 @@ const { findUser } = require("./findUser");
 router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
+    const filterParam = req.query.filter; // Get the filter data from the query parameter
+    if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
     try {
         const user = await findUser({ email: req.session.email });
@@ -82,6 +84,5 @@ router.post("/filterRestaurantsResults", async (req, res) => {
     }
     res.redirect(`/restaurants?filter=${encodeURIComponent(JSON.stringify(filterData))}`);
 })
-
 
 module.exports = router;
