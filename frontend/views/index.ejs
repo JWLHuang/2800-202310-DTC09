@@ -8,23 +8,6 @@
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
 
-        <div class="container vstack text-center">
-            <div class="row">
-                <h1>This is the index page</h1>
-                <h2>Here are some test links</h2>
-            </div>
-            <div class="row">
-                <a href="/404">404 page</a>
-                <% if (user) { %>
-                    <a href="/restaurants">List of Restaurants</a>
-                    <a href="/logout">Logout</a>
-                    <a href="/resetPassword">Reset Password</a>
-                    <% } else { %>
-                        <a href="/login">Login page</a>
-                        <a href="/signup">Signup page</a>
-                        <% } %>
-            </div>
-        </div>
     </main>
     <!-- start landing page layout  -->
     <div class="container" id="welcome">
