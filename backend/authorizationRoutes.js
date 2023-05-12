@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
         const user = await usersModel.findOne({
             email: req.body.email,
         })
-        if (user.extAuth === true) {
+        if (user && user.extAuth === true) {
             user ? res.locals.user = user : res.locals.user = null;
             res.render("login.ejs", { errorMsg: "Please use external authentication instead." });
         } else if (user && bcrypt.compareSync(req.body.password, user.password)) {

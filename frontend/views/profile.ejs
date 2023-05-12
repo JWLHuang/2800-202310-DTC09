@@ -1,36 +1,36 @@
 <%- include('partials/header') %>
-    <script src="../script/profile.js"></script>
-    <link rel="stylesheet" href="../style/profile.css">
-    <%- include("svgIcons") %>
+<script src="../script/profile.js"></script>
+<link rel="stylesheet" href="../style/profile.css">
+<%- include("svgIcons") %>
 
-        <main class="container">
-            <div class="user">
-                <h1 class="text-center mb-5">User Profile</h1>
+<main class="container">
+  <div class="user">
+    <h1 class="text-center mb-5">User Profile</h1>
 
-                <div>
-                    <svg class="bi d-block mx-auto mb-1" width="180" height="180">
-                        <use xlink:href="#people-circle"></use>
-                    </svg>
-                    <h3 class="text-center mt-4">
-                        <%=user.name%>
-                    </h3>
-                </div>
+    <div>
+      <svg class="bi d-block mx-auto mb-1" width="180" height="180">
+        <use xlink:href="#people-circle"></use>
+      </svg>
+      <h3 class="text-center mt-4">
+        <%=user.name%>
+      </h3>
+    </div>
 
-                <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs">
 
-                    <li class="nav-item tab" id="navProfile">
-                        <a class="nav-link navProfile active">Profile</a>
-                    </li>
+      <li class="nav-item tab" id="navProfile">
+        <a class="nav-link navProfile active">Profile</a>
+      </li>
 
-                    <li class="nav-item tab" id="navPreferences">
-                        <a class="nav-link navPreferences"> Dietary Preferences</a>
-                    </li>
+      <li class="nav-item tab" id="navPreferences">
+        <a class="nav-link navPreferences"> Dietary Preferences</a>
+      </li>
 
-                    <li class="nav-item tab" id="navFactors">
-                        <a class="nav-link navFactors"> Dining Factors</a>
-                    </li>
+      <li class="nav-item tab" id="navFactors">
+        <a class="nav-link navFactors"> Dining Factors</a>
+      </li>
 
-                    <li class="nav-item dropdown">
+      <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                             aria-expanded="false">Setting</a>
                         <ul class="dropdown-menu">
@@ -41,14 +41,14 @@
                             </li>
                             <li><a class="dropdown-item text-danger" href="#">Deactivate Account</a></li>
                         </ul>
-                    </li>
+                    </li> -->
 
-                </ul>
-                <div class="tab-content mt-4 mx-3" id="nav-tabContent">
-                    <%- include('partials/profileTemplates/displayProfileTab.ejs', {user: user, profileInfo: profileInfo}) %>
-                </div>
-                </form>
-            </div>
-        </main>
-        <div class="modal-backdrop fade show d-none" id="backdrop"></div>
-        <%- include('partials/footer') %>
+    </ul>
+    <div class="tab-content mt-4 mx-3" id="nav-tabContent">
+      <%- include('partials/profileTemplates/displayProfileTab.ejs', {user: user, profileInfo: profileInfo}) %>
+    </div>
+    </form>
+  </div>
+</main>
+<div class="modal-backdrop fade show d-none" id="backdrop"></div>
+<%- include('partials/footer') %>
