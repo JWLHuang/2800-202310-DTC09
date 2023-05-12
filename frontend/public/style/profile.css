@@ -73,9 +73,9 @@
 }
 
 @media screen and (max-width: 768px) {
-    .nav-item.dropdown {
+    /* .nav-item.dropdown {
         display: none;
-    }
+    } */
 
     /* .btn-vegan,
     .btn-gluten-free,
@@ -83,6 +83,4 @@
         padding: 5px 5px;
         font-size: 12px;
     } */
-}
-    
 }
