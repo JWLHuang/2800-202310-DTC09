@@ -3,16 +3,27 @@ const router = express.Router();
 const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 
+
 router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
+    const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
     try {
         const user = await findUser({ email: req.session.email });
         const searchTerms = user.dietary_preferences
         const searchQuery = {
-            $or: searchTerms.map((term) => ({
-                FacilitiesAndServices: { $regex: term, $options: "i" }
-            }))
+            $and: [
+                {
+                    $or: searchTerms.map((term) => ({
+                        "Dietary Restrictions": { $regex: term, $options: "i" }
+                    }))
+                },
+                {
+                    $and: Object.keys(filterData).map((field) => ({
+                        [field]: { $regex: filterData[field], $options: "i" }
+                    }))
+                }
+            ]
         }
         try {
             const restaurants = await restaurantModel.find(searchQuery);
@@ -52,7 +63,8 @@ router.get("/filterRestaurants", async (req, res) => {
 });
 
 router.post("/filterRestaurantsResults", async (req, res) => {
-    console.log(req.body);
+    let filterData = req.body;
+    res.redirect(`/restaurants?filter=${encodeURIComponent(JSON.stringify(filterData))}`);
 })
 
 module.exports = router;

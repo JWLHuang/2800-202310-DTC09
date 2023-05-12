@@ -19,7 +19,6 @@
   "description": "COMP 2800 Project - Eric Deau, Jacky Huang, Derek Woo, Nathan Yau",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
   "author": "",
   "license": "ISC"
 }
