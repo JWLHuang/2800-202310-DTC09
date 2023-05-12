@@ -14,7 +14,7 @@ const mongodb_database = process.env.MONGODB_DATABASE;
 const userCollection = database.db(mongodb_database).collection("users");
 
 router.get("/resetPassword", (req, res) => {
-  res.render("resetPassword.ejs");
+  res.render("resetPassword.ejs", { user: res.locals.user });
 });
 
 router.post("/resetPasswordSubmit", async (req, res) => {
