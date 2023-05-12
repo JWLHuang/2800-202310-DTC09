@@ -35,7 +35,7 @@ router.get("/ExtAuthSuccess", async (req, res) => {
         await usersModel.create(newUser).then(() => {
             console.log("User created");
             req.session.authenticated = true;
-            req.session.email = req.body.email;
+            req.session.email = email;
             res.redirect("/");
         });
     }
