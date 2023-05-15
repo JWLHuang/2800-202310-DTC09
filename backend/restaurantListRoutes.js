@@ -2,13 +2,41 @@ const express = require('express');
 const router = express.Router();
 const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
+const aiFilter = require("./aiFilter");
 
-const findRestaurants = async (user, searchQuery, res, errorMsg) => {
-    try {
-        const restaurants = await restaurantModel.find(searchQuery);
-        res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-    } catch (err) {
-        console.log(err);
+// const findRestaurants = async (user, searchQuery, res, errorMsg) => {
+//     try {
+//         const restaurants = await restaurantModel.find(searchQuery);
+//         res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
+
+const getSearchQuery = async (filterData, preferences) => {
+    if (preferences.length === 0) {
+        query = {
+            $and: Object.keys(filterData).map((field) => ({
+                [field]: { $regex: filterData[field], $options: "i" }
+            }))
+        }
+        return query;
+    } else {
+        const query = {
+            $and: [
+                {
+                    $or: preferences.map((term) => ({
+                        "Dietary Restrictions": { $regex: term, $options: "i" }
+                    }))
+                },
+                {
+                    $and: Object.keys(filterData).map((field) => ({
+                        [field]: { $regex: filterData[field], $options: "i" }
+                    }))
+                }
+            ]
+        }
+        return query;
     }
 }
 
@@ -19,38 +47,66 @@ router.get('/restaurants', async (req, res) => {
     if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
     try {
-        const user = await findUser({ email: req.session.email });
+        // Retrieve user preferences from their account
+        const user = await findUser({ email: req.session.email }) // Replace with your actual implementation
         if (!user) {
             return res.redirect("/login")
-        } else if (user.dietary_preferences.length === 0) {
-            const searchQuery = {
-                $and: Object.keys(filterData).map((field) => ({
-                    [field]: { $regex: filterData[field], $options: "i" }
-                }))
-            }
-            findRestaurants(user, searchQuery, res, errorMsg);
         } else {
-            const searchTerms = user.dietary_preferences
-            const searchQuery = {
-                $and: [
-                    {
-                        $or: searchTerms.map((term) => ({
-                            "Dietary Restrictions": { $regex: term, $options: "i" }
-                        }))
-                    },
-                    {
-                        $and: Object.keys(filterData).map((field) => ({
-                            [field]: { $regex: filterData[field], $options: "i" }
-                        }))
-                    }
-                ]
-            }
-            findRestaurants(user, searchQuery, res, errorMsg);
+            const searchQuery = await getSearchQuery(filterData, user.dietary_preferences);
+            console.log(searchQuery);
         }
     } catch (err) {
         console.log(err);
     }
 });
+// const findRestaurants = async (user, searchQuery, res, errorMsg) => {
+//     try {
+//         const restaurants = await restaurantModel.find(searchQuery);
+//         res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
+
+// router.get('/restaurants', async (req, res) => {
+//     const errorMsg = req.session.error ? req.session.error : null;
+//     delete req.session.error;
+//     const filterParam = req.query.filter; // Get the filter data from the query parameter
+//     if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
+//     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
+//     try {
+//         const user = await findUser({ email: req.session.email });
+//         if (!user) {
+//             return res.redirect("/login")
+//         } else if (user.dietary_preferences.length === 0) {
+//             const searchQuery = {
+//                 $and: Object.keys(filterData).map((field) => ({
+//                     [field]: { $regex: filterData[field], $options: "i" }
+//                 }))
+//             }
+//             findRestaurants(user, searchQuery, res, errorMsg);
+//         } else {
+//             const searchTerms = user.dietary_preferences
+//             const searchQuery = {
+//                 $and: [
+//                     {
+//                         $or: searchTerms.map((term) => ({
+//                             "Dietary Restrictions": { $regex: term, $options: "i" }
+//                         }))
+//                     },
+//                     {
+//                         $and: Object.keys(filterData).map((field) => ({
+//                             [field]: { $regex: filterData[field], $options: "i" }
+//                         }))
+//                     }
+//                 ]
+//             }
+//             findRestaurants(user, searchQuery, res, errorMsg);
+//         }
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
 
 router.get('/restaurant/:id?', async (req, res) => {
     const user = await findUser({ email: req.session.email });
