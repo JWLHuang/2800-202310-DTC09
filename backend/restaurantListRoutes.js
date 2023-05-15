@@ -12,6 +12,12 @@ const findRestaurants = async (user, searchQuery, res, errorMsg) => {
     }
 }
 
+router.get("/snake", async (req, res) => {
+    const user = await findUser({ email: req.session.email });
+    user ? res.locals.user = user : res.locals.user = null;
+    res.render("snake");
+});
+
 router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
