@@ -57,6 +57,8 @@ router.get('/restaurants', async (req, res) => {
             const restaurants = await restaurantModel.find(searchQuery);
             // console.log(restaurants);
             let filteredRestaurants = await aiFilter(restaurants);
+            // console.log(filteredRestaurants);
+            res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: filteredRestaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
             // throw search query into aiFilter to get the filtered restaurants
             // const filteredRestaurants = await aiFilter(searchQuery, restaurants);
             // console.log(filteredRestaurants);

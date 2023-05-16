@@ -21,16 +21,22 @@ const findRestaurants = async (restaurantList) => {
         });
         // console.log('response', response.data.choices[0].text);
         // const recommendations = response.data.choices.map(choice => choice.text.trim());
-        const recommendations = response.data.choices.slice(0, Math.min(restaurantList.length, 5)).map((choice, index) => {
-            const restaurantIndex = index + 1;
-            return {
-                ...restaurantList[restaurantIndex - 1],
-                recommendation: choice.text.trim(),
-                rank: restaurantIndex
-            };
-        });
-
-        console.log('recommendations', recommendations);
+        // const recommendations = response.data.choices.slice(0, Math.min(restaurantList.length, 5)).map((choice, index) => {
+        //     const restaurantIndex = index + 1;
+        //     return {
+        //         ...restaurantList[restaurantIndex - 1],
+        //         recommendation: choice.text.trim(),
+        //         rank: restaurantIndex
+        //     };
+        // });
+        const recommendations = response.data.choices
+            .slice(0, Math.min(restaurantList.length, 5))
+            .map((choice, index) => restaurantList[index]);
+        // const recommendations = response.data.choices.slice(0, Math.min(restaurantList.length, 5)).map((choice, index) => {
+        //     restaurantList[index]
+        // });
+        // console.log('recommendations', recommendations)
+        return recommendations;
         // console.log('generatedFilter', generatedFilter)
     } catch (err) {
         console.log(err);
