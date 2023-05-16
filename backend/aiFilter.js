@@ -8,16 +8,34 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const findRestaurants = async (restaurantList) => {
-    const prompt = `Can you give me 5 random restaurants in ${restaurantList}?}`;
-    const response = await openai.createCompletion({
-        model: 'text-davinci-003',
-        prompt: prompt,
-        max_tokens: 100,
-        temperature: 0.75,
+    // console.log('restaurantList', restaurantList)
+    // const prompt = `Restaurant Recommendation\n\nPlease recommend me a random restaurant that must be from this following list:\n${JSON.stringify(restaurantList)}\nConsider the cuisine type, rating, and location while making recommendations. 1.`
+    const prompt = `Restaurant Recommendation\n\nPlease recommend random restaurants for me from this following list:\n${JSON.stringify(restaurantList)}\nConsider the cuisine type, rating, and location while making recommendations. Give me up to 5 restaurants. 1. `;
+    try {
+        const response = await openai.createCompletion({
+            model: 'text-davinci-003',
+            prompt: prompt,
+            max_tokens: 200,
+            temperature: 0.9,
+            n: 5,
+        });
+        // console.log('response', response.data.choices[0].text);
+        // const recommendations = response.data.choices.map(choice => choice.text.trim());
+        const recommendations = response.data.choices.slice(0, Math.min(restaurantList.length, 5)).map((choice, index) => {
+            const restaurantIndex = index + 1;
+            return {
+                ...restaurantList[restaurantIndex - 1],
+                recommendation: choice.text.trim(),
+                rank: restaurantIndex
+            };
+        });
 
-    });
-    console.log('response', response.data.choices[0].text);
-    const generatedFilter = response.data.choices[0].text.trim();
+        console.log('recommendations', recommendations);
+        // console.log('generatedFilter', generatedFilter)
+    } catch (err) {
+        console.log(err);
+    }
+
     // try {
     //     const restaurants = await restaurantModel.find(searchQuery).exec();
     //     const filteredRestaurantsAI = restaurants.filter((restaurant) =>
