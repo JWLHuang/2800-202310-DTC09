@@ -48,6 +48,29 @@
     </div>
 
     <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          <select class="form-select rounded-pill" aria-label="Default select example" name="question" id="question">
+            <option selected>&nbsp please select a security question</option>
+            <option value="questionOne">What is your mother's maiden name?</option>
+            <option value="questionTwo">What was the name of your first pet?</option>
+            <option value="questionThree">What is your favourite colour?</option>
+            <option value="questionFour">In which city were you born?</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          <input type="answer" name="answer" class="form-control rounded-pill" id="answer" placeholder="answer" />
+          <label for="answer">answer</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col text-center mt-3">
         <button class="btn btn-primary rounded-pill" id="submit" tyype="submit">Sign up</button>
       </div>
