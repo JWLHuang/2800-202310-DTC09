@@ -1,0 +1,15 @@
+<% if (user) { %>
+    <% if (link.link===currentURL) { %>
+        <li class="nav-item">
+            <a href="<%= link.link %>" class="nav-link footer-link active-nav-item">
+                <i class="<%= link.name %>"></i>
+            </a>
+        </li>
+        <% } else { %>
+            <li class="nav-item">
+                <a href="<%= link.link %>" class="nav-link footer-link">
+                    <i class="<%= link.name %>"></i>
+                </a>
+            </li>
+            <% } %>
+                <% } %>

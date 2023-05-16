@@ -1,0 +1,21 @@
+.footer {
+    background-color: #2c698d;
+}
+
+.footer-link {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    background-color: #bae8e8;
+    color: #272643;
+}
+
+.active-nav-item {
+    background-color: #272643 !important;
+}
+
+.active-nav-item:hover {
+    background-color: #bae8e8 !important;
+}
