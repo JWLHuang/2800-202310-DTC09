@@ -81,10 +81,10 @@ function uploadReviews() {
     fetch('/processReview', {
         method: 'POST',
         body: formData
-    })
+    })  
         .then(response => response.json())
-        .then(data => {
-            console.log(data);
+        .then(_ => {
+            window.location.href = "/restaurant/" + pendingUploadMap.restaurantID;
         })
         .catch(error => {
             console.error('Error:', error);

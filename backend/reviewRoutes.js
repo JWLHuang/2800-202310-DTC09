@@ -32,14 +32,18 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
         var image = {};
         req.files.forEach(file => {
             const imagefield = "image" + index.toString().padStart(2, '0');
-            image[imagefield+"Buffer"] = file.buffer;
-            image[imagefield+"Type"] = file.mimetype;
+            image[imagefield + "Buffer"] = file.buffer;
+            image[imagefield + "Type"] = file.mimetype;
             index += 1;
         })
         const reviewContent = Object.assign({}, req.body, image);
         const review = new reviewModel(reviewContent);
-        await review.save();
-        console.log('Rewiew saved');
+        try {
+            await review.save();
+            res.json({ success: "Review saved successfully" })
+        } catch (err) {
+            console.log(err);
+        }
     }
 });
 
