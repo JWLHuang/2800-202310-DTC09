@@ -26,6 +26,7 @@ const navbarLinks = require("../frontend/public/script/navbarLinks");
 app.use("/", (req, res, next) => {
   res.locals.footerLinks = footerLinks.footerLinks;
   res.locals.socialLinks = footerLinks.socialLinks;
+  res.locals.mobileLinks = footerLinks.mobileLinks;
   res.locals.beforeLoginNav = navbarLinks.beforeLoginNav;
   res.locals.afterLoginNav = navbarLinks.afterLoginNav;
   res.locals.currentURL = url.parse(req.url).pathname;
