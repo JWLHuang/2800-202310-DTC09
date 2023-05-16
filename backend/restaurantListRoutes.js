@@ -15,7 +15,7 @@ const aiFilter = require("./aiFilter");
 
 const getSearchQuery = async (filterData, preferences) => {
     if (preferences.length === 0) {
-        query = {
+        const query = {
             $and: Object.keys(filterData).map((field) => ({
                 [field]: { $regex: filterData[field], $options: "i" }
             }))
@@ -40,6 +40,7 @@ const getSearchQuery = async (filterData, preferences) => {
     }
 }
 
+
 router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
@@ -53,7 +54,12 @@ router.get('/restaurants', async (req, res) => {
             return res.redirect("/login")
         } else {
             const searchQuery = await getSearchQuery(filterData, user.dietary_preferences);
-            console.log(searchQuery);
+            const restaurants = await restaurantModel.find(searchQuery);
+            // console.log(restaurants);
+            let filteredRestaurants = await aiFilter(restaurants);
+            // throw search query into aiFilter to get the filtered restaurants
+            // const filteredRestaurants = await aiFilter(searchQuery, restaurants);
+            // console.log(filteredRestaurants);
         }
     } catch (err) {
         console.log(err);
