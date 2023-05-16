@@ -4,14 +4,6 @@ const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 const aiFilter = require("./aiFilter");
 
-// const findRestaurants = async (user, searchQuery, res, errorMsg) => {
-//     try {
-//         const restaurants = await restaurantModel.find(searchQuery);
-//         res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
 
 const getSearchQuery = async (filterData, preferences) => {
     if (preferences.length === 0) {
@@ -40,7 +32,6 @@ const getSearchQuery = async (filterData, preferences) => {
     }
 }
 
-
 router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
@@ -55,66 +46,13 @@ router.get('/restaurants', async (req, res) => {
         } else {
             const searchQuery = await getSearchQuery(filterData, user.dietary_preferences);
             const restaurants = await restaurantModel.find(searchQuery);
-            // console.log(restaurants);
             let filteredRestaurants = await aiFilter(restaurants);
-            // console.log(filteredRestaurants);
             res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: filteredRestaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-            // throw search query into aiFilter to get the filtered restaurants
-            // const filteredRestaurants = await aiFilter(searchQuery, restaurants);
-            // console.log(filteredRestaurants);
         }
     } catch (err) {
         console.log(err);
     }
 });
-// const findRestaurants = async (user, searchQuery, res, errorMsg) => {
-//     try {
-//         const restaurants = await restaurantModel.find(searchQuery);
-//         res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
-// router.get('/restaurants', async (req, res) => {
-//     const errorMsg = req.session.error ? req.session.error : null;
-//     delete req.session.error;
-//     const filterParam = req.query.filter; // Get the filter data from the query parameter
-//     if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
-//     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
-//     try {
-//         const user = await findUser({ email: req.session.email });
-//         if (!user) {
-//             return res.redirect("/login")
-//         } else if (user.dietary_preferences.length === 0) {
-//             const searchQuery = {
-//                 $and: Object.keys(filterData).map((field) => ({
-//                     [field]: { $regex: filterData[field], $options: "i" }
-//                 }))
-//             }
-//             findRestaurants(user, searchQuery, res, errorMsg);
-//         } else {
-//             const searchTerms = user.dietary_preferences
-//             const searchQuery = {
-//                 $and: [
-//                     {
-//                         $or: searchTerms.map((term) => ({
-//                             "Dietary Restrictions": { $regex: term, $options: "i" }
-//                         }))
-//                     },
-//                     {
-//                         $and: Object.keys(filterData).map((field) => ({
-//                             [field]: { $regex: filterData[field], $options: "i" }
-//                         }))
-//                     }
-//                 ]
-//             }
-//             findRestaurants(user, searchQuery, res, errorMsg);
-//         }
-//     } catch (err) {
-//         console.log(err);
-//     }
-// });
 
 router.get('/restaurant/:id?', async (req, res) => {
     const user = await findUser({ email: req.session.email });
