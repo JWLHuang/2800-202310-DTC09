@@ -5,17 +5,18 @@
 .footer-link {
     color: #ffffff;
     text-decoration: none;
+    padding: 16px;
 }
 
 .footer-link:hover {
-    background-color: #bae8e8;
-    color: #272643;
+    background-color: #272643;
+    color: #bae8e8;
 }
 
 .active-nav-item {
-    background-color: #272643 !important;
+    background-color: #bae8e8 !important;
 }
 
 .active-nav-item:hover {
-    background-color: #bae8e8 !important;
+    background-color: #272643 !important;
 }
