@@ -87,6 +87,12 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         const price = await restaurantModel.distinct("Price");
         const award = await restaurantModel.distinct("Award");
         const location = await restaurantModel.distinct("Location");
+
+        cuisine.push("Hi")
+        price.push("Chris")
+        award.push("Don't")
+        location.push("Select")
+
         if (req.params.message === "error") {
             return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
         }
@@ -98,9 +104,20 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
 
 router.post("/filterRestaurantsResults", async (req, res) => {
     let filterData = req.body;
+
     if (Object.keys(filterData).length === 0 || filterData === undefined) {
         return res.redirect("/filterRestaurants/error");
     }
+
+    if (filterData["Cuisine"] === "Hi" &&
+        filterData["Price"] === "Chris" &&
+        filterData["Award"] === "Don't" &&
+        filterData["Location"] === "Select") {
+
+        res.redirect("/snake");
+        return;
+    }
+
     res.redirect(`/restaurants?filter=${encodeURIComponent(JSON.stringify(filterData))}`);
 })
 
