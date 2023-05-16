@@ -12,14 +12,14 @@
         <div>
             <input type="hidden" id="restaurantID" value="<%= restaurant._id %>">
             <input type="hidden" id="userID" value="<%= user._id %>">
-            <input type="text" id="title" placeholder="Review Title" class="mb-3 w-100 px-2">
+            <input type="text" id="reviewTitle" placeholder="Review Title" class="mb-3 w-100 px-2">
             <div class="d-flex justify-content-between align-items-end mb-2">
                 <span>Review Content</span>
                 <a href="/SmartReveiw" class="btn-sm btn-success w-12" id="AIGenerate">Smart Review</a>
             </div>
             <div>
                 <textarea class="form-control mt-1 mb-3 posting-content" rows="4"
-                    placeholder="Share your experience with us!" id="reviewContent"></textarea>
+                    placeholder="Share your experience with us!" id="reviewBody"></textarea>
             </div>
             <div id="drop-area" class="py-5">
                 <h4>Drop images here, or click below!</h4>

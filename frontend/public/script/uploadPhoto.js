@@ -63,15 +63,15 @@ function uploadReviews() {
     const pendingUploadMap = {
         userID: document.getElementById('userID').value,
         restaurantID: document.getElementById('restaurantID').value,
-        title: document.getElementById('title').value,
-        reviewContent: document.getElementById('reviewContent').value
+        reviewTitle: document.getElementById('reviewTitle').value,
+        reviewBody: document.getElementById('reviewBody').value
     };
 
     const formData = new FormData();
     formData.append('userID', pendingUploadMap.userID);
     formData.append('restaurantID', pendingUploadMap.restaurantID);
-    formData.append('title', pendingUploadMap.title);
-    formData.append('reviewContent', pendingUploadMap.reviewContent);
+    formData.append('reviewTitle', pendingUploadMap.reviewTitle);
+    formData.append('reviewBody', pendingUploadMap.reviewBody);
 
     // Assuming fileArray contains the file objects
     fileArray.forEach((file) => {
