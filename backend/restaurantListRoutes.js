@@ -61,13 +61,14 @@ const getRestaurantRatings = async (restaurants) => {
                 let cleanliness = 0;
                 let price = 0;
                 let accessibility = 0;
+                // console.log('reviews Service', reviews[1].Price)
                 for (let j = 0; j < reviews.length; j++) {
-                    service += reviews[j].service;
-                    food += reviews[j].food;
-                    atmosphere += reviews[j].atmosphere;
-                    cleanliness += reviews[j].cleanliness;
-                    price += reviews[j].price;
-                    accessibility += reviews[j].accessibility;
+                    service += reviews[j].Service;
+                    food += reviews[j].Food;
+                    atmosphere += reviews[j].Atmosphere;
+                    cleanliness += reviews[j].Cleanliness;
+                    price += reviews[j].Price;
+                    accessibility += reviews[j].Accessibility;
                 }
                 const averageService = service / reviews.length;
                 const averageFood = food / reviews.length;
@@ -76,8 +77,8 @@ const getRestaurantRatings = async (restaurants) => {
                 const averagePrice = price / reviews.length;
                 const averageAccessibility = accessibility / reviews.length;
 
-                const averageRating = (averageService + averageFood + averageAtmosphere + averageCleanliness + averagePrice + averageAccessibility) / 6;
-                console.log('averageRating', averageRating)
+                const averageRating = Math.round(((averageService + averageFood + averageAtmosphere + averageCleanliness + averagePrice + averageAccessibility) / 6) * 100) / 100;
+                // console.log('averageRating', averageRating)
                 restaurantRatings.push({ ...restaurant, averageRating });
             }
         }
@@ -96,7 +97,7 @@ const findRestaurants = async (user, searchQuery, res, errorMsg) => {
         // const personalRating = await getRating(restaurants);
         // console.log(personalRating);
         const restaurantRatings = await getRestaurantRatings(restaurants);
-        console.log(restaurantRatings[1]);
+        // console.log(restaurantRatings[1]);
 
         // console.log(restaurantRatings[0]);
         // res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
