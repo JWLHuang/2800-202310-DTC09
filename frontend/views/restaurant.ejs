@@ -1,173 +1,172 @@
 <%- include('partials/header') %>
-  <%- include('partials/restaurantFunctions') %>
-    <link rel="stylesheet" href="/style/restaurant.css">
-    <script src="/script/restaurant.js"></script>
+<%- include('partials/restaurantFunctions') %>
+<link rel="stylesheet" href="/style/restaurant.css">
+<script src="/script/restaurant.js"></script>
 
-    <script>
-      $("#directionsButton").on("load", updateDirections(<%= restaurant.Latitude %>, <%= restaurant.Longitude %>))
-    </script>
+<script>
+  $("#directionsButton").on("load", updateDirections(<%= restaurant.Latitude %>, <%= restaurant.Longitude %>))
+</script>
 
-    <div class="container">
-      <div class="row mt-3">
-        <div class="col">
-          <div id="restaurantName">
-            <h1>
-              <%= locals.restaurant.Name ? restaurant.Name : "Restaurant name not available" %>
-            </h1>
-          </div>
-        </div>
+<div class="container">
+  <div class="row mt-3">
+    <div class="col">
+      <div id="restaurantName">
+        <h1>
+          <%= locals.restaurant.Name ? restaurant.Name : "Restaurant name not available" %>
+        </h1>
       </div>
-      <div class="row mt-3">
-        <div class="col">
-          <div id="restaurantImg">
-            <% if (locals.restaurant.ImgUrl) { %>
-              <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>" <% } else { %>
-          </div>
-          Image not available
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <div id="restaurantImg">
+        <% if (locals.restaurant.ImgUrl) { %>
+        <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>" <% } else { %> </div>
+        Image not available
+        <% } %>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col" id="restaurantDetails">
+        <div id="starRating">
+          <%= locals.restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %>
+        </div>
+        <div id="priceRating">
+          <%= locals.restaurant.Price ? restaurant.Price : "Price rating not available" %>
+        </div>
+        <div id="cuisineType">
+          <%= locals.restaurant.Cuisine ? restaurant.Cuisine : "Cuisine type not available" %>
+        </div>
+        <div id="restaurantPhone">
+          <% if (locals.restaurant.PhoneNumber) { %>
+          Phone: <a href="tel:<%= restaurant.PhoneNumber %>">
+            <%= restaurant.PhoneNumber %>
+          </a>
+          <% } else { %>
+          Phone number not available
+          <% } %>
+        </div>
+        <div id="listingPage">
+          <% if (locals.restaurant.Url) { %>
+          <a href="<%= restaurant.Url %>">Visit Michelin listing</a>
+          <% } else { %>
+          Michelin listing not available
           <% } %>
         </div>
       </div>
-      <div class="row mt-3">
-        <div class="col" id="restaurantDetails">
-          <div id="starRating">
-            <%= locals.restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %>
-          </div>
-          <div id="priceRating">
-            <%= locals.restaurant.Price ? restaurant.Price : "Price rating not available" %>
-          </div>
-          <div id="cuisineType">
-            <%= locals.restaurant.Cuisine ? restaurant.Cuisine : "Cuisine type not available" %>
-          </div>
-          <div id="restaurantPhone">
-            <% if (locals.restaurant.PhoneNumber) { %>
-              Phone: <a href="tel:<%= restaurant.PhoneNumber %>">
-                <%= restaurant.PhoneNumber %>
-              </a>
+      <div class="col">
+        <div id="restaurantInfo">
+          <div id="openHours">
+            <% if (locals.restaurant.OpenHours) { %>
+            <p>Open today from:<br />
+              <!-- <%= restaurant.OpenHours %> -->
+              <%= JSON.parse(restaurant.OpenHours)[String(new Date().getDay())] %>
               <% } else { %>
-                Phone number not available
-                <% } %>
-          </div>
-          <div id="restaurantWebsite">
-            <% if (locals.restaurant.WebsiteUrl) { %>
-              <a href="<%= restaurant.WebsiteUrl %>">Visit website</a>
-              <% } else { %>
-                Website not available
-                <% } %>
-          </div>
-        </div>
-        <div class="col">
-          <div id="restaurantInfo">
-            <div id="openHours">
-              <% if (locals.restaurant.OpenHours) { %>
-                <p>Open today from:<br />
-                  <%= restaurant.OpenHours %>
-                    <% } else { %>
-                      Hours not available
-                </p>
-                <% } %>
-            </div>
-            <div id="map">
-              <% if (locals.restaurant.Longitude && locals.restaurant.Latitude) { %>
-                <iframe id="mapFrame" height="125" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>&amp;layer=mapnik&amp;marker=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"></iframe>
-                <% } else { %>
-                  Map not available
-                  <% } %>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3" id="buttonContainers">
-        <div class="col" id="menuButtonContainer">
-          <div id="menuButton"><button class="btn btn-secondary w-100">Menu</button></div>
-        </div>
-        <div class="col">
-          <div id="directionsButtonContainer">
-            <div id="directionsButton">
-              <% if (locals.restaurant.Longitude && locals.restaurant.Latitude && userLatitude && userLongitude) { %>
-                <a target="blank"
-                  href="https://www.openstreetmap.org/directions?from=&to=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"><button
-                    class="btn btn-secondary w-100">Directions</button></a>
-                <% } else { %>
-                  <button class="btn btn-secondary w-100" disabled>Directions not available</button>
-                  <% } %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-3">
-        <div class="col">
-          <div id="reviewButton"><a href="/writeReview/<%=restaurant._id.toString()%>"><button
-                class="btn btn-secondary">Write a
-                Review</button></a></div>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col">
-          <h3>Latest Reviews</h3>
-          <% if (typeof reviews !=='undefined' ) { %>
-            <% reviews.forEach(review=> { %>
-              <div id="reviewCards">
-                <div class="card text-center mb-3">
-                  <div class="card-header">
-                    <%= review.reviewTitle %>
-                  </div>
-                  <div id="<%= review._id %>" class="card-body carousel slide px-4 pointer-event" data-bs-ride="false">
-                    <div class="carousel-inner">
-                      <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
-                        review.image01Buffer.toString('base64') : undefined; %>
-                        <% if (typeof imageOneUrl !=='undefined' ) {%>
-                          <div class="carousel-item active">
-                            <img src='<%=imageOneUrl %>' class="d-block w-100" alt="imageOne">
-                          </div>
-                          <% } else {%>
-                            <div class="carousel-item active">
-                              <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg"
-                                class="d-block w-100" alt="imageOne">
-                            </div>
-                            <% } %>
-                              <% imageTwoUrl=review.image02Buffer ? "data:" + review.image02Type + ";base64, " +
-                                review.image02Buffer.toString('base64') : undefined; %>
-                                <% if (typeof imageTwoUrl !=='undefined' ) {%>
-                                  <div class="carousel-item">
-                                    <img src='<%= imageTwoUrl %>' class="d-block w-100" alt="imageTwo">
-                                  </div>
-                                  <% } %>
-                                    <% imageThreeUrl=review.image03Buffer ? "data:" + review.image03Type + ";base64, " +
-                                      review.image03Buffer.toString('base64') : undefined; %>
-                                      <% if (typeof imageThreeUrl !=='undefined' ) {%>
-                                        <div class="carousel-item">
-                                          <img src='<%= imageThreeUrl %>' class="d-block w-100" alt="imageTwo">
-                                        </div>
-                                        <% } %>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#<%= review._id %>"
-                      data-bs-slide="prev">
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>"
-                      data-bs-slide="next">
-                    </button>
-                    <h5 class="card-title">★★★☆☆</h5>
-                    <p class="card-text">
-                      <%= review.reviewBody %>
-                    </p>
-                    <a href="#" class="btn btn-primary">Like this review?</a>
-                  </div>
-                  <div class="card-footer text-muted">
-                      Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString() %>
-                  </div>
-                </div>
-              </div>
-        </div>
-        <% }) %>
-          <% } else { %>
-            <h6 class="btn btn-success">No reviews available yet! Be the first to write one!</h6>
+              Hours not available
+            </p>
             <% } %>
+          </div>
+          <div id="map">
+            <% if (locals.restaurant.Longitude && locals.restaurant.Latitude) { %>
+            <iframe id="mapFrame" height="125" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>&amp;layer=mapnik&amp;marker=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"></iframe>
+            <% } else { %>
+            Map not available
+            <% } %>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-    </div>
+    <div class="row mb-3" id="buttonContainers">
+      <div class="col" id="restaurantWebsiteContainer">
+        <div id="restaurantWebsite">
+          <% if (locals.restaurant.WebsiteUrl) { %>
+          <a href="<%= restaurant.WebsiteUrl %>"><button class="btn btn-secondary w-100">Visit website</button></a>
+          <% } else { %>
+          <button class="btn btn-secondary w-100" disabled>Website not available</button>
+          <% } %>
+        </div>
+      </div>
+      <div class="col">
+        <div id="directionsButtonContainer">
+          <div id="directionsButton">
+            <% if (locals.restaurant.Longitude && locals.restaurant.Latitude && userLatitude && userLongitude) { %>
+            <a target="blank" href="https://www.openstreetmap.org/directions?from=&to=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"><button class="btn btn-secondary w-100">Directions</button></a>
+            <% } else { %>
+            <button class="btn btn-secondary w-100" disabled>Directions not available</button>
+            <% } %>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <%- include('partials/footer') %>
+    <div class="row mt-3">
+      <div class="col">
+        <div id="reviewButton"><a href="/writeReview/<%=restaurant._id.toString()%>"><button class="btn btn-secondary">Write a
+              Review</button></a></div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <h3>Latest Reviews</h3>
+        <% if (typeof reviews !=='undefined' ) { %>
+        <% reviews.forEach(review=> { %>
+        <div id="reviewCards">
+          <div class="card text-center mb-3">
+            <div class="card-header">
+              <%= review.reviewTitle %>
+            </div>
+            <div id="<%= review._id %>" class="card-body carousel slide px-4 pointer-event" data-bs-ride="false">
+              <div class="carousel-inner">
+                <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
+                        review.image01Buffer.toString('base64') : undefined; %>
+                <% if (typeof imageOneUrl !=='undefined' ) {%>
+                <div class="carousel-item active">
+                  <img src='<%=imageOneUrl %>' class="d-block w-100" alt="imageOne">
+                </div>
+                <% } else {%>
+                <div class="carousel-item active">
+                  <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" class="d-block w-100" alt="imageOne">
+                </div>
+                <% } %>
+                <% imageTwoUrl=review.image02Buffer ? "data:" + review.image02Type + ";base64, " +
+                                review.image02Buffer.toString('base64') : undefined; %>
+                <% if (typeof imageTwoUrl !=='undefined' ) {%>
+                <div class="carousel-item">
+                  <img src='<%= imageTwoUrl %>' class="d-block w-100" alt="imageTwo">
+                </div>
+                <% } %>
+                <% imageThreeUrl=review.image03Buffer ? "data:" + review.image03Type + ";base64, " +
+                                      review.image03Buffer.toString('base64') : undefined; %>
+                <% if (typeof imageThreeUrl !=='undefined' ) {%>
+                <div class="carousel-item">
+                  <img src='<%= imageThreeUrl %>' class="d-block w-100" alt="imageTwo">
+                </div>
+                <% } %>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="prev">
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="next">
+              </button>
+              <h5 class="card-title">★★★☆☆</h5>
+              <p class="card-text">
+                <%= review.reviewBody %>
+              </p>
+              <a href="#" class="btn btn-primary">Like this review?</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString() %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+      <% } else { %>
+      <h6 class="btn btn-success">No reviews available yet! Be the first to write one!</h6>
+      <% } %>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<%- include('partials/footer') %>
