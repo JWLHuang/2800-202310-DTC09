@@ -98,7 +98,10 @@ const findRestaurants = async (user, searchQuery, res, errorMsg) => {
         // console.log(personalRating);
         const restaurantRatings = await getRestaurantRatings(restaurants);
         // console.log(restaurantRatings[1]);
-
+        // console.log(restaurantRatings[0]._doc.Name);
+        console.log(restaurantRatings[0]._doc.Name);
+        console.log(restaurantRatings[0]);
+        return restaurantRatings;
         // console.log(restaurantRatings[0]);
         // res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
     } catch (err) {
@@ -145,7 +148,11 @@ router.get('/restaurants', async (req, res) => {
                     }
                 ]
             }
-            findRestaurants(user, searchQuery, res, errorMsg);
+            const restaurants = await findRestaurants(user, searchQuery, res, errorMsg);
+            // console.log(restaurants)
+            // console.log(restaurants[0]._doc.Name);
+            // console.log(restaurants[0].averageRating);
+            return res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg })
         }
     } catch (err) {
         console.log(err);

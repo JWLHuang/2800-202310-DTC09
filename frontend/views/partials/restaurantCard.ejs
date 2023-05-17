@@ -3,7 +3,7 @@
     <% var randomImage=images[Math.floor(Math.random() * images.length)] %>
         <% var randomImage=images[Math.floor(Math.random() * images.length)] %>
             <%- include('restaurantFunctions') %>
-                <a href="/restaurant/<%= restaurant._id %>">
+                <a href="/restaurant/<%= restaurant._doc._id %>">
                     <div class="row justify-content-center">
                         <div class="card mb-3">
                             <div class="row g-0">
@@ -14,21 +14,21 @@
                                 <div class="col-md-8">
                                     <div class="card-body">
                                         <h5 class="card-title">
-                                            <%= restaurant.Name %>
+                                            <%= restaurant._doc.Name %>
                                         </h5>
                                         <p class="card-text">
-                                            <%= restaurant.Address %>
+                                            <%= restaurant._doc.Address %>
                                         </p>
                                         <% if (restaurant.Award !=="Bib Gourmand" ) { %>
                                             <%= restaurant.Award ? createStarRating(restaurant.Award)
                                                 : "Michelin rating not available" %>
                                                 <% } else { %>
                                                     <p>
-                                                        <%= restaurant.Award %>
+                                                        <%= restaurant._doc.Award %>
                                                     </p>
                                                     <% } %>
                                                         <p class="card-text">
-                                                            <%= restaurant.Price %>
+                                                            <%= restaurant._doc.Price %>
                                                         </p>
                                     </div>
                                 </div>
