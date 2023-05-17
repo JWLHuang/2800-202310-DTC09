@@ -5,7 +5,6 @@ function handleDrop(event) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var reader = new FileReader();
-        numberofImages += 1
         reader.onload = handleFileRead;
         reader.readAsDataURL(file);
         fileArray.push(files[i]);
@@ -19,7 +18,6 @@ function handleButton(event) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var reader = new FileReader();
-        numberofImages += 1
         reader.onload = handleFileRead;
         reader.readAsDataURL(file);
         fileArray.push(files[i]);
@@ -29,9 +27,12 @@ function handleButton(event) {
 function handleFileRead(event) {
     var text = document.getElementById('photoUplaodText');
     text.classList.remove('d-none');
+    $('#removeAllImages').removeClass('d-none');
     var img = document.createElement('img');
 
     img.src = event.target.result;
+    img.classList.add("PendingImage");
+    numberofImages += 1
 
     img.style.width = 'max(320px,100%)';
     img.style["margin-top"] = '10px';
@@ -39,7 +40,6 @@ function handleFileRead(event) {
 
     var container = document.querySelector('#pendingUploadImages')
     container.appendChild(img);
-    console.log(numberofImages)
 }
 
 function handleDragOver(event) {
@@ -81,10 +81,26 @@ function uploadReviews() {
     fetch('/processReview', {
         method: 'POST',
         body: formData
-    })  
+    })
         .then(response => response.json())
-        .then(_ => {
-            window.location.href = "/restaurant/" + pendingUploadMap.restaurantID;
+        .then(data => {
+            // var returnMessage = document.getElementById('returnMessage');
+            // returnMessage.innerHTML = data.message;
+            // returnMessage.classList.remove('d-none');
+            var backdrop = document.getElementById('backdrop');
+            if (data.status == "error") {
+                var errorMessage = document.getElementById('errorMessage');
+                errorMessage.innerHTML = data.message;
+                errorMessage.classList.remove('d-none');
+
+            }
+            if (data.status == "success") {
+                alert(data.message);
+                backdrop.classList.remove('d-none');
+                setTimeout(function () {
+                    window.location.href = "/restaurant/" + pendingUploadMap.restaurantID;
+                }, 2000);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -97,3 +113,8 @@ var fileArray = [];
 var dropArea = document.getElementById('drop-area');
 dropArea.addEventListener('drop', handleDrop, false);
 dropArea.addEventListener('dragover', handleDragOver, false);
+
+$('body').on('click', '#removeAllImages', function () {
+    $(`.PendingImage`).remove();
+    fileArray = [];
+});
