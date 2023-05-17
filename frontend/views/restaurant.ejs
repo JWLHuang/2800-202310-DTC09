@@ -1,6 +1,11 @@
 <%- include('partials/header') %>
 <%- include('partials/restaurantFunctions') %>
 <link rel="stylesheet" href="/style/restaurant.css">
+<script src="/script/restaurant.js"></script>
+
+<script>
+  $("#directionsButton").on("load", updateDirections(<%= restaurant.Latitude %>, <%= restaurant.Longitude %>))
+</script>
 
 <div class="container">
   <div class="row mt-3">
@@ -61,7 +66,7 @@
       <div class="col">
         <div id="directionsButtonContainer">
           <div id="directionsButton"><% if (locals.restaurant.Longitude && locals.restaurant.Latitude && userLatitude && userLongitude) { %>
-            <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=<%= userLatitude %>%2C<%= userLongitude %>%3B<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>#map=15/<%=userLatitude%>/<%=userLongitude%>"><button class="btn btn-secondary w-100">Directions</button></a>
+            <a target="blank" href="https://www.openstreetmap.org/directions?from=&to=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"><button class="btn btn-secondary w-100">Directions</button></a>
             <% } else { %>
             <button class="btn btn-secondary w-100" disabled>Directions not available</button>
             <% } %>
