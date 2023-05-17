@@ -1,108 +1,149 @@
 <%- include('partials/header') %>
-<%- include('partials/restaurantFunctions') %>
-<link rel="stylesheet" href="/style/restaurant.css">
-<script src="/script/restaurant.js"></script>
+  <%- include('partials/restaurantFunctions') %>
+    <link rel="stylesheet" href="/style/restaurant.css">
+    <script src="/script/restaurant.js"></script>
 
-<script>
-  $("#directionsButton").on("load", updateDirections(<%= restaurant.Latitude %>, <%= restaurant.Longitude %>))
-</script>
+    <script>
+      $("#directionsButton").on("load", updateDirections(<%= restaurant.Latitude %>, <%= restaurant.Longitude %>))
+    </script>
 
-<div class="container">
-  <div class="row mt-3">
-    <div class="col">
-      <div id="restaurantName">
-        <h1><%= locals.restaurant.Name ? restaurant.Name : "Restaurant name not available" %></h1>
-      </div>
-    </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col">
-      <div id="restaurantImg"><% if (locals.restaurant.ImgUrl) { %>
-        <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>" <% } else { %> </div>
-        Image not available
-        <% } %>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col" id="restaurantDetails">
-        <div id="starRating"><%= locals.restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %></div>
-        <div id="priceRating"><%= locals.restaurant.Price ? restaurant.Price : "Price rating not available" %></div>
-        <div id="cuisineType"><%= locals.restaurant.Cuisine ? restaurant.Cuisine : "Cuisine type not available" %></div>
-        <div id="restaurantPhone"><% if (locals.restaurant.PhoneNumber) { %>
-          Phone: <a href="tel:<%= restaurant.PhoneNumber %>"><%= restaurant.PhoneNumber %></a>
-          <% } else { %>
-          Phone number not available
-          <% } %>
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col">
+          <div id="restaurantName">
+            <h1>
+              <%= locals.restaurant.Name ? restaurant.Name : "Restaurant name not available" %>
+            </h1>
+          </div>
         </div>
-        <div id="restaurantWebsite"><% if (locals.restaurant.WebsiteUrl) { %>
-          <a href="<%= restaurant.WebsiteUrl %>">Visit website</a>
-          <% } else { %>
-          Website not available
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div id="restaurantImg">
+            <% if (locals.restaurant.ImgUrl) { %>
+              <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>" <% } else { %>
+          </div>
+          Image not available
           <% } %>
         </div>
       </div>
-      <div class="col">
-        <div id="restaurantInfo">
-          <div id="openHours">
-            <% if (locals.restaurant.OpenHours) { %>
-            <p>Open today from:<br /> <%= restaurant.OpenHours %>
+      <div class="row mt-3">
+        <div class="col" id="restaurantDetails">
+          <div id="starRating">
+            <%= locals.restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %>
+          </div>
+          <div id="priceRating">
+            <%= locals.restaurant.Price ? restaurant.Price : "Price rating not available" %>
+          </div>
+          <div id="cuisineType">
+            <%= locals.restaurant.Cuisine ? restaurant.Cuisine : "Cuisine type not available" %>
+          </div>
+          <div id="restaurantPhone">
+            <% if (locals.restaurant.PhoneNumber) { %>
+              Phone: <a href="tel:<%= restaurant.PhoneNumber %>">
+                <%= restaurant.PhoneNumber %>
+              </a>
               <% } else { %>
-              Hours not available</p>
-            <% } %>
+                Phone number not available
+                <% } %>
           </div>
-          <div id="map"><% if (locals.restaurant.Longitude && locals.restaurant.Latitude) { %>
-            <iframe id="mapFrame" height="125" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>&amp;layer=mapnik&amp;marker=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"></iframe>
-            <% } else { %>
-            Map not available
-            <% } %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3" id="buttonContainers">
-      <div class="col" id="menuButtonContainer">
-        <div id="menuButton"><button class="btn btn-secondary w-100">Menu</button></div>
-      </div>
-      <div class="col">
-        <div id="directionsButtonContainer">
-          <div id="directionsButton"><% if (locals.restaurant.Longitude && locals.restaurant.Latitude && userLatitude && userLongitude) { %>
-            <a target="blank" href="https://www.openstreetmap.org/directions?from=&to=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"><button class="btn btn-secondary w-100">Directions</button></a>
-            <% } else { %>
-            <button class="btn btn-secondary w-100" disabled>Directions not available</button>
-            <% } %>
+          <div id="restaurantWebsite">
+            <% if (locals.restaurant.WebsiteUrl) { %>
+              <a href="<%= restaurant.WebsiteUrl %>">Visit website</a>
+              <% } else { %>
+                Website not available
+                <% } %>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col">
-        <div id="reviewButton"><a href="/writeReview/<%=restaurant._id.toString()%>"><button class="btn btn-secondary">Write a
-              Review</button></a></div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col">
-        <h3>Latest Reviews</h3>
-        <div id="reviewCards">
-          <div class="card text-center">
-            <div class="card-header">
-              Review Title
+        <div class="col">
+          <div id="restaurantInfo">
+            <div id="openHours">
+              <% if (locals.restaurant.OpenHours) { %>
+                <p>Open today from:<br />
+                  <%= restaurant.OpenHours %>
+                    <% } else { %>
+                      Hours not available
+                </p>
+                <% } %>
             </div>
-            <div class="card-body">
-              <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" class="card-img-top" id="reviewImage" alt="Review Image">
-              <h5 class="card-title">★★★☆☆</h5>
-              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, voluptate!</p>
-              <a href="#" class="btn btn-primary">Like this review?</a>
-            </div>
-            <div class="card-footer text-muted">
-              Posted by Username on 01/01/2021
+            <div id="map">
+              <% if (locals.restaurant.Longitude && locals.restaurant.Latitude) { %>
+                <iframe id="mapFrame" height="125" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>&amp;layer=mapnik&amp;marker=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"></iframe>
+                <% } else { %>
+                  Map not available
+                  <% } %>
             </div>
           </div>
         </div>
       </div>
+      <div class="row mb-3" id="buttonContainers">
+        <div class="col" id="menuButtonContainer">
+          <div id="menuButton"><button class="btn btn-secondary w-100">Menu</button></div>
+        </div>
+        <div class="col">
+          <div id="directionsButtonContainer">
+            <div id="directionsButton">
+              <% if (locals.restaurant.Longitude && locals.restaurant.Latitude && userLatitude && userLongitude) { %>
+                <a target="blank"
+                  href="https://www.openstreetmap.org/directions?from=&to=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"><button
+                    class="btn btn-secondary w-100">Directions</button></a>
+                <% } else { %>
+                  <button class="btn btn-secondary w-100" disabled>Directions not available</button>
+                  <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div id="reviewButton"><a href="/writeReview/<%=restaurant._id.toString()%>"><button
+                class="btn btn-secondary">Write a
+                Review</button></a></div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <h3>Latest Reviews</h3>
+          <% if (typeof reviews !=='undefined' ) { %>
+            <% reviews.forEach(review=> { %>
+              <div id="reviewCards">
+                <div class="card text-center mb-3">
+                  <div class="card-header">
+                    <%= review.reviewTitle %>
+                  </div>
+                  <div class="card-body">
+                    <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
+                      review.image01Buffer.toString('base64') : undefined; %>
+                      <% imageTwoUrl=review.image21Buffer ? "data:" + review.image02Type + ";base64, " +
+                        review.image02Buffer.toString('base64') : undefined; %>
+                        <% imageThreeUrl=review.image03Buffer ? "data:" + review.image03Type + ";base64, " +
+                          review.image03Buffer.toString('base64') : undefined; %>
+                          <% if (imageOneUrl !==undefined) { %>
+                            <img img src='<%= imageOneUrl %>' class="card-img-top" id="reviewImage" alt="Review Image">
+                            <% } else {%>
+                              <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg"
+                                class="card-img-top" id="reviewImage" alt="Review Image">
+                              <% } %>
+                                <h5 class="card-title">★★★☆☆</h5>
+                                <p class="card-text">
+                                  <%= review.reviewBody %>
+                                </p>
+                                <a href="#" class="btn btn-primary">Like this review?</a>
+                  </div>
+                  <div class="card-footer text-muted">
+                    Posted by <%=review.userID%> on 01/01/2021
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+                <% } else { %>
+                  <h6 class="btn btn-success">No reviews available yet! Be the first to write one!</h6>
+                  <% } %>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</div>
+    </div>
+    </div>
 
-<%- include('partials/footer') %>
+    <%- include('partials/footer') %>
