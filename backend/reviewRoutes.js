@@ -6,6 +6,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const reviewModel = require("./models/reviewModel");
 const Joi = require("joi");
+const reviewRating = require("./ai_evaluate_reviews");
 
 // Joi schema for review
 const reviewSchema = Joi.object({
@@ -81,6 +82,10 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
             message: 'Maximum 3 images with size 500KB or less allowed.'
         })
     } else {
+        // Evaluate review using AI
+        result = await reviewRating(req.body.reviewTitle, req.body.reviewBody);
+        const rating = JSON.parse(result);
+
         // Create review object
         var index = 1;
         var image = {};
@@ -91,7 +96,8 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
             index += 1;
         })
         req.body['TimeStamp'] = Date.now();
-        const reviewContent = Object.assign({}, req.body, image);
+        const reviewContent = Object.assign({}, req.body, image, rating);
+        console.log(reviewContent);
         const review = new reviewModel(reviewContent);
 
         // Upload images and review to database
@@ -99,12 +105,16 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
             await review.save();
             return res.json({
                 status: "success",
-                message: "Review submitted successfully!\nRedirecting to restaurant page..."})
+                message: "Review submitted successfully!\nRedirecting to restaurant page..."
+            })
         } catch (err) {
             console.log(err);
         }
     }
 });
+
+router.get("/testing", async (req, res) => {
+})
 
 // Export routes to server.js
 module.exports = router;
