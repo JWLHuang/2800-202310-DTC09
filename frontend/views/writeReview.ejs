@@ -1,0 +1,29 @@
+<%- include('partials/header.ejs') %>
+<link rel="stylesheet" href="/style/writeReview.css">
+    <div class="container">
+        <div>
+            <h1 class="mt-2">Write a review</h1>
+        </div>
+        <label class="mb-3 mt-5" style="display: block">You are reviewing a <h6 style="display: inline-block">
+                <%= restaurant.Award ? restaurant.Award : "Rating not available" %>
+            </h6> restaurant: <h6>
+                <%= restaurant.Name ? restaurant.Name : "Restaurant name not available" %>
+            </h6></label>
+        <input type="text" name="title" placeholder="Review Title" class="mb-3 w-100 px-2">
+        <div class="form-group">
+            <label>Review Content</label>
+            <textarea class="form-control mt-1 mb-3 posting-content" rows="4"
+                placeholder="Share your experience with us!"></textarea>
+        </div>
+        <div id="drop-area" class="py-5">
+            <h4>Drop images here, or click below!</h4>
+            <button class="btn btn-primary w-30" id="uploadButton">Upload Images</button>
+        </div>
+        <h5 id="photoUplaodText" class="d-none mt-3">Photos to be uploaded:</h5>
+        <div id="pendingUploadImages" class="d-flex flex-row flex-wrap">
+        </div>
+        <!-- <img id="mypic-goes-here" width=100 height=100 /> -->
+        <button class="btn btn-primary w-100 mt-5">Submit</button>
+    </div>
+    <script src="/script/uploadPhoto.js"></script>
+    <%- include('partials/footer.ejs') %>
