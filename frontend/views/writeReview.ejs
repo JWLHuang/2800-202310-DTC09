@@ -25,11 +25,15 @@
                 <h4>Drop images here, or click below!</h4>
                 <button class="btn btn-primary w-30" id="uploadButton">Upload Images</button>
             </div>
-            <h5 id="photoUplaodText" class="d-none mt-3">Photos to be uploaded:</h5>
+            <h5 id="photoUplaodText" class="d-none mt-3 inline">Photos to be uploaded:</h5>
+            <button class="btn btn-danger w-35 d-none" id="removeAllImages">Remove All Images</button>
             <div id="pendingUploadImages" class="d-flex flex-row flex-wrap">
             </div>
-            <button class="btn btn-primary w-100 mt-5" type="submit" onclick="uploadReviews()">Submit Review</button>
+            <div class="btn-danger text-center rounded py-1 d-none mt-3" id="errorMessage"></div>
+            <button class="btn btn-primary w-100 mt-3" type="submit" onclick="uploadReviews()">Submit
+                Review</button>
         </div>
     </div>
+    <div class="modal-backdrop fade show d-none" id="backdrop"></div>
     <script src="/script/uploadPhoto.js"></script>
     <%- include('partials/footer.ejs') %>
