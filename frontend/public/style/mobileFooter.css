@@ -9,16 +9,17 @@ body {
 .footer-link {
     color: #ffffff;
     text-decoration: none;
-    padding: 16px;
 }
 
 .footer-link:hover {
     background-color: #272643;
     color: #bae8e8;
+    transition: ease-in 0.2s;
 }
 
 .active-nav-item {
     background-color: #bae8e8 !important;
+    color: #272643
 }
 
 .active-nav-item:hover {
