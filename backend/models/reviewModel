@@ -1,0 +1,19 @@
+const mongoose = require("mongoose");
+
+const reviewSchema = new mongoose.Schema({
+    userID: String,
+    restaurantID: String,
+    reviewTitle: String,
+    reviewBody: String,
+    image01Buffer: Buffer,
+    image01Type: String,
+    image02Buffer: Buffer,
+    image02Type: String,
+    image03Buffer: Buffer,
+    image03Type: String,
+    TimeStamp: Date
+});
+
+const reviewModule = mongoose.model("reviews", reviewSchema);
+
+module.exports = reviewModule
