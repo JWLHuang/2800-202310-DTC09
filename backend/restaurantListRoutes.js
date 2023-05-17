@@ -70,7 +70,9 @@ router.get('/restaurant/:id?', async (req, res) => {
             reviews[i].userID = author.name;
         }
         if (restaurant) {
-            await usersModel.updateOne({ email: req.session.email }, { $push:  {history: restaurant._id}});
+            await usersModel.updateOne(
+                { email: req.session.email }, 
+                { $push:  {history: restaurant._id}});
             res.render("restaurant", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews } : { user: user, restaurant: null });
         } else {
             req.session.error = "Restaurant not found";
