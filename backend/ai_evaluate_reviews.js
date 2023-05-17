@@ -13,7 +13,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const reviewRating = async (reviewSubject, reviewContent) => {
-    const prompt = `Give me a rating out of 5 in json format on Service, Food, Atmosphere, Cleanliness, Price, Accessibility based on the review below. 
+    const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case based on the review below. 
     If the aspect is missing, make it 2.5. \n\n Review Title:${reviewSubject}. \n\nReview Content:${reviewContent}}`;
     try {
         const response = await openai.createCompletion({
@@ -23,7 +23,8 @@ const reviewRating = async (reviewSubject, reviewContent) => {
             temperature: 0,
             n: 1,
         });
-        console.log(response.data.usage)
+        // console.log(response.data.choices[0].text);
+        // console.log(response.data.usage)
         return response.data.choices[0].text;
     } catch (err) {
         console.log(err);
