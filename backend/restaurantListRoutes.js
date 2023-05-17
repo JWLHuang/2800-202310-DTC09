@@ -4,10 +4,102 @@ const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 const reviewModel = require("./models/reviewModel");
 
+// const getRating = async (restaurantList) => {
+//     let service = 0;
+//     let food = 0;
+//     let atmosphere = 0;
+//     let cleanliness = 0;
+//     let price = 0;
+//     let accessibility = 0;
+//     let personalRating = 0;
+//     try {
+//         for (let i = 0; i < restaurantList.length; i++) {
+//             const reviews = await reviewModel.find({ restaurantID: restaurantList[i]._id });
+//             console.log('reviews', reviews)
+//             console.log('restaurantID: ', restaurantList[i]._id)
+//             if (reviews.length === 0) {
+//                 return 0;
+//             }
+//             for (let j = 0; j < reviews.length; j++) {
+//                 service += reviews[j].service;
+//                 food += reviews[j].food;
+//                 atmosphere += reviews[j].atmosphere;
+//                 cleanliness += reviews[j].cleanliness;
+//                 price += reviews[j].price;
+//                 accessibility += reviews[j].accessibility;
+//             }
+//             restaurantList[i].service = service / reviews.length;
+//             restaurantList[i].food = food / reviews.length;
+//             restaurantList[i].atmosphere = atmosphere / reviews.length;
+//             restaurantList[i].cleanliness = cleanliness / reviews.length;
+//             restaurantList[i].price = price / reviews.length;
+//             restaurantList[i].accessibility = accessibility / reviews.length;
+//         }
+//         personalRating = (service + food + atmosphere + cleanliness + price + accessibility) / (restaurantList.length * 6);
+//         return personalRating;
+//         // const reviews = await reviewModel.find({ restaurantID: req.params.id });
+//     }
+//     catch (err) {
+//         console.log(err);
+//     }
+// }
+
+const getRestaurantRatings = async (restaurants) => {
+    try {
+        const restaurantRatings = [];
+
+        for (let i = 0; i < restaurants.length; i++) {
+            const restaurant = restaurants[i];
+            const reviews = await reviewModel.find({ restaurantID: restaurant._id });
+            // console.log('reviews', reviews)
+            if (reviews.length === 0) {
+                restaurantRatings.push({ ...restaurant, averageRating: 0 });
+            } else {
+                let service = 0;
+                let food = 0;
+                let atmosphere = 0;
+                let cleanliness = 0;
+                let price = 0;
+                let accessibility = 0;
+                for (let j = 0; j < reviews.length; j++) {
+                    service += reviews[j].service;
+                    food += reviews[j].food;
+                    atmosphere += reviews[j].atmosphere;
+                    cleanliness += reviews[j].cleanliness;
+                    price += reviews[j].price;
+                    accessibility += reviews[j].accessibility;
+                }
+                const averageService = service / reviews.length;
+                const averageFood = food / reviews.length;
+                const averageAtmosphere = atmosphere / reviews.length;
+                const averageCleanliness = cleanliness / reviews.length;
+                const averagePrice = price / reviews.length;
+                const averageAccessibility = accessibility / reviews.length;
+
+                const averageRating = (averageService + averageFood + averageAtmosphere + averageCleanliness + averagePrice + averageAccessibility) / 6;
+                console.log('averageRating', averageRating)
+                restaurantRatings.push({ ...restaurant, averageRating });
+            }
+        }
+        // console.log('restaurantRatings', restaurantRatings[0])
+        return restaurantRatings;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
+
+
 const findRestaurants = async (user, searchQuery, res, errorMsg) => {
     try {
         const restaurants = await restaurantModel.find(searchQuery);
-        res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
+        // const personalRating = await getRating(restaurants);
+        // console.log(personalRating);
+        const restaurantRatings = await getRestaurantRatings(restaurants);
+        console.log(restaurantRatings[1]);
+
+        // console.log(restaurantRatings[0]);
+        // res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
     }

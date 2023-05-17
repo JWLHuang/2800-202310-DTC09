@@ -11,7 +11,13 @@ const reviewSchema = new mongoose.Schema({
     image02Type: String,
     image03Buffer: Buffer,
     image03Type: String,
-    TimeStamp: Date
+    TimeStamp: Date,
+    SERVICE: Number,
+    FOOD: Number,
+    ATMOSPHERE: Number,
+    CLEANLINESS: Number,
+    PRICE: Number,
+    ACCESSIBILITY: Number,
 });
 
 const reviewModule = mongoose.model("reviews", reviewSchema);
