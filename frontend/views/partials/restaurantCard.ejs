@@ -30,6 +30,15 @@
                                                         <p class="card-text">
                                                             <%= restaurant._doc.Price %>
                                                         </p>
+                                                        <% if (restaurant.averageRating===0) { %>
+                                                            <p class="card-text">
+                                                                No reviews yet
+                                                            </p>
+                                                            <% } else { %>
+                                                                <p class="card-text">
+                                                                    <%= restaurant.averageRating %>
+                                                                </p>
+                                                                <% } %>
                                     </div>
                                 </div>
                             </div>
