@@ -108,7 +108,7 @@
     <div class="row mt-3">
       <div class="col">
         <h3>Latest Reviews</h3>
-        <% if (typeof reviews !=='undefined' ) { %>
+        <% if (reviews.length !== 0) { %>
         <% reviews.forEach(review=> { %>
         <div id="reviewCards">
           <div class="card text-center mb-3">
@@ -147,11 +147,14 @@
               </button>
               <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="next">
               </button>
-              <h5 class="card-title">★★★☆☆</h5>
-              <p class="card-text">
+              <!-- <h5 class="card-title">★★★☆☆</h5> -->
+              <!-- <div class="d-flex align-items-start mt-3">
+                <span class="btn-sm btn-danger">Disappointing Experience</span>
+              </div> -->
+              <p class="card-text text-left mt-3">
                 <%= review.reviewBody %>
               </p>
-              <a href="#" class="btn btn-primary">Like this review?</a>
+              <!-- <a href="#" class="btn btn-primary">Like this review?</a> -->
             </div>
             <div class="card-footer text-muted">
               Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString() %>
