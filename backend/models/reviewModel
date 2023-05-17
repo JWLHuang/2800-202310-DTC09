@@ -10,7 +10,8 @@ const reviewSchema = new mongoose.Schema({
     image02Buffer: Buffer,
     image02Type: String,
     image03Buffer: Buffer,
-    image03Type: String
+    image03Type: String,
+    TimeStamp: Date
 });
 
 const reviewModule = mongoose.model("reviews", reviewSchema);
