@@ -13,9 +13,9 @@ const socialLinks = [
 ]
 
 const mobileLinks = [
-    { name: 'bi bi-house-door-fill', link: '/' },
-    { name: 'bi bi-map-fill', link: '#' },
-    { name: 'bi bi-calendar-fill', link: '/filterRestaurants' },
+    { name: 'Home', icon: 'bi bi-house-door-fill', link: '/' },
+    { name: 'Map', icon: 'bi bi-map-fill', link: '#' },
+    { name: 'Plan', icon: 'bi bi-calendar-fill', link: '/filterRestaurants' },
 ]
 
 module.exports = { footerLinks: footerLinks, socialLinks: socialLinks, mobileLinks: mobileLinks }
