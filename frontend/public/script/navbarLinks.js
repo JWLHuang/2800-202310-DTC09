@@ -41,6 +41,11 @@ const afterLogin = [
         name: 'My Reviews',
         link: '/reviews',
         icon: 'bi bi-chat-left-fill'
+    },    
+    {
+        name: 'My History',
+        link: '/history',
+        icon: 'bi bi-click-history'
     },
     {
         name: 'Settings',
