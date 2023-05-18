@@ -14,7 +14,6 @@ const getIndividualRating = async (weights, ratings) => {
     for (const field in weights) {
         normalizedWeights[field] = (weights[field] / totalWeight);
     }
-    // console.log('normalizedWeights', normalizedWeights)
     const weightedSum =
         (normalizedWeights.service * ratings.service) +
         (normalizedWeights.food * ratings.food) +
@@ -22,8 +21,6 @@ const getIndividualRating = async (weights, ratings) => {
         (normalizedWeights.cleanliness * ratings.cleanliness) +
         (normalizedWeights.price * ratings.price) +
         (normalizedWeights.accessibility * ratings.accessibility);
-    // console.log('weightedSum', weightedSum)
-    // console.log('totalWeight', totalWeight)
     const individualRating = Math.round(weightedSum * 100) / 100;
     return individualRating;
 }
