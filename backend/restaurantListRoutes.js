@@ -31,53 +31,67 @@ const getIndividualRating = async (weights, ratings) => {
 const getRestaurantRatings = async (user, restaurants) => {
     try {
         const restaurantRatings = [];
+
         for (let i = 0; i < restaurants.length; i++) {
             const restaurant = restaurants[i];
             const reviews = await reviewModel.find({ restaurantID: restaurant._id });
-            if (reviews.length === 0) {
-                restaurantRatings.push({ ...restaurant, averageRating: 0 });
-            } else {
-                let service = 0;
-                let food = 0;
-                let atmosphere = 0;
-                let cleanliness = 0;
-                let price = 0;
-                let accessibility = 0;
-                for (let j = 0; j < reviews.length; j++) {
-                    service += reviews[j].service ?? 0;
-                    food += reviews[j].food ?? 0;
-                    atmosphere += reviews[j].atmosphere ?? 0;
-                    cleanliness += reviews[j].cleanliness ?? 0;
-                    price += reviews[j].price ?? 0;
-                    accessibility += reviews[j].accessibility ?? 0;
-                }
-                const averageRating = {
-                    service: service / reviews.length,
-                    food: food / reviews.length,
-                    atmosphere: atmosphere / reviews.length,
-                    cleanliness: cleanliness / reviews.length,
-                    price: price / reviews.length,
-                    accessibility: accessibility / reviews.length,
-                }
-                const userWeights = {
-                    service: user.service,
-                    food: user.food,
-                    atmosphere: user.atmosphere,
-                    cleanliness: user.cleanliness,
-                    price: user.price,
-                    accessibility: user.accessibility,
-                };
 
-                const individualRating = await getIndividualRating(userWeights, averageRating);
-                restaurantRatings.push({ ...restaurant, averageRating: individualRating });
+            const averageRating = reviews.length === 0 ? 0 : calculateRestaurantRating(reviews);
+            if (averageRating === 0) {
+                restaurantRatings.push({ ...restaurant, averageRating: 0 });
+                continue;
             }
+            const userWeights = {
+                service: user.service,
+                food: user.food,
+                atmosphere: user.atmosphere,
+                cleanliness: user.cleanliness,
+                price: user.price,
+                accessibility: user.accessibility,
+            };
+            const individualRating = await getIndividualRating(userWeights, averageRating);
+            restaurantRatings.push({ ...restaurant, averageRating: individualRating });
         }
         return restaurantRatings;
     } catch (err) {
         console.log(err);
         return [];
     }
-}
+};
+
+// Get the average rating of a restaurant based on reviews.
+const calculateRestaurantRating = (reviews) => {
+    let ratingSum = {
+        service: 0,
+        food: 0,
+        atmosphere: 0,
+        cleanliness: 0,
+        price: 0,
+        accessibility: 0,
+    };
+
+    for (let i = 0; i < reviews.length; i++) {
+        const review = reviews[i];
+        ratingSum.service += review.service ?? 0;
+        ratingSum.food += review.food ?? 0;
+        ratingSum.atmosphere += review.atmosphere ?? 0;
+        ratingSum.cleanliness += review.cleanliness ?? 0;
+        ratingSum.price += review.price ?? 0;
+        ratingSum.accessibility += review.accessibility ?? 0;
+    }
+
+    const averageRating = {
+        service: ratingSum.service / reviews.length,
+        food: ratingSum.food / reviews.length,
+        atmosphere: ratingSum.atmosphere / reviews.length,
+        cleanliness: ratingSum.cleanliness / reviews.length,
+        price: ratingSum.price / reviews.length,
+        accessibility: ratingSum.accessibility / reviews.length,
+    };
+
+    return averageRating;
+};
+
 
 // Get the search query for the restaurants using the filter data and user preferences
 const getSearchQuery = async (filterData, preferences) => {
