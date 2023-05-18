@@ -79,6 +79,7 @@ const getRestaurantRatings = async (user, restaurants) => {
     }
 }
 
+// Get the search query for the restaurants using the filter data and user preferences
 const getSearchQuery = async (filterData, preferences) => {
     if (preferences.length === 0) {
         const query = {
@@ -128,7 +129,6 @@ router.get('/restaurants', async (req, res) => {
             const restaurants = await restaurantModel.find(searchQuery);
             const randomRestaurants = restaurants.slice().sort(() => Math.random() - 0.5).slice(0, 10);
             let filteredRestaurants = await aiFilter(randomRestaurants);
-            console.log(filteredRestaurants);
             filteredRestaurants = await getRestaurantRatings(user, filteredRestaurants);
             res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: filteredRestaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
         }
