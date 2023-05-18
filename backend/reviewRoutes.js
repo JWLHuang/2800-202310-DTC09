@@ -128,11 +128,15 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
         })
     } else {
         // Evaluate review using AI
-        const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case based on the review below. 
-    If the aspect is missing, make it 2.5.\n\n Review Title:${req.body.reviewTitle}.\n\nReview Content:${req.body.reviewBody}
+        const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case 
+        based on the review below. If the aspect is missing, make it 2.5. 
+        Also, give me a positive label with max 3 words and a negative label with max 3 words on the review below.
+        The response must be in a JSON format with key "service", "food", "atmosphere", "cleanliness", "price", "accessibility", "positiveTag", "negativeTag".
+        \n\n Review Title:${req.body.reviewTitle}.\n\nReview Content:${req.body.reviewBody}
     }`;
-        result = await reviewAi(prompt, 0.1);
+        result = await reviewAi(prompt, 0.5);
         const rating = JSON.parse(result);
+        console.log(rating)
 
         // Create review object
         var index = 1;

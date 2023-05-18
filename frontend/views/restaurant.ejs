@@ -148,9 +148,10 @@
               <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="next">
               </button>
               <!-- <h5 class="card-title">★★★☆☆</h5> -->
-              <!-- <div class="d-flex align-items-start mt-3">
-                <span class="btn-sm btn-danger">Disappointing Experience</span>
-              </div> -->
+              <div class="align-items-start mt-3 <%= typeof review.positiveTag !=='undefined' ? 'd-flex': 'd-none' %>">
+                <span class="btn-sm btn-success"><%= typeof review.positiveTag !=='undefined' ? review.positiveTag : '' %></span>
+                <span class="btn-sm btn-danger mx-2"><%= typeof review.negativeTag !=='undefined' ? review.negativeTag : '' %></span>
+              </div>
               <p class="card-text text-left mt-3">
                 <%= review.reviewBody %>
               </p>
@@ -161,7 +162,6 @@
             </div>
           </div>
         </div>
-      </div>
       <% }) %>
       <% } else { %>
       <h6 class="btn btn-success">No reviews available yet! Be the first to write one!</h6>
