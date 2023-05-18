@@ -36,11 +36,6 @@ const getRestaurantRatings = async (user, restaurants) => {
             const restaurant = restaurants[i];
             const reviews = await reviewModel.find({ restaurantID: restaurant._id });
 
-            const averageRating = reviews.length === 0 ? 0 : calculateRestaurantRating(reviews);
-            if (averageRating === 0) {
-                restaurantRatings.push({ ...restaurant, averageRating: 0 });
-                continue;
-            }
             const userWeights = {
                 service: user.service,
                 food: user.food,
@@ -49,9 +44,28 @@ const getRestaurantRatings = async (user, restaurants) => {
                 price: user.price,
                 accessibility: user.accessibility,
             };
-            const individualRating = await getIndividualRating(userWeights, averageRating);
+
+            const hasUndefinedValues = Object.values(userWeights).some(value => value === undefined);
+
+            const averageRating = reviews.length === 0 ? 0 : calculateRestaurantRating(reviews);
+            if (averageRating === 0 && hasUndefinedValues) {
+                restaurantRatings.push({ ...restaurant, averageRating: 0, individualRating: "No Rating" });
+                continue;
+            }
+            if (averageRating === 0 && !hasUndefinedValues) {
+                restaurantRatings.push({ ...restaurant, averageRating: 0, individualRating: 0 });
+                continue;
+            }
+
             const totalAverageSum = Object.values(averageRating).reduce((sum, rating) => sum + rating, 0);
             restaurantRating = Math.round((totalAverageSum / Object.keys(averageRating).length) * 100) / 100;
+
+            if (restaurantRating !== 0 && hasUndefinedValues) {
+                restaurantRatings.push({ ...restaurant, averageRating: restaurantRating, individualRating: "No Rating" });
+                continue;
+            }
+
+            const individualRating = await getIndividualRating(userWeights, averageRating);
             restaurantRatings.push({ ...restaurant, averageRating: restaurantRating, individualRating: individualRating });
         }
         return restaurantRatings;
