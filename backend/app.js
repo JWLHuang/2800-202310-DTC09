@@ -66,6 +66,7 @@ const resetPasswordRoutes = require('./resetPasswordRoutes');
 const extAuthRoutes = require('./extAuthRoutes');
 const forgotPasswordRoutes = require('./forgotPasswordRoutes');
 const reviewRoutes = require('./reviewRoutes');
+const planMyDayRoutes = require('./planMyDayRoutes');
 
 
 app.use(signupRoutes);
@@ -74,6 +75,7 @@ app.use(profileRoutes);
 app.use(restaurantListRoutes);
 app.use(resetPasswordRoutes);
 app.use(extAuthRoutes);
+app.use(planMyDayRoutes);
 
 app.use(forgotPasswordRoutes);
 app.use(reviewRoutes);
