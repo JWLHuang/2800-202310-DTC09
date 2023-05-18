@@ -84,7 +84,8 @@ const getRestaurantRatings = async (user, restaurants) => {
 const findRestaurants = async (user, searchQuery) => {
     try {
         const restaurants = await restaurantModel.find(searchQuery);
-        const restaurantRatings = await getRestaurantRatings(user, restaurants);
+        const randomRestaurants = restaurants.slice().sort(() => Math.random() - 0.5).slice(0, 5);
+        const restaurantRatings = await getRestaurantRatings(user, randomRestaurants);
         return restaurantRatings;
     } catch (err) {
         console.log(err);
@@ -150,14 +151,14 @@ router.get('/restaurant/:id?', async (req, res) => {
         }
         if (restaurant) {
             await usersModel.updateOne(
-                { email: req.session.email }, 
-                { $push:  {history: restaurant._id}});
+                { email: req.session.email },
+                { $push: { history: restaurant._id } });
             res.render("restaurant", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews } : { user: user, restaurant: null });
         } else {
             req.session.error = "Restaurant not found";
             res.redirect("/filterRestaurants")
         }
-        
+
     } catch (error) {
         console.log(error)
         req.session.error = "Restaurant not found";
