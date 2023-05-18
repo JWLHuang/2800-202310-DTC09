@@ -3,12 +3,12 @@
                 <h6 class="mb-3">
                     <%=link.heading%>
                 </h6>
-                <% if (user[link.id]) { %>
-                    <% user[link.id].forEach((item)=> {%>
+                <% if (user[link.id] && user[link.id].length > 0) { %>
+                    <% user[link.id].sort().forEach((item)=> {%>
                         <h6 class="btn-<%- item %> btn-sm mx-1 text-uppercase inline-block align-self-center"><%- item
                                 %></h6>
                         <%})%>
                             <% } else {%>
-                                <p>Update Your Dietary Preferences Now</p>
+                                <p class="btn-success btn w-100 mt-3 mb-5">Add Dietary Preference to enjoy our service!</p>
                                 <% } %>
             </div>
