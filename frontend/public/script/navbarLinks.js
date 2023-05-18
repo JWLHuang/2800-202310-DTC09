@@ -33,6 +33,16 @@ const afterLogin = [
         icon: 'bi bi-house-door-fill'
     },
     {
+        name: 'Find A Restaurant',
+        link: '/filterRestaurants',
+        icon: 'bi bi-search'
+    },
+    {
+        name: 'Restaurant Map',
+        link: '/map',
+        icon: 'bi bi-map-fill'
+    },
+    {
         name: 'My Profile',
         link: '/profile',
         icon: 'bi bi-person-fill'
@@ -41,7 +51,7 @@ const afterLogin = [
         name: 'My Reviews',
         link: '/reviews',
         icon: 'bi bi-chat-left-fill'
-    },    
+    },
     {
         name: 'My History',
         link: '/history',
