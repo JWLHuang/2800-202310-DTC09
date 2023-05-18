@@ -4,7 +4,7 @@ const configuration = new Configuration({
     apiKey: this.apiKey,
     endpoint: process.env.OPENAI_ENDPOINT,
     azure: {
-        apiKey: process.env.OPENAI_API_KEY,
+        apiKey: process.env.OPENAI_API_KEY_AZ,
         endpoint: process.env.OPENAI_ENDPOINT,
         deploymentName: 'text-davinci-003',
     }
