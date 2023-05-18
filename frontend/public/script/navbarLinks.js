@@ -45,7 +45,7 @@ const afterLogin = [
     {
         name: 'My History',
         link: '/history',
-        icon: 'bi bi-click-history'
+        icon: 'bi bi-clock-history'
     },
     {
         name: 'Settings',
