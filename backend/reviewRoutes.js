@@ -10,11 +10,60 @@ const reviewAi = require("./ai_reviews");
 
 // Joi schema for review
 const reviewSchema = Joi.object({
-    reviewTitle: Joi.string().min(1).max(300).trim().required(),
-    reviewBody: Joi.string().min(1).max(1000).trim().required(),
+    reviewTitle: Joi.string().min(2).max(300).trim().required().messages(
+        {
+            'string.empty': `Review Title cannot be empty`,
+            'string.min': `Review Title must be at least 2 characters long`,
+            'string.max': `Review Title cannot exceed 100 characters`
+        }),
+    reviewBody: Joi.string().min(20).max(1500).trim().required().messages(
+        {
+            'string.empty': `Review cannot be empty`,
+            'string.min': `Review must be at least 20 characters long`,
+            'string.max': `Review cannot exceed 1500 characters`
+        }),
     restaurantID: Joi.string().min(1).max(100).trim().required(),
     userID: Joi.string().min(1).max(100).trim().required()
 });
+
+const smartReviewSchema = Joi.object({
+    'tone': Joi.string().valid('positive', 'neutral', 'critical', 'humorous').required().messages(
+        {
+            'any.only': `Tone must be selected`
+        }),
+    'service': Joi.string().min(2).max(40).trim().messages(
+        {
+            'string.min': `Comment on service must be at least 2 characters long`,
+            'string.max': `Comment on service cannot exceed 40 characters`
+        }),
+    'food': Joi.string().min(2).max(100).trim().messages(
+        {
+            'string.min': `Comment on food must be at least 2 characters long`,
+            'string.max': `Comment on food cannot exceed 40 characters`
+        }),
+    'atmosphere': Joi.string().min(2).max(40).trim().messages(
+        {
+            'string.min': `Comment on atmosphere must be at least 2 characters long`,
+            'string.max': `Comment on atmosphere cannot exceed 40 characters`
+        }),
+    'cleanliness': Joi.string().min(2).max(40).trim().messages(
+        {
+            'string.min': `Comment on cleanliness must be at least 2 characters long`,
+            'string.max': `Comment on cleanliness cannot exceed 40 characters`
+        }),
+    'price': Joi.string().min(2).max(40).trim().messages(
+        {
+            'string.min': `Comment on value for money must be at least 2 characters long`,
+            'string.max': `Comment on value for money cannot exceed 40 characters`
+        }),
+    'accessability': Joi.string().min(2).max(40).trim().messages(
+        {
+            'string.min': `Comment on accessability must be at least 2 characters long`,
+            'string.max': `Comment on accessability cannot exceed 40 characters`
+        }),
+    'restaurantID': Joi.string().min(1).max(100).trim().required()
+});
+
 
 // Express middleware
 router.use(express.json({ limit: '50mb' }));
@@ -47,9 +96,11 @@ router.get("/smartReveiw/:id/:errorMessage?", async (req, res) => {
     try {
         const restaurant = await restaurantModel.findOne({ _id: req.params.id });
         if (req.params.errorMessage === "missingTone") {
-            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Please select a tone." });
+            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Please select a valid tone." });
         } else if (req.params.errorMessage === "missingAspect") {
             return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Please fill in at least an aspect." });
+        } else if (req.params.errorMessage === "invalidAspect") {
+            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Filled aspect must be within 2 to 40 characters." });
         } else {
             return res.render("smartReview", { user: user, restaurant: restaurant });
         }
@@ -61,19 +112,26 @@ router.get("/smartReveiw/:id/:errorMessage?", async (req, res) => {
 
 router.post("/generateSmartReview/", async (req, res) => {
     try {
-        // Check if all input fields are empty
         inputChecking = JSON.stringify(req.body)
         inputChecking = JSON.parse(inputChecking)
+
+        // Check if a valid tone is selected
+        const { error, value } = smartReviewSchema.validate(req.body);
+        if (error.details[0].type === "any.required") {
+            return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingTone");
+        }
         if (inputChecking['tone'] === undefined) {
             return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingTone");
         }
+        
+        // Check if at least one aspect is filled
         delete inputChecking['tone'];
         delete inputChecking['restaurantID'];
         let empty = true;
         let keyArray = [];
         for (const key in inputChecking) {
             keyArray.push(key)
-            if (inputChecking[key] !== "") {
+            if (inputChecking[key].trim() !== "") {
                 empty = false;
             } else {
                 delete req.body[key]
@@ -82,6 +140,11 @@ router.post("/generateSmartReview/", async (req, res) => {
         if (empty) {
             return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingAspect");
         }
+        if (error.details[0].type === "string.min" || error.details[0].type === "string.max") {
+            return res.redirect("/smartReveiw/" + req.body.restaurantID + "/invalidAspect");
+        }
+        
+        // Generate review
         try {
             const user = await findUser({ email: req.session.email });
             const restaurant = await restaurantModel.findOne({ _id: req.body.restaurantID });
@@ -93,12 +156,8 @@ router.post("/generateSmartReview/", async (req, res) => {
             \n ${JSON.stringify(req.body)}`;
             result = await reviewAi(prompt, 0.9);
             const generatedReview = JSON.parse(result);
-            // for (const key in generatedReview) {
-            //     console.log(key)
-            // }
             res.render("writeReview", { user: user, restaurant: restaurant, generatedReview: generatedReview });
         } catch (err) {
-            console.log(err);
             req.session.error = "Error generating review. Please try again later.";
             res.redirect("/filterRestaurants")
         }
@@ -123,7 +182,7 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     if (error) {
         return res.json({
             status: "error",
-            message: "Review Title and Review Body are required."
+            message: error.message
         })
     }
 
@@ -171,7 +230,6 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }`;
         result = await reviewAi(prompt, 0.5);
         const rating = JSON.parse(result);
-        console.log(rating)
 
         // Create review object
         var index = 1;
@@ -184,7 +242,6 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
         })
         req.body['TimeStamp'] = Date.now();
         const reviewContent = Object.assign({}, req.body, image, rating);
-        // console.log(reviewContent);
         const review = new reviewModel(reviewContent);
 
         // Upload images and review to database
