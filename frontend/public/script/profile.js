@@ -12,7 +12,7 @@ const setup = () => {
     console.log(profileError)
     if (profileError === "errorDietaryPreferences") {
         $(`.navPreferences`).addClass('active')
-    } else if (profileError === "errorDiningCriteria") {
+    } else if (profileError === "errorDiningCriteria" || profileError === "errorRanking") {
         $(`.navFactors`).addClass('active')
     } else {
         $(`.navProfile`).addClass('active')

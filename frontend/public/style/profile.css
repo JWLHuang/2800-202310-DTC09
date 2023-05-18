@@ -22,7 +22,8 @@
 }
 
 .nav-link.navProfile,
-.nav-link.navPreferences, .nav-link.navFactors {
+.nav-link.navPreferences,
+.nav-link.navFactors {
     padding: 5px 8px;
 }
 
@@ -39,7 +40,7 @@
 }
 
 .btn-vegan {
-    background-color: #4CAF50;
+    background-color: #3CB043;
     color: white;
     border-radius: 10px;
     border: none;
@@ -48,12 +49,49 @@
     cursor: pointer;
 }
 
-.btn-vegan:hover {
-    background-color: #3e8e41;
+.btn-vegetarian {
+    background-color: #5DBB63;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
+.btn-kosher {
+    background-color: #03C04A;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-halal {
+    background-color: #99EDC3;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
 .btn-gluten-free {
-    background-color: #80811d;
+    background-color: #98BF64;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-dairy-free {
+    background-color: #AEF359;
     color: white;
     border-radius: 10px;
     border: none;
@@ -63,7 +101,7 @@
 }
 
 .btn-nut-free {
-    background-color: #128f16;
+    background-color: #3DED97;
     color: white;
     border-radius: 10px;
     border: none;
