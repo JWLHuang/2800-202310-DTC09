@@ -39,7 +39,7 @@ const afterLogin = [
     },
     {
         name: 'My Reviews',
-        link: '/reviews',
+        link: '/myReviews',
         icon: 'bi bi-chat-left-fill'
     },
     {

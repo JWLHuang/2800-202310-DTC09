@@ -257,6 +257,21 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }
 });
 
+router.get('/myReviews', async (req, res) => {
+    // Check if user is logged in
+    if (!req.session.authenticated) {
+        return res.redirect('/login');
+    }
+    try {
+        const user = await findUser({ email: req.session.email });
+        const reviews = await reviewModel.find({ userID: user._id }, { image03Buffer: 0, image03Type: 0, image02Buffer: 0, image02Type: 0 });
+        res.render("myReviews", { user: user, reviews: reviews });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+
 
 // Export routes to server.js
 module.exports = router;
