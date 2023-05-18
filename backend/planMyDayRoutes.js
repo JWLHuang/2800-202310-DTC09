@@ -5,7 +5,7 @@ const { findUser } = require("./findUser");
 const { getTopThree } = require("./planMyDay");
 
 const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
-    console.log(req)
+    // console.log(req)
     try {
         const restaurants = await restaurantModel.find(searchQuery);
         var restaurantsList = [];
