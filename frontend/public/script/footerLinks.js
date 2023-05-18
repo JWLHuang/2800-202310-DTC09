@@ -14,7 +14,7 @@ const socialLinks = [
 
 const mobileLinks = [
     { name: 'Home', icon: 'bi bi-house-door-fill', link: '/' },
-    { name: 'Map', icon: 'bi bi-map-fill', link: '#' },
+    { name: 'Map', icon: 'bi bi-map-fill', link: '/map' },
     { name: 'Plan', icon: 'bi bi-calendar-fill', link: '/filterRestaurants' },
 ]
 
