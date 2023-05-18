@@ -83,9 +83,16 @@ const getRestaurantRatings = async (user, restaurants) => {
 const getSearchQuery = async (filterData, preferences) => {
     if (preferences.length === 0) {
         const query = {
-            $and: Object.keys(filterData).map((field) => ({
-                [field]: { $regex: filterData[field], $options: "i" }
-            }))
+            $and: Object.keys(filterData).map((field) => {
+                if (field === "Price") {
+                    return {
+                        [field]: filterData.Price,
+                    };
+                }
+                return {
+                    [field]: { $regex: filterData[field], $options: "i" },
+                };
+            }),
         }
         return query;
     } else {
@@ -93,16 +100,23 @@ const getSearchQuery = async (filterData, preferences) => {
             $and: [
                 {
                     $or: preferences.map((term) => ({
-                        "Dietary Restrictions": { $regex: term, $options: "i" }
+                        "DietaryRestrictions": { $regex: term, $options: "i" }
                     }))
                 },
                 {
-                    $and: Object.keys(filterData).map((field) => ({
-                        [field]: { $regex: filterData[field], $options: "i" }
-                    }))
-                }
-            ]
-        }
+                    $and: Object.keys(filterData).map((field) => {
+                        if (field === "Price") {
+                            return {
+                                [field]: filterData.Price,
+                            };
+                        }
+                        return {
+                            [field]: { $regex: filterData[field], $options: "i" },
+                        };
+                    }),
+                },
+            ],
+        };
         return query;
     }
 }
