@@ -14,12 +14,13 @@
                         <h2 class="h6 mb-0"><%= review.reviewTitle %></h2>
                         <span class="small text-gray">
                             <i class="fa fa-clock-o"></i>
-                            <%=review.TimeStamp.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })%>
+                            <%=review.TimeStamp.toLocaleDateString(undefined, { year: 'numeric' , month: 'long' , day: 'numeric' , hour: 'numeric' ,
+                                minute: 'numeric' , second: 'numeric' })%>
                         </span>
                             <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
                                 review.image01Buffer.toString('base64') : undefined; %>
                             <% if (typeof imageOneUrl !=='undefined' ) {%>
-                                <div class="carousel-inner">
+                                <div class="carousel-inner mt-3">
                                     <div class="carousel-item active">
                                         <div class="w-100 folded partialImage hideImage<%=review._id%>">
                                             <img src='<%= imageOneUrl %>' class="d-block w-100 rounded" alt="imageOne">

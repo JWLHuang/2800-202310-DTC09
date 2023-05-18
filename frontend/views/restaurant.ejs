@@ -175,7 +175,7 @@
                       <!-- <a href="#" class="btn btn-primary">Like this review?</a> -->
                     </div>
                     <div class="card-footer text-muted">
-                      Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString() %>
+                      Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString(undefined, { year: 'numeric' , month: 'long' , day: 'numeric'}) %>
                     </div>
                   </div>
                 </div>

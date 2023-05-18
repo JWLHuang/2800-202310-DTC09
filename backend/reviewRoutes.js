@@ -264,7 +264,7 @@ router.get('/myReviews', async (req, res) => {
     }
     try {
         const user = await findUser({ email: req.session.email });
-        const reviews = await reviewModel.find({ userID: user._id }, { image03Buffer: 0, image03Type: 0, image02Buffer: 0, image02Type: 0 });
+        const reviews = await reviewModel.find({ userID: user._id }, { image03Buffer: 0, image03Type: 0, image02Buffer: 0, image02Type: 0 }).sort({ TimeStamp: -1 });
         res.render("myReviews", { user: user, reviews: reviews });
     } catch (err) {
         console.log(err);
