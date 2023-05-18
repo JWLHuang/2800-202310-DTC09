@@ -11,7 +11,7 @@
               <div class="row g-0">
                 <div class="col-md-2 p-0">
                   <img src="<%= restaurant._doc.ImgUrl %>" class="img-fluid rounded-start restaurant-thumbnail"
-                    alt="<%= restaurant.Name%>">
+                    alt="<%= restaurant._doc.Name%>">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
@@ -21,8 +21,9 @@
                     <p class="card-text">
                       <%= restaurant._doc.Address %>
                     </p>
-                    <% if (restaurant.Award !=="Bib Gourmand" ) { %>
-                      <%= restaurant.Award ? createStarRating(restaurant.Award) : "Michelin rating not available" %>
+                    <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
+                      <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award)
+                        : "Michelin rating not available" %>
                         <% } else { %>
                           <p>
                             <%= restaurant._doc.Award %>
