@@ -5,9 +5,6 @@ const { render } = require('ejs');
 const router = express.Router();
 const mongo = require("mongodb");
 
-
-
-
 router.get("/history", async (req, res) => {
     const user = await findUser({ email: req.session.email });
     const restaurantHistory = await user.history;
@@ -20,13 +17,10 @@ router.get("/history", async (req, res) => {
     }
     await restaurantInfo()
     res.render("history.ejs", {
-        user: res.locals.user,
+        user: user,
         restaurants: historyList,
     })
 
 });
-
-
-
 
 module.exports = router;
