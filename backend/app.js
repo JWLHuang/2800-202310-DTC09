@@ -67,6 +67,7 @@ const extAuthRoutes = require('./extAuthRoutes');
 const forgotPasswordRoutes = require('./forgotPasswordRoutes');
 const reviewRoutes = require('./reviewRoutes');
 const planMyDayRoutes = require('./planMyDayRoutes');
+const historyRoutes = require('./historyRoutes');
 
 
 app.use(signupRoutes);
@@ -79,6 +80,7 @@ app.use(planMyDayRoutes);
 
 app.use(forgotPasswordRoutes);
 app.use(reviewRoutes);
+app.use(historyRoutes);
 
 
 function handle404(req, res, _) {
