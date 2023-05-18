@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/style/snake.css">
+
+
+<body>
+  <div class="game text-center mb-5">
+    <div class="row">
+      <div class="col">
+        <div id="mainScreen" width="300" height="300">
+          <div id="introScreen">
+            <h2><em>Chasing Stars</em></h2>
+            <br />
+            <button id="startGame" class="startButton">Start game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="controls text-center">
+    <div class="row">
+      <div class="col">
+        <div id="upButton" class="button">Up</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div id="leftButton" class="button">Left</div>
+      </div>
+      <div class="col">
+        <div id="downButton" class="button">Down</div>
+      </div>
+      <div class="col">
+        <div id="rightButton" class="button">Right</div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/script/snake.js"></script>
+
+</body>

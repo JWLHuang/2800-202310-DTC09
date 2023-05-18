@@ -1,0 +1,11 @@
+#drop-area {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: max(50px, 10vh);
+    border: 2px dashed #ccc;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+}

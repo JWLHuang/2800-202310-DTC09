@@ -1,0 +1,27 @@
+    #gameCanvas, #mainScreen {
+      border: 1px solid black;
+      width: 300px;
+      height: 300px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    #introScreen {
+      padding-top: 30%;
+    }
+
+    .button {
+      width: 80px;
+      height: 80px;
+      padding-top: 27px;
+      font-size: 16px;
+    }
+    
+    .button, .startButton {
+      border-radius: 10px;
+      background-color: #e3f6f5;
+      border: 1px solid #666666;
+      display: inline-block;
+      margin: 5px;
+      cursor: pointer;
+    }

@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
     cleanliness: Number,
     accessibility: Number,
     extAuth: Boolean,
+    question: String,
+    answer: String,
+    history: Array,
 });
 
 const userModule = mongoose.model("users", userSchema);

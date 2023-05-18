@@ -26,6 +26,7 @@ const navbarLinks = require("../frontend/public/script/navbarLinks");
 app.use("/", (req, res, next) => {
   res.locals.footerLinks = footerLinks.footerLinks;
   res.locals.socialLinks = footerLinks.socialLinks;
+  res.locals.mobileLinks = footerLinks.mobileLinks;
   res.locals.beforeLoginNav = navbarLinks.beforeLoginNav;
   res.locals.afterLoginNav = navbarLinks.afterLoginNav;
   res.locals.currentURL = url.parse(req.url).pathname;
@@ -63,6 +64,10 @@ const profileRoutes = require("./profileRoutes");
 const restaurantListRoutes = require("./restaurantListRoutes");
 const resetPasswordRoutes = require('./resetPasswordRoutes');
 const extAuthRoutes = require('./extAuthRoutes');
+const forgotPasswordRoutes = require('./forgotPasswordRoutes');
+const reviewRoutes = require('./reviewRoutes');
+const planMyDayRoutes = require('./planMyDayRoutes');
+
 
 app.use(signupRoutes);
 app.use(authorizationRoutes);
@@ -70,6 +75,11 @@ app.use(profileRoutes);
 app.use(restaurantListRoutes);
 app.use(resetPasswordRoutes);
 app.use(extAuthRoutes);
+app.use(planMyDayRoutes);
+
+app.use(forgotPasswordRoutes);
+app.use(reviewRoutes);
+
 
 function handle404(req, res, _) {
   res.status(404).render("404.ejs");
