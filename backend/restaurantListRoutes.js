@@ -103,15 +103,6 @@ const getSearchQuery = async (filterData, preferences) => {
             ]
         }
         return query;
-// find restaurants based on the search query
-const findRestaurants = async (user, searchQuery) => {
-    try {
-        const restaurants = await restaurantModel.find(searchQuery);
-        const randomRestaurants = restaurants.slice().sort(() => Math.random() - 0.5).slice(0, 5);
-        const restaurantRatings = await getRestaurantRatings(user, randomRestaurants);
-        return restaurantRatings;
-    } catch (err) {
-        console.log(err);
     }
 }
 
@@ -132,18 +123,13 @@ router.get('/restaurants', async (req, res) => {
         const user = await findUser({ email: req.session.email }) // Replace with your actual implementation
         if (!user) {
             return res.redirect("/login")
-        } else if (user.dietary_preferences.length === 0) {
-            const searchQuery = {
-                $and: Object.keys(filterData).map((field) => ({
-                    [field]: { $regex: filterData[field], $options: "i" }
-                }))
-            }
-            const restaurants = await findRestaurants(user, searchQuery);
-            return res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg })
         } else {
             const searchQuery = await getSearchQuery(filterData, user.dietary_preferences);
             const restaurants = await restaurantModel.find(searchQuery);
-            let filteredRestaurants = await aiFilter(restaurants);
+            const randomRestaurants = restaurants.slice().sort(() => Math.random() - 0.5).slice(0, 10);
+            let filteredRestaurants = await aiFilter(randomRestaurants);
+            console.log(filteredRestaurants);
+            filteredRestaurants = await getRestaurantRatings(user, filteredRestaurants);
             res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: filteredRestaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
         }
     } catch (err) {
