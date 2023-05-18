@@ -38,11 +38,27 @@
                         </p>
                         <% } else { %>
                           <p class="card-text">
-                            <strong>Personal Rating:
+                            <strong>Average Rating:
                               <%= restaurant.averageRating %>/5
                             </strong>
                           </p>
                           <% } %>
+                            <% if (restaurant.averageRating===0 && !restaurant.individualRating) { %>
+                              <p class="card-text">
+                                No reviews to compare to your personal preferences yet.
+                              </p>
+                              <% } else if (restaurant.individualRating) { %>
+                                <p class="card-text">
+                                  <strong>Personal Rating:
+                                    <%= restaurant.individualRating %>/5
+                                  </strong>
+                                </p>
+                                <% } else { %>
+                                  <p class="card-text">
+                                    Please rank your preferences to view your personal rating.
+                                  </p>
+                                  <% } %>
+
             </div>
           </div>
         </div>

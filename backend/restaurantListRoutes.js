@@ -31,7 +31,7 @@ const getIndividualRating = async (weights, ratings) => {
 const getRestaurantRatings = async (user, restaurants) => {
     try {
         const restaurantRatings = [];
-
+        let restaurantRating = 0;
         for (let i = 0; i < restaurants.length; i++) {
             const restaurant = restaurants[i];
             const reviews = await reviewModel.find({ restaurantID: restaurant._id });
@@ -50,7 +50,9 @@ const getRestaurantRatings = async (user, restaurants) => {
                 accessibility: user.accessibility,
             };
             const individualRating = await getIndividualRating(userWeights, averageRating);
-            restaurantRatings.push({ ...restaurant, averageRating: individualRating });
+            const totalAverageSum = Object.values(averageRating).reduce((sum, rating) => sum + rating, 0);
+            restaurantRating = Math.round((totalAverageSum / Object.keys(averageRating).length) * 100) / 100;
+            restaurantRatings.push({ ...restaurant, averageRating: restaurantRating, individualRating: individualRating });
         }
         return restaurantRatings;
     } catch (err) {
@@ -156,6 +158,8 @@ router.get('/restaurants', async (req, res) => {
             const searchQuery = await getSearchQuery(filterData, user.dietary_preferences);
             const restaurants = await restaurantModel.find(searchQuery);
             const randomRestaurants = restaurants.slice().sort(() => Math.random() - 0.5).slice(0, 10);
+            // const filteredRestaurants = await getRestaurantRatings(user, randomRestaurants);
+            // console.log(filteredRestaurants);
             let filteredRestaurants = await aiFilter(randomRestaurants);
             filteredRestaurants = await getRestaurantRatings(user, filteredRestaurants);
             res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: filteredRestaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
