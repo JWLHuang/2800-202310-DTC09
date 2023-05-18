@@ -17,6 +17,9 @@
               <p class="card-text">
                 <%= restaurant._doc.Address %>
               </p>
+              <p class="card-text">
+                <%= restaurant._doc.Cuisine %>
+              </p>
               <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
                 <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
                   <% } else { %>
