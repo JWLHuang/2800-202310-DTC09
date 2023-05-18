@@ -4,46 +4,8 @@ const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 const reviewModel = require("./models/reviewModel");
 
-// const getRating = async (restaurantList) => {
-//     let service = 0;
-//     let food = 0;
-//     let atmosphere = 0;
-//     let cleanliness = 0;
-//     let price = 0;
-//     let accessibility = 0;
-//     let personalRating = 0;
-//     try {
-//         for (let i = 0; i < restaurantList.length; i++) {
-//             const reviews = await reviewModel.find({ restaurantID: restaurantList[i]._id });
-//             console.log('reviews', reviews)
-//             console.log('restaurantID: ', restaurantList[i]._id)
-//             if (reviews.length === 0) {
-//                 return 0;
-//             }
-//             for (let j = 0; j < reviews.length; j++) {
-//                 service += reviews[j].service;
-//                 food += reviews[j].food;
-//                 atmosphere += reviews[j].atmosphere;
-//                 cleanliness += reviews[j].cleanliness;
-//                 price += reviews[j].price;
-//                 accessibility += reviews[j].accessibility;
-//             }
-//             restaurantList[i].service = service / reviews.length;
-//             restaurantList[i].food = food / reviews.length;
-//             restaurantList[i].atmosphere = atmosphere / reviews.length;
-//             restaurantList[i].cleanliness = cleanliness / reviews.length;
-//             restaurantList[i].price = price / reviews.length;
-//             restaurantList[i].accessibility = accessibility / reviews.length;
-//         }
-//         personalRating = (service + food + atmosphere + cleanliness + price + accessibility) / (restaurantList.length * 6);
-//         return personalRating;
-//         // const reviews = await reviewModel.find({ restaurantID: req.params.id });
-//     }
-//     catch (err) {
-//         console.log(err);
-//     }
-// }
 
+// get the individual rating of the user for a restaurant
 const getIndividualRating = async (weights, ratings) => {
     const totalWeight = Object.values(weights).reduce((sum, weight) => sum + weight, 0);
     const normalizedWeights = {};
@@ -65,15 +27,13 @@ const getIndividualRating = async (weights, ratings) => {
     return individualRating;
 }
 
-
+// get the rating for each restaurant from reviews and user weights
 const getRestaurantRatings = async (user, restaurants) => {
     try {
         const restaurantRatings = [];
-
         for (let i = 0; i < restaurants.length; i++) {
             const restaurant = restaurants[i];
             const reviews = await reviewModel.find({ restaurantID: restaurant._id });
-            // console.log('reviews', reviews)
             if (reviews.length === 0) {
                 restaurantRatings.push({ ...restaurant, averageRating: 0 });
             } else {
@@ -83,21 +43,14 @@ const getRestaurantRatings = async (user, restaurants) => {
                 let cleanliness = 0;
                 let price = 0;
                 let accessibility = 0;
-                // console.log('reviews Service', reviews[1].Price)
                 for (let j = 0; j < reviews.length; j++) {
-                    service += reviews[j].service;
-                    food += reviews[j].food;
-                    atmosphere += reviews[j].atmosphere;
-                    cleanliness += reviews[j].cleanliness;
-                    price += reviews[j].price;
-                    accessibility += reviews[j].accessibility;
+                    service += reviews[j].service ?? 0;
+                    food += reviews[j].food ?? 0;
+                    atmosphere += reviews[j].atmosphere ?? 0;
+                    cleanliness += reviews[j].cleanliness ?? 0;
+                    price += reviews[j].price ?? 0;
+                    accessibility += reviews[j].accessibility ?? 0;
                 }
-                // const averageService = service / reviews.length;
-                // const averageFood = food / reviews.length;
-                // const averageAtmosphere = atmosphere / reviews.length;
-                // const averageCleanliness = cleanliness / reviews.length;
-                // const averagePrice = price / reviews.length;
-                // const averageAccessibility = accessibility / reviews.length;
                 const averageRating = {
                     service: service / reviews.length,
                     food: food / reviews.length,
@@ -106,7 +59,6 @@ const getRestaurantRatings = async (user, restaurants) => {
                     price: price / reviews.length,
                     accessibility: accessibility / reviews.length,
                 }
-                // console.log(user)
                 const userWeights = {
                     service: user.service,
                     food: user.food,
@@ -117,42 +69,9 @@ const getRestaurantRatings = async (user, restaurants) => {
                 };
 
                 const individualRating = await getIndividualRating(userWeights, averageRating);
-                // console.log('individualRating', individualRating)
                 restaurantRatings.push({ ...restaurant, averageRating: individualRating });
-                // const totalWeight = Object.values(userWeights).reduce((sum, weight) => sum + weight, 0);
-                // const normalizedWeights = {};
-
-                // for (const field in userWeights) {
-                //     normalizedWeights[field] = (userWeights[field] / totalWeight);
-                // }
-
-                // const weightedSum =
-                //     (userWeights.service * averageService) +
-                //     (userWeights.food * averageFood) +
-                //     (userWeights.atmosphere * averageAtmosphere) +
-                //     (userWeights.cleanliness * averageCleanliness) +
-                //     (userWeights.price * averagePrice) +
-                //     (userWeights.accessibility * averageAccessibility);
-
-                // console.log('userWeights', userWeights)
-                // console.log('weightedSum', weightedSum)
-                // console.log('totalWeight', totalWeight)
-                // // const sumOfWeights = Object.values(normalizedWeights).reduce((sum, weight) => sum + weight, 0);
-
-                // const individualRating = (weightedSum / totalWeight);
-                // console.log('individualRating', individualRating)
-
-                // const weightedRating = Math.round(((averageService * user.service) + (averageFood * user.food) + (averageAtmosphere * user.atmosphere) + (averageCleanliness * user.cleanliness) + (averagePrice * user.price) + (averageAccessibility * user.accessibility)) * 100) / 100;
-                // const averageRating = (((user.service * averageService) + (user.food * averageFood) + (user.atmosphere * averageAtmosphere) + (user.cleanliness * averageCleanliness) + (user.price * averagePrice) + (user.accessibility * averageAccessibility)) / (user.service + user.food + user.atmosphere + user.cleanliness + user.price + user.accessibility) * 5);
-                // console.log('averageRating', averageRating)
-
-
-                // const averageRating = Math.round(((averageService + averageFood + averageAtmosphere + averageCleanliness + averagePrice + averageAccessibility) / 6) * 100) / 100;
-                // console.log('averageRating', averageRating)
-                // restaurantRatings.push({ ...restaurant, averageRating });
             }
         }
-        // console.log('restaurantRatings', restaurantRatings[0])
         return restaurantRatings;
     } catch (err) {
         console.log(err);
@@ -160,20 +79,12 @@ const getRestaurantRatings = async (user, restaurants) => {
     }
 }
 
-
-const findRestaurants = async (user, searchQuery, res, errorMsg) => {
+// find restaurants based on the search query
+const findRestaurants = async (user, searchQuery) => {
     try {
         const restaurants = await restaurantModel.find(searchQuery);
-        // const personalRating = await getRating(restaurants);
-        // console.log(personalRating);
         const restaurantRatings = await getRestaurantRatings(user, restaurants);
-        // console.log(restaurantRatings[1]);
-        // console.log(restaurantRatings[0]._doc.Name);
-        // console.log(restaurantRatings[0]._doc.Name);
-        // console.log(restaurantRatings[0]);
         return restaurantRatings;
-        // console.log(restaurantRatings[0]);
-        // res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
     }
@@ -201,7 +112,8 @@ router.get('/restaurants', async (req, res) => {
                     [field]: { $regex: filterData[field], $options: "i" }
                 }))
             }
-            findRestaurants(user, searchQuery, res, errorMsg);
+            const restaurants = await findRestaurants(user, searchQuery);
+            return res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg })
         } else {
             const searchTerms = user.dietary_preferences
             const searchQuery = {
@@ -218,11 +130,7 @@ router.get('/restaurants', async (req, res) => {
                     }
                 ]
             }
-            const restaurants = await findRestaurants(user, searchQuery, res, errorMsg);
-            // console.log(restaurants)
-            // console.log(restaurants)
-            // console.log(restaurants[0]._doc.Name);
-            // console.log(restaurants[0].averageRating);
+            const restaurants = await findRestaurants(user, searchQuery);
             return res.render('restaurantList.ejs', restaurants ? { user: user, restaurants: restaurants, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg })
         }
     } catch (err) {
