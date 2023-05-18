@@ -3,6 +3,7 @@ const router = express.Router();
 const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 const reviewModel = require("./models/reviewModel");
+const usersModel = require("./models/usersModel");
 
 
 // get the individual rating of the user for a restaurant
@@ -142,18 +143,21 @@ router.get('/restaurant/:id?', async (req, res) => {
     const user = await findUser({ email: req.session.email });
     try {
         const restaurant = await restaurantModel.findOne({ _id: req.params.id });
-        const reviews = await reviewModel.find({ restaurantID: req.params.id });
+        const reviews = await reviewModel.find({ restaurantID: req.params.id }).sort({ TimeStamp: -1 });
         for (let i = 0; i < reviews.length; i++) {
             const author = await findUser({ _id: reviews[i].userID }, { name: 1 });
             reviews[i].userID = author.name;
         }
         if (restaurant) {
+            await usersModel.updateOne(
+                { email: req.session.email }, 
+                { $push:  {history: restaurant._id}});
             res.render("restaurant", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews } : { user: user, restaurant: null });
         } else {
             req.session.error = "Restaurant not found";
             res.redirect("/filterRestaurants")
         }
-
+        
     } catch (error) {
         console.log(error)
         req.session.error = "Restaurant not found";

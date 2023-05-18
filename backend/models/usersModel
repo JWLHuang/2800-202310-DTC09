@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     extAuth: Boolean,
     question: String,
     answer: String,
+    history: Array,
 });
 
 const userModule = mongoose.model("users", userSchema);

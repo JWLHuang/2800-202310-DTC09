@@ -1,0 +1,38 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid">
+  <% if (locals.errorMsg) { %>
+  <div class="alert alert-danger" role="alert">
+    <%= errorMsg %>
+  </div>
+  <% } %>
+  <div class="row mt-3">
+    <div class="col">
+      <div id="restaurantName">
+        <h1>Your Itinerary</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <div class="container-fluid">
+        <% for (var key in results) { %>
+        <div class="mt-4 mb-3">
+          <h2><%= key %></h2>
+        </div>
+        <%- include('partials/planMyDayCard.ejs', {restaurant: results[key]}) %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="container-fluid">
+        <div class="d-grid p-4">
+          <a href="/filterRestaurants" class="btn btn-primary btn-lg" type="button">Change Filter</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer.ejs') %>
