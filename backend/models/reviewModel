@@ -19,7 +19,7 @@ const reviewSchema = new mongoose.Schema({
     price: Number,
     accessibility: Number,
     positiveTag: String,
-    negativeTag: String,
+    negativeTag: String
 });
 
 const reviewModule = mongoose.model("reviews", reviewSchema);
