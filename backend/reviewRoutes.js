@@ -6,7 +6,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const reviewModel = require("./models/reviewModel");
 const Joi = require("joi");
-const reviewRating = require("./ai_evaluate_reviews");
+const reviewAi = require("./ai_reviews");
 
 // Joi schema for review
 const reviewSchema = Joi.object({
@@ -30,6 +30,22 @@ router.get("/writeReview/:id/", async (req, res) => {
     const user = await findUser({ email: req.session.email });
     const restaurant = await restaurantModel.findOne({ _id: req.params.id });
     res.render("writeReview", { user: user, restaurant: restaurant });
+});
+
+router.get("/smartReveiw/:id/", async (req, res) => {
+    // Check if user is logged in
+    if (!req.session.authenticated) {
+        return res.redirect('/login');
+    }
+
+    // Reder the specific writeReview page
+    const user = await findUser({ email: req.session.email });
+    const restaurant = await restaurantModel.findOne({ _id: req.params.id });
+    res.render("smartReview", { user: user, restaurant: restaurant });
+});
+
+router.post("/generateSmartReview/", async (req, res) => {
+    console.log(req.body);
 });
 
 // Route for processing reviews
@@ -83,7 +99,9 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
         })
     } else {
         // Evaluate review using AI
-        result = await reviewRating(req.body.reviewTitle, req.body.reviewBody);
+        const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case based on the review below. 
+    If the aspect is missing, make it 2.5. \n\n Review Title:${req.body.reviewTitle}. \n\nReview Content:${req.body.reviewBody}}`;
+        result = await reviewAi(prompt);
         const rating = JSON.parse(result);
 
         // Create review object
@@ -113,8 +131,6 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }
 });
 
-router.get("/testing", async (req, res) => {
-})
 
 // Export routes to server.js
 module.exports = router;

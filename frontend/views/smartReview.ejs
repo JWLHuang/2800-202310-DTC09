@@ -1,0 +1,61 @@
+<%- include('partials/header.ejs') %>
+    <link rel="stylesheet" href="/style/writeReview.css">
+    <div class="container">
+        <div>
+            <h1 class="mt-2">Generate a review</h1>
+        </div>
+        <label class="mb-3 mt-4" style="display: block">Creating review for a <h6 style="display: inline-block">
+                <%= restaurant.Award ? restaurant.Award : "Rating not available" %>
+            </h6> restaurant: <h6>
+                <%= restaurant.Name ? restaurant.Name : "Restaurant name not available" %>
+            </h6></label>
+        <form action="/generateSmartReview" method="POST">
+            <input type="hidden" name="restaurantID" value="<%= restaurant._id %>">
+            <h6> Feel free to leave it blank if you dont have special thought about it</h6>
+            <div class="form-group mb-4 text-center">
+                <select class=" text-center" name="tone" style="width:100%;">
+                    <option value="" class="text-center" selected disabled hidden>What tone would AI adopt in this
+                        review?</option>
+                    <option value="positive">Positive</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="critical">Critical</option>
+                    <option value="humorous">Humorous</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <pre class="m-0"><span class="btn-success">How was the service?</span></pre>
+                <input type="text" name="service" placeholder="Describe the service in five words or less!"
+                    class="w-100 px-2">
+            </div>
+            <div class="mb-3">
+                <pre class="m-0"><span class="btn-success">How was the food?</span></pre>
+                <input type="text" name="food" placeholder="Describe the food in five words or less!"
+                    class="w-100 px-2">
+            </div>
+            <div class="mb-3">
+                <pre class="m-0"><span class="btn-success">How was the atmosphere?</span></pre>
+                <input type="text" name="atmosphere" placeholder="Describe the atmosphere in five words or less!"
+                    class="w-100 px-2">
+            </div>
+            <div class="mb-3">
+                <pre class="m-0"><span class="btn-success">How was the cleanliness?</span></pre>
+                <input type="text" name="cleanliness" placeholder="Describe the cleanliness in five words or less!"
+                    class="w-100 px-2">
+            </div>
+            <div class="mb-3">
+                <pre class="m-0"><span class="btn-success">How was the value for money?</span></pre>
+                <input type="text" name="price" placeholder="Describe the value for money in five words or less!"
+                    class="w-100 px-2">
+            </div>
+            <div class="mb-3">
+                <pre class="m-0"><span class="btn-success">How was the acessibility?</span></pre>
+                <input type="text" name="acessibility" placeholder="Describe the acessibility in five words or less!"
+                    class="w-100 px-2">
+            </div>
+            <div class="btn-danger text-center rounded py-1 d-none mt-3" id="errorMessage"></div>
+            <button class="btn btn-primary w-100 mt-3" type="submit">Generate Review</button>
+        </form>
+    </div>
+    <div class="modal-backdrop fade show d-none" id="backdrop"></div>
+    <script src="/script/uploadPhoto.js"></script>
+    <%- include('partials/footer.ejs') %>
