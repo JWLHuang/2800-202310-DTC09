@@ -9,7 +9,7 @@ const updateDirections = async (restaurantLatitude, restaurantLongitude) => {
 
             $("#directionsButton a").attr("href", newLink);
 
-            console.log(newLink);
+            // console.log(newLink);
         }, () => {
             console.log(error)
         });
