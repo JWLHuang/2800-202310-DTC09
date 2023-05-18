@@ -70,7 +70,9 @@ router.post("/generateSmartReview/", async (req, res) => {
         delete inputChecking['tone'];
         delete inputChecking['restaurantID'];
         let empty = true;
+        let keyArray = [];
         for (const key in inputChecking) {
+            keyArray.push(key)
             if (inputChecking[key] !== "") {
                 empty = false;
             } else {
@@ -80,18 +82,16 @@ router.post("/generateSmartReview/", async (req, res) => {
         if (empty) {
             return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingAspect");
         }
-        console.log(req.body)
         try {
             const user = await findUser({ email: req.session.email });
             const restaurant = await restaurantModel.findOne({ _id: req.body.restaurantID });
             req.body.restaurantID = restaurant.Name;
             const prompt = `Generate a restaurant review based on given aspect and tone from the information below, 
             and return a review title in 20 words or less and review paragraph with 100 words to 150 words. 
-            Do not mention aspects that has not mentioned in the aspect list. Exaggerate the tone.
-            The response must be in a JSON format starting with "{" with key "reviewTitle" and "reviewContent".
+            Never mention ${keyArray} aspects unless its given. Exaggerate the tone.
+            The response must be in a JSON format with no new line characters starting with "{" with key "reviewTitle" and "reviewContent".
             \n ${JSON.stringify(req.body)}`;
             result = await reviewAi(prompt, 0.9);
-            console.log(result);
             const generatedReview = JSON.parse(result);
             // for (const key in generatedReview) {
             //     console.log(key)
@@ -164,8 +164,9 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
         // Evaluate review using AI
         const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case 
         based on the review below. If the aspect is missing, make it 2.5. 
-        Also, give me a positive label with max 3 words and a negative label with max 3 words on the review below.
+        Also, give me a positive comment with max 3 words and a negative comment with max 3 words on the review below.
         The response must be in a JSON format starting with "{" with key "service", "food", "atmosphere", "cleanliness", "price", "accessibility", "positiveTag", "negativeTag".
+        "positiveTag", "negativeTag" can be empty if there is no positive or negative comment.
         \n\n Review Title:${req.body.reviewTitle}.\n\nReview Content:${req.body.reviewBody}
     }`;
         result = await reviewAi(prompt, 0.5);
