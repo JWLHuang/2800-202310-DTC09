@@ -12,13 +12,13 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const reviewRating = async (prompt) => {
+const reviewRating = async (prompt, randomness) => {
     try {
         const response = await openai.createCompletion({
             model: 'text-davinci-003',
             prompt: prompt,
             max_tokens: 200,
-            temperature: 0,
+            temperature: randomness,
             n: 1,
         });
         // console.log(response.data.choices[0].text);

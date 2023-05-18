@@ -28,8 +28,13 @@ router.get("/writeReview/:id/", async (req, res) => {
 
     // Reder the specific writeReview page
     const user = await findUser({ email: req.session.email });
-    const restaurant = await restaurantModel.findOne({ _id: req.params.id });
-    res.render("writeReview", { user: user, restaurant: restaurant });
+    try {
+        const restaurant = await restaurantModel.findOne({ _id: req.params.id });
+        res.render("writeReview", { user: user, restaurant: restaurant });
+    } catch (err) {
+        req.session.error = "Restaurant not found";
+        res.redirect("/filterRestaurants")
+    }
 });
 
 router.get("/smartReveiw/:id/", async (req, res) => {
@@ -40,12 +45,36 @@ router.get("/smartReveiw/:id/", async (req, res) => {
 
     // Reder the specific writeReview page
     const user = await findUser({ email: req.session.email });
-    const restaurant = await restaurantModel.findOne({ _id: req.params.id });
-    res.render("smartReview", { user: user, restaurant: restaurant });
+    try {
+        const restaurant = await restaurantModel.findOne({ _id: req.params.id });
+        res.render("smartReview", { user: user, restaurant: restaurant });
+    } catch (err) {
+        req.session.error = "Restaurant not found";
+        res.redirect("/filterRestaurants")
+    }
 });
 
 router.post("/generateSmartReview/", async (req, res) => {
-    console.log(req.body);
+    try {
+        const user = await findUser({ email: req.session.email });
+        const restaurant = await restaurantModel.findOne({ _id: req.body.restaurantID });
+        req.body.restaurantID = restaurant.Name;
+        const prompt = `Generate a restaurant review based on given aspect and tone from the information below, 
+        and return a review title in 20 words or less and review paragraph with 100 words to 150 words. Exaggerate the tone.
+        The response must be in a JSON format with key "reviewTitle" and "reviewContent"
+        \n ${JSON.stringify(req.body)}`;
+        result = await reviewAi(prompt, 0.9);
+        console.log(result);
+        const generatedReview = JSON.parse(result);
+        res.render("writeReview", { user: user, restaurant: restaurant, generatedReview: generatedReview });
+        res.send()
+    } catch (err) {
+        console.log(err)
+        return res.json({
+            status: "error",
+            message: "Restaurant not found."
+        })
+    }
 });
 
 // Route for processing reviews
@@ -100,8 +129,9 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     } else {
         // Evaluate review using AI
         const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case based on the review below. 
-    If the aspect is missing, make it 2.5. \n\n Review Title:${req.body.reviewTitle}. \n\nReview Content:${req.body.reviewBody}}`;
-        result = await reviewAi(prompt);
+    If the aspect is missing, make it 2.5.\n\n Review Title:${req.body.reviewTitle}.\n\nReview Content:${req.body.reviewBody}
+    }`;
+        result = await reviewAi(prompt, 0.1);
         const rating = JSON.parse(result);
 
         // Create review object
@@ -115,7 +145,7 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
         })
         req.body['TimeStamp'] = Date.now();
         const reviewContent = Object.assign({}, req.body, image, rating);
-        console.log(reviewContent);
+        // console.log(reviewContent);
         const review = new reviewModel(reviewContent);
 
         // Upload images and review to database
