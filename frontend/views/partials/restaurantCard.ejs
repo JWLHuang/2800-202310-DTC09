@@ -1,51 +1,46 @@
 <link rel="stylesheet" href="/style/restaurantThumbnail.css">
 
-<% var images=["/images/site_resources/restaurant01.jpg", "/images/site_resources/restaurant02.jpg"
-  , "/images/site_resources/restaurant03.jpg" ] %>
-  <% var randomImage=images[Math.floor(Math.random() * images.length)] %>
-    <% var randomImage=images[Math.floor(Math.random() * images.length)] %>
-      <%- include('restaurantFunctions') %>
-        <a href="/restaurant/<%= restaurant._doc._id %>">
-          <div class="row justify-content-center">
-            <div class="card mb-3">
-              <div class="row g-0">
-                <div class="col-md-2 p-0">
-                  <img src="<%= restaurant._doc.ImgUrl %>" class="img-fluid rounded-start restaurant-thumbnail"
-                    alt="<%= restaurant._doc.Name%>">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      <%= restaurant._doc.Name %>
-                    </h5>
-                    <p class="card-text">
-                      <%= restaurant._doc.Address %>
+<%- include('restaurantFunctions') %>
+  <a href="/restaurant/<%= restaurant._doc._id %>">
+    <div class="row justify-content-center">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-2 p-0">
+            <img src="<%= restaurant._doc.ImgUrl %>" class="img-fluid rounded-start restaurant-thumbnail"
+              alt="<%= restaurant._doc.Name%>">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">
+                <%= restaurant._doc.Name %>
+              </h5>
+              <p class="card-text">
+                <%= restaurant._doc.Address %>
+              </p>
+              <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
+                <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
+                  <% } else { %>
+                    <p>
+                      <%= restaurant._doc.Award %>
                     </p>
-                    <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
-                      <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award)
-                        : "Michelin rating not available" %>
+                    <% } %>
+                      <p class="card-text">
+                        <%= restaurant._doc.Price %>
+                      </p>
+                      <% if (restaurant.averageRating===0) { %>
+                        <p class="card-text">
+                          No reviews yet
+                        </p>
                         <% } else { %>
-                          <p>
-                            <%= restaurant._doc.Award %>
+                          <p class="card-text">
+                            <strong>Personal Rating:
+                              <%= restaurant.averageRating %>
+                            </strong>
                           </p>
                           <% } %>
-                            <p class="card-text">
-                              <%= restaurant._doc.Price %>
-                            </p>
-                            <% if (restaurant.averageRating===0) { %>
-                              <p class="card-text">
-                                No reviews yet
-                              </p>
-                              <% } else { %>
-                                <p class="card-text">
-                                  <strong>Personal Rating:
-                                    <%= restaurant.averageRating %>
-                                  </strong>
-                                </p>
-                                <% } %>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
-        </a>
+        </div>
+      </div>
+    </div>
+  </a>
