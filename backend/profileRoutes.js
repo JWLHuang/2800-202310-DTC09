@@ -11,12 +11,12 @@ const profileSchema = Joi.object({
 });
 
 const factorsSchema = Joi.object({
-    service: Joi.number().min(1).max(5).required(),
-    food: Joi.number().min(1).max(5).required(),
-    price: Joi.number().min(1).max(5).required(),
-    atmosphere: Joi.number().min(1).max(5).required(),
-    cleanliness: Joi.number().min(1).max(5).required(),
-    accessibility: Joi.number().min(1).max(5).required()
+    service: Joi.number().min(1).max(6).required(),
+    food: Joi.number().min(1).max(6).required(),
+    price: Joi.number().min(1).max(6).required(),
+    atmosphere: Joi.number().min(1).max(6).required(),
+    cleanliness: Joi.number().min(1).max(6).required(),
+    accessibility: Joi.number().min(1).max(6).required()
 });
 
 router.get('/profile/:message?', async (req, res) => {
@@ -29,11 +29,13 @@ router.get('/profile/:message?', async (req, res) => {
     const diningDict = diningCriteria.toObject()
     const dietaryDict = dietaryPreferences.toObject()
     if (req.params.message === "errorProfileEdit") {
-        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorProfileEdit: "Invalid Input for 'about me' section"  });
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorProfileEdit: "Invalid Input for 'about me' section" });
     } else if (req.params.message === "errorDietaryPreferences") {
-        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorPreferencesEdit: "Please pick at least one dietary preference"  });
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorPreferencesEdit: "Please pick at least one dietary preference" });
     } else if (req.params.message === "errorDiningCriteria") {
-        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorFactorEdit: "Must rank all criteria"  });
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorFactorEdit: "Must rank all criteria" });
+    } else if (req.params.message === "errorRanking") {
+        return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorFactorEdit: "Cannot have duplicate rankings" });
     }
     res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict });
 });
@@ -66,6 +68,8 @@ router.post('/updateDietaryPreferences', async (req, res) => {
 });
 
 router.post('/updateDiningCriteria', async (req, res) => {
+
+    // Check if all criteria are ranked
     ratings = {};
     for (const key in req.body) {
         ratings[key] = parseInt(req.body[key]);
@@ -74,13 +78,22 @@ router.post('/updateDiningCriteria', async (req, res) => {
     if (error) {
         return res.redirect("/profile/errorDiningCriteria");
     }
-    else {
-        try {
-            await usersModel.updateOne({ email: req.session.email }, ratings)
-            res.redirect('/profile');
-        } catch (err) {
-            console.log(err);
+
+    // Check if there are duplicate rankings
+    rankingArray = []
+    for (const key in ratings) {
+        if (rankingArray.includes(ratings[key])) {
+            return res.redirect("/profile/errorRanking");
         }
+        rankingArray.push(ratings[key])
+    }
+
+    // Update user's dining criteria
+    try {
+        await usersModel.updateOne({ email: req.session.email }, ratings)
+        res.redirect('/profile');
+    } catch (err) {
+        console.log(err);
     }
 });
 

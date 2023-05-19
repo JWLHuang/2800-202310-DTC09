@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    padding-top: 6px;
+}
+
+#map {
+    margin-top: 55px;
+    height: calc(100vh - 125px);
+    /* height: 100%; */
+}

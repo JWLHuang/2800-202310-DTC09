@@ -33,14 +33,29 @@ const afterLogin = [
         icon: 'bi bi-house-door-fill'
     },
     {
+        name: 'Find A Restaurant',
+        link: '/filterRestaurants',
+        icon: 'bi bi-search'
+    },
+    {
+        name: 'Restaurant Map',
+        link: '/map',
+        icon: 'bi bi-map-fill'
+    },
+    {
         name: 'My Profile',
         link: '/profile',
         icon: 'bi bi-person-fill'
     },
     {
         name: 'My Reviews',
-        link: '/reviews',
+        link: '/myReviews',
         icon: 'bi bi-chat-left-fill'
+    },
+    {
+        name: 'My History',
+        link: '/history',
+        icon: 'bi bi-clock-history'
     },
     {
         name: 'Settings',

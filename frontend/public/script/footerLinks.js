@@ -12,4 +12,10 @@ const socialLinks = [
     { name: 'bi bi-twitter h1 text-light p-2', link: '#' }
 ]
 
-module.exports = { footerLinks: footerLinks, socialLinks: socialLinks }
+const mobileLinks = [
+    { name: 'Home', icon: 'bi bi-house-door-fill', link: '/' },
+    { name: 'Map', icon: 'bi bi-map-fill', link: '/map' },
+    { name: 'Plan', icon: 'bi bi-calendar-fill', link: '/filterRestaurants' },
+]
+
+module.exports = { footerLinks: footerLinks, socialLinks: socialLinks, mobileLinks: mobileLinks }
