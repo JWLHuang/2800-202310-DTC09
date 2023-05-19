@@ -1,66 +1,85 @@
 <link rel="stylesheet" href="/style/restaurantThumbnail.css">
 
 <%- include('restaurantFunctions') %>
-  <a href="/restaurant/<%= restaurant._doc._id %>">
-    <div class="row justify-content-center">
-      <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-2 p-0">
-            <img src="<%= restaurant._doc.ImgUrl %>" class="img-fluid rounded-start restaurant-thumbnail"
-              alt="<%= restaurant._doc.Name%>">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= restaurant._doc.Name %>
-              </h5>
-              <p class="card-text">
-                <%= restaurant._doc.Address %>
-              </p>
-              <p class="card-text">
-                <%= restaurant._doc.Cuisine %>, <strong>
-                    <%= restaurant._doc.DietaryRestrictions.toUpperCase() %>
-                  </strong>
-              </p>
-              <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
-                <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
-                  <% } else { %>
-                    <p>
-                      <%= restaurant._doc.Award %>
-                    </p>
-                    <% } %>
-                      <p class="card-text">
-                        <%= restaurant._doc.Price %>
-                      </p>
-                      <% if (restaurant.averageRating===0) { %>
-                        <p class="card-text">
-                          No reviews yet
-                        </p>
-                        <% } else { %>
-                          <p class="card-text">
-                            <strong>Average Rating:
-                              <%= restaurant.averageRating %>/5
-                            </strong>
-                          </p>
-                          <% } %>
-                            <% if (restaurant.individualRating==="No Rating") { %>
-                              <p class="card-text">
-                                Please rank your preferences to view your personal rating.
-                              </p>
-                              <% } else if(restaurant.averageRating===0 && restaurant.individualRating===0) { %>
-                                <p class="card-text">
-                                  No reviews to compare to your personal preferences yet.
-                                </p>
-                                <% } else { %>
-                                  <p class="card-text">
-                                    <strong>Your Rating:
-                                      <%= restaurant.individualRating %>/5
-                                    </strong>
-                                  </p>
-                                  <% } %>
-            </div>
+<% if (restaurant._doc._id != "646562b76644f1aa93bc2ba2") { %>
+<a href="/restaurant/<%= restaurant._doc._id %>">
+  <div class="row justify-content-center">
+    <div class="card mb-3">
+      <div class="row g-0">
+        <div class="col-md-2 p-0">
+          <img src="<%= restaurant._doc.ImgUrl %>" class="img-fluid rounded-start restaurant-thumbnail" alt="<%= restaurant._doc.Name%>">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= restaurant._doc.Name %>
+            </h5>
+            <p class="card-text">
+              <%= restaurant._doc.Address %>
+            </p>
+            <p class="card-text">
+              <%= restaurant._doc.Cuisine %>, <strong>
+                <%= restaurant._doc.DietaryRestrictions.toUpperCase() %>
+              </strong>
+            </p>
+            <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
+            <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
+            <% } else { %>
+            <p>
+              <%= restaurant._doc.Award %>
+            </p>
+            <% } %>
+            <p class="card-text">
+              <%= restaurant._doc.Price %>
+            </p>
+            <% if (restaurant.averageRating===0) { %>
+            <p class="card-text">
+              No reviews yet
+            </p>
+            <% } else { %>
+            <p class="card-text">
+              <strong>Average Rating:
+                <%= restaurant.averageRating %>/5
+              </strong>
+            </p>
+            <% } %>
+            <% if (restaurant.averageRating===0 && !restaurant.individualRating) { %>
+            <p class="card-text">
+              No reviews to compare to your personal preferences yet.
+            </p>
+            <% } else if (restaurant.individualRating) { %>
+            <p class="card-text">
+              <strong>Personal Rating:
+                <%= restaurant.individualRating %>/5
+              </strong>
+            </p>
+            <% } else { %>
+            <p class="card-text">
+              Please rank your preferences to view your personal rating.
+            </p>
+            <% } %>
+
           </div>
         </div>
       </div>
     </div>
-  </a>
+  </div>
+</a>
+<% } else { %>
+<div class="row justify-content-center">
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-2 p-0">
+        <img src="https://images.pexels.com/photos/2228568/pexels-photo-2228568.jpeg" class="img-fluid rounded-start restaurant-thumbnail" alt="<%= restaurant._doc.Name%>">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">
+            <em>No restaurants matched with current filters for this category</em>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
