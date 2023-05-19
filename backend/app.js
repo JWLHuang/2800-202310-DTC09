@@ -8,6 +8,8 @@ const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
 const { findUser } = require("./findUser");
 const url = require('url');
+const restaurantModel = require("./models/restaurantModel");
+
 
 require("dotenv").config();
 const port = process.env.PORT || 3000;
@@ -55,7 +57,16 @@ app.use(
 
 app.get("/", async (req, res) => {
   const user = await findUser({ email: req.session.email });
-  res.render("index.ejs", user ? { user: user } : { user: null });
+  const restaurantHistory = await user.history;
+  let historyList = []
+  const restaurantInfo = async () => {
+    for (let i = 0; i < restaurantHistory.length; i++) {
+      restaurant = await restaurantModel.find({ _id: new mongo.ObjectId(restaurantHistory[i]) })
+      historyList = historyList.concat(restaurant)
+    }
+  }
+  await restaurantInfo()
+  res.render("index.ejs", user ? { user: user, restaurantHistory: historyList } : { user: null });
 });
 
 const signupRoutes = require("./signupRoutes");
