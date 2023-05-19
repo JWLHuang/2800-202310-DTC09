@@ -2,6 +2,7 @@
 <%- include('partials/restaurantFunctions') %>
 <link rel="stylesheet" href="/style/restaurant.css">
 <script src="/script/restaurant.js"></script>
+<%- include("svgIcons") %>
 
 <script>
   $("#directionsButton").on("load", updateDirections('<%= restaurant.Latitude %>', '<%= restaurant.Longitude %>'))
@@ -123,7 +124,9 @@
                   </div>
                   <% } else {%>
                   <div class="carousel-item active">
-                    <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" class="d-block w-100" alt="imageOne">
+                          <svg class="bi d-block mx-auto mb-1" width="250" height="250">
+                            <use xlink:href="#no-image"></use>
+                          </svg>
                   </div>
                   <% } %>
                   <% imageTwoUrl=review.image02Buffer ? "data:" + review.image02Type + ";base64, " +
