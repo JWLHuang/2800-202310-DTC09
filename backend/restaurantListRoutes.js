@@ -161,8 +161,9 @@ router.get('/restaurants', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
     const filterParam = req.query.filter; // Get the filter data from the query parameter
-    if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
+    // if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
+    if (!filterData.Location) return res.redirect("/filterRestaurants/error");
     try {
         // Retrieve user preferences from their account
         const user = await findUser({ email: req.session.email }) // Replace with your actual implementation
@@ -227,9 +228,11 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         award.push("Don't")
         location.push("Select")
 
-        if (req.params.message === "error") {
-            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
-        }
+        return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg });
+
+        // if (req.params.message === "error") {
+        //     return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
+        // }
         res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
