@@ -1,8 +1,12 @@
+main {
+  overflow: hidden;
+}
+
 body {
   background-color: #222;
-  background-image: url("https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmUxZTQ1MTcxOTVjZWQ2ZjNlNjA0MjI5YjgyOGM3OWU3MGIzZWNjNyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/pWhWtKdqwOAco/giphy.gif ");
+  background-image: url("https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmUxZTQ1MTcxOTVjZWQ2ZjNlNjA0MjI5YjgyOGM3OWU3MGIzZWNjNyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/pWhWtKdqwOAco/giphy.gif");
   background-repeat: no-repeat;
-  background-size: auto 100vh;
+  background-size: 100vw 100vh;
 }
 
 #gameCanvas, #mainScreen {
