@@ -66,7 +66,6 @@ app.get("/", async (req, res) => {
     }
   }
   await restaurantInfo()
-  console.log(historyList);
   res.render("index.ejs", user ? { user: user, restaurantHistory: historyList } : { user: null });
 });
 
