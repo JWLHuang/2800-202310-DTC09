@@ -56,17 +56,22 @@ app.use(
 );
 
 app.get("/", async (req, res) => {
-  const user = await findUser({ email: req.session.email });
-  const restaurantHistory = await user.history;
-  let historyList = []
-  const restaurantInfo = async () => {
-    for (let i = 0; i < restaurantHistory.length; i++) {
-      restaurant = await restaurantModel.find({ _id: new mongo.ObjectId(restaurantHistory[i]) })
-      historyList = historyList.concat(restaurant)
+
+  // Check if user is logged in
+  if (req.session.authenticated) {
+    const user = await findUser({ email: req.session.email });
+    const restaurantHistory = await user.history;
+    let historyList = []
+    const restaurantInfo = async () => {
+      for (let i = 0; i < restaurantHistory.length; i++) {
+        restaurant = await restaurantModel.find({ _id: new mongo.ObjectId(restaurantHistory[i]) })
+        historyList = historyList.concat(restaurant)
+      }
     }
+    await restaurantInfo()
+    return res.render("index.ejs", { user: user, restaurantHistory: historyList });
   }
-  await restaurantInfo()
-  res.render("index.ejs", user ? { user: user, restaurantHistory: historyList } : { user: null });
+  return res.render("index.ejs", { user: null });
 });
 
 const signupRoutes = require("./signupRoutes");
