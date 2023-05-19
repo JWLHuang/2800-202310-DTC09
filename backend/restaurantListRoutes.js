@@ -223,10 +223,10 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         const award = await restaurantModel.distinct("Award");
         const location = await restaurantModel.distinct("Location");
 
-        cuisine.push("Hi")
-        price.push("Chris")
-        award.push("Don't")
-        location.push("Select")
+        location.push("Chris")
+        cuisine.push("Don't")
+        price.push("Select")
+        award.push("This")
 
         if (req.params.message === "error") {
             return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg });
@@ -248,10 +248,10 @@ router.post("/filterRestaurantsResults", async (req, res) => {
         return res.redirect("/filterRestaurants/error");
     }
 
-    if (filterData["Cuisine"] === "Hi" &&
-        filterData["Price"] === "Chris" &&
-        filterData["Award"] === "Don't" &&
-        filterData["Location"] === "Select") {
+    if (filterData["Location"] === "Chris" &&
+        filterData["Cuisine"] === "Don't" &&
+        filterData["Price"] === "Select" &&
+        filterData["Award"] === "This") {
 
         res.redirect("/snake");
         return;
