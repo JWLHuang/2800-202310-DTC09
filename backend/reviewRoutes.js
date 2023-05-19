@@ -86,7 +86,7 @@ router.get("/writeReview/:id/", async (req, res) => {
     }
 });
 
-router.get("/smartReveiw/:id/:errorMessage?", async (req, res) => {
+router.get("/SmartReview/:id/:errorMessage?", async (req, res) => {
     // Check if user is logged in
     if (!req.session.authenticated) {
         return res.redirect('/login');
@@ -101,6 +101,8 @@ router.get("/smartReveiw/:id/:errorMessage?", async (req, res) => {
             return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Please fill in at least an aspect." });
         } else if (req.params.errorMessage === "invalidAspect") {
             return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Filled aspect must be within 2 to 40 characters." });
+        } else if (req.params.errorMessage === "errorGenerateReview") {
+            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Error generating review. Please try again later." });
         } else {
             return res.render("smartReview", { user: user, restaurant: restaurant });
         }
@@ -118,10 +120,10 @@ router.post("/generateSmartReview/", async (req, res) => {
         // Check if a valid tone is selected
         const { error, value } = smartReviewSchema.validate(req.body);
         if (error.details[0].type === "any.required") {
-            return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingTone");
+            return res.redirect("/SmartReview/" + req.body.restaurantID + "/missingTone");
         }
         if (inputChecking['tone'] === undefined) {
-            return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingTone");
+            return res.redirect("/SmartReview/" + req.body.restaurantID + "/missingTone");
         }
         
         // Check if at least one aspect is filled
@@ -138,10 +140,10 @@ router.post("/generateSmartReview/", async (req, res) => {
             }
         }
         if (empty) {
-            return res.redirect("/smartReveiw/" + req.body.restaurantID + "/missingAspect");
+            return res.redirect("/SmartReview/" + req.body.restaurantID + "/missingAspect");
         }
         if (error.details[0].type === "string.min" || error.details[0].type === "string.max") {
-            return res.redirect("/smartReveiw/" + req.body.restaurantID + "/invalidAspect");
+            return res.redirect("/SmartReview/" + req.body.restaurantID + "/invalidAspect");
         }
         
         // Generate review
@@ -158,8 +160,7 @@ router.post("/generateSmartReview/", async (req, res) => {
             const generatedReview = JSON.parse(result);
             res.render("writeReview", { user: user, restaurant: restaurant, generatedReview: generatedReview });
         } catch (err) {
-            req.session.error = "Error generating review. Please try again later.";
-            res.redirect("/filterRestaurants")
+            res.redirect("/SmartReview/" + req.body.restaurantID + "/errorGenerateReview")
         }
     } catch (err) {
         console.log(err)
