@@ -228,7 +228,9 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         award.push("Don't")
         location.push("Select")
 
-        return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg });
+        if (req.params.message === "error") {
+            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg });
+        }
 
         // if (req.params.message === "error") {
         //     return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
