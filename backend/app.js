@@ -59,8 +59,20 @@ app.get("/", async (req, res) => {
 
   // Check if user is logged in
   if (req.session.authenticated) {
+    const errorMsg = req.session.error ? req.session.error : null;
+    delete req.session.error;
     const user = await findUser({ email: req.session.email });
     const restaurantHistory = await user.history;
+    const location = await restaurantModel.distinct("Location");
+    const cuisine = await restaurantModel.distinct("Cuisine");
+    const price = await restaurantModel.distinct("Price");
+    const award = await restaurantModel.distinct("Award");
+    location.push("Chris")
+    cuisine.push("Don't")
+    price.push("Select")
+    award.push("This")
+    
+
     let historyList = []
     const restaurantInfo = async () => {
       for (let i = 0; i < restaurantHistory.length; i++) {
@@ -69,7 +81,7 @@ app.get("/", async (req, res) => {
       }
     }
     await restaurantInfo()
-    return res.render("index.ejs", { user: user, restaurantHistory: historyList });
+    return res.render("index.ejs", { user: user, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award });
   }
   return res.render("index.ejs", { user: null });
 });
