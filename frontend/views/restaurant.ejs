@@ -64,6 +64,14 @@
               </p>
               <% } %>
             </div>
+            <div id="address">
+              <% if (locals.restaurant.Address) { %>
+              <%= restaurant.Address %>
+              <% } else { %>
+              Address not available
+              </p>
+              <% } %>
+            </div>
             <div id="map">
               <% if (locals.restaurant.Longitude && locals.restaurant.Latitude) { %>
               <iframe id="mapFrame" height="125" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>%2C<%= restaurant.Latitude %>&amp;layer=mapnik&amp;marker=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>"></iframe>
@@ -124,9 +132,9 @@
                   </div>
                   <% } else {%>
                   <div class="carousel-item active">
-                          <svg class="bi d-block mx-auto mb-1" width="250" height="250">
-                            <use xlink:href="#no-image"></use>
-                          </svg>
+                    <svg class="bi d-block mx-auto mb-1" width="250" height="250">
+                      <use xlink:href="#no-image"></use>
+                    </svg>
                   </div>
                   <% } %>
                   <% imageTwoUrl=review.image02Buffer ? "data:" + review.image02Type + ";base64, " +
@@ -138,50 +146,47 @@
                   <% } %>
                   <% imageThreeUrl=review.image03Buffer ? "data:" + review.image03Type + ";base64, "
                                         + review.image03Buffer.toString('base64') : undefined; %>
-                                        <% if (typeof imageThreeUrl !=='undefined' ) {%>
-                                          <div class="carousel-item">
-                                            <img src='<%= imageThreeUrl %>' class="d-block w-100" alt="imageTwo">
-                                          </div>
-                                          <% } %>
-                      </div>
-                      <button class="carousel-control-prev" type="button" data-bs-target="#<%= review._id %>"
-                        data-bs-slide="prev">
-                      </button>
-                      <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>"
-                        data-bs-slide="next">
-                      </button>
-                      <!-- <h5 class="card-title">★★★☆☆</h5> -->
-                      <div
-                        class="align-items-start mt-3 <%= typeof review.positiveTag !=='undefined' && typeof review.negativeTag !=='undefined' ? 'd-flex': 'd-none' %>">
-                        <% if (typeof review.positiveTag !=='undefined' && review.positiveTag !=='' ) {%>
-                          <span class="btn-sm btn-success">
-                            <%= review.positiveTag %>
-                          </span>
-                          <% }%>
-                        <% if (typeof review.negativeTag !=='undefined' && review.negativeTag !=='') {%>
-                        <span class="btn-sm btn-danger mx-2">
-                          <%= review.negativeTag %>
-                        </span>
-                        <% }%>
-                      </div>
-                      <p class="card-text text-left mt-3">
-                        <%= review.reviewBody %>
-                      </p>
-                      <!-- <a href="#" class="btn btn-primary">Like this review?</a> -->
-                    </div>
-                    <div class="card-footer text-muted">
-                      Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString(undefined, { year: 'numeric' , month: 'long' , day: 'numeric'}) %>
-                    </div>
+                  <% if (typeof imageThreeUrl !=='undefined' ) {%>
+                  <div class="carousel-item">
+                    <img src='<%= imageThreeUrl %>' class="d-block w-100" alt="imageTwo">
                   </div>
+                  <% } %>
                 </div>
-                <% }) %>
-                  <% } else { %>
-                    <h6 class="btn btn-success">No reviews available yet! Be the first to write one!</h6>
-                    <% } %>
+                <button class="carousel-control-prev" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="prev">
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="next">
+                </button>
+                <!-- <h5 class="card-title">★★★☆☆</h5> -->
+                <div class="align-items-start mt-3 <%= typeof review.positiveTag !=='undefined' && typeof review.negativeTag !=='undefined' ? 'd-flex': 'd-none' %>">
+                  <% if (typeof review.positiveTag !=='undefined' && review.positiveTag !=='' ) {%>
+                  <span class="btn-sm btn-success">
+                    <%= review.positiveTag %>
+                  </span>
+                  <% }%>
+                  <% if (typeof review.negativeTag !=='undefined' && review.negativeTag !=='') {%>
+                  <span class="btn-sm btn-danger mx-2">
+                    <%= review.negativeTag %>
+                  </span>
+                  <% }%>
+                </div>
+                <p class="card-text text-left mt-3">
+                  <%= review.reviewBody %>
+                </p>
+                <!-- <a href="#" class="btn btn-primary">Like this review?</a> -->
+              </div>
+              <div class="card-footer text-muted">
+                Posted by <%=review.userID%> on <%= review.TimeStamp.toLocaleDateString(undefined, { year: 'numeric' , month: 'long' , day: 'numeric'}) %>
+              </div>
+            </div>
           </div>
+          <% }) %>
+          <% } else { %>
+          <h6 class="btn btn-success">No reviews available yet! Be the first to write one!</h6>
+          <% } %>
         </div>
       </div>
     </div>
-    </div>
+  </div>
+</div>
 
 <%- include('partials/footer') %>
