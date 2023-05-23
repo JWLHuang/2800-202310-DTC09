@@ -59,10 +59,9 @@ app.get("/", async (req, res) => {
 
   // Check if user is logged in
   if (req.session.authenticated) {
-    const errorMsg = req.session.error ? req.session.error : null;
-    delete req.session.error;
     const user = await findUser({ email: req.session.email });
-    const restaurantHistory = await user.history;
+    const history = await user.history;
+    const restaurantHistory = history.reverse().slice(0, 3);
     const location = await restaurantModel.distinct("Location");
     const cuisine = await restaurantModel.distinct("Cuisine");
     const price = await restaurantModel.distinct("Price");
