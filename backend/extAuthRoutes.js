@@ -14,32 +14,37 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 router.get("/ExtAuthSuccess", async (req, res) => {
-    const email = userProfile.emails[0].value
-    const user = await findUser({ email: email });
+    try {
+        const email = userProfile.emails[0].value
 
-    if (user && user.extAuth === true) {
-        req.session.authenticated = true;
-        req.session.email = email
-        console.log("User logged in");
-        res.redirect("/");
-    } else if (user && user.extAuth !== true) {
-        res.render("login.ejs", { user: null, errorMsg: "Your account was not created with external authentication. Please use the login form instead." });
-    } else {
-        const username = userProfile.displayName
-        newUser = {
-            email: email,
-            name: username,
-            password: bcrypt.hashSync("", 10),
-            type: "user",
-            extAuth: true,
-        };
+        const user = await findUser({ email: email });
 
-        await usersModel.create(newUser).then(() => {
-            console.log("User created");
+        if (user && user.extAuth === true) {
             req.session.authenticated = true;
-            req.session.email = email;
+            req.session.email = email
+            console.log("User logged in");
             res.redirect("/");
-        });
+        } else if (user && user.extAuth !== true) {
+            res.render("login.ejs", { user: null, errorMsg: "Your account was not created with external authentication. Please use the login form instead." });
+        } else {
+            const username = userProfile.displayName
+            newUser = {
+                email: email,
+                name: username,
+                password: bcrypt.hashSync("", 10),
+                type: "user",
+                extAuth: true,
+            };
+
+            await usersModel.create(newUser).then(() => {
+                console.log("User created");
+                req.session.authenticated = true;
+                req.session.email = email;
+                res.redirect("/");
+            });
+        }
+    } catch {
+        return res.render("login.ejs", { user: null, errorMsg: "Authentication error. Please try again." });
     }
 });
 
