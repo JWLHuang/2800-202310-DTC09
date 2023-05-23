@@ -20,7 +20,6 @@ router.get("/history", async (req, res) => {
     }
     await restaurantInfo()
     restaurantList = await getRestaurantRatings(user, historyList);
-    console.log(restaurantList)
     res.render("history.ejs", {
         user: user,
         restaurants: restaurantList,
