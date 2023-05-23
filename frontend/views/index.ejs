@@ -11,18 +11,18 @@
   <!-- start landing page layout  -->
   <div class="container mb-2" id="welcome">
     <% if (user) { %>
-      <h2>Welcome back, <%= user.name %>
+      <h2 style="text-align: center">Welcome back, <%= user.name %>
       </h2>
       <!-- Filter Restaurants Accordion -->
       <div class="accordion" id="accordionExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
               aria-expanded="true" aria-controls="collapseOne">
               Get Started
             </button>
           </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+          <div id="collapseOne" class="accordion-collapse collapse collapse" aria-labelledby="headingOne"
             data-bs-parent="#accordionExample">
             <div class="accordion-body">
               <%- include ('filterRestaurants')%>
@@ -30,11 +30,9 @@
           </div>
         </div>
       </div>
-
-
-      <% } else { %>
-        <h2>Welcome to TableTrek!</h2>
-        <% } %>
+    <% } else { %>
+      <h2>Welcome to TableTrek!</h2>
+      <% } %>
   </div>
 
   <div class="container mt-5">
