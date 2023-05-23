@@ -85,6 +85,7 @@ const reviewRoutes = require('./reviewRoutes');
 const planMyDayRoutes = require('./planMyDayRoutes');
 const historyRoutes = require('./historyRoutes');
 const mapRoutes = require('./mapRoutes');
+const contactRoutes = require('./contactRoutes');
 
 
 app.use(signupRoutes);
@@ -99,6 +100,7 @@ app.use(mapRoutes);
 app.use(forgotPasswordRoutes);
 app.use(reviewRoutes);
 app.use(historyRoutes);
+app.use(contactRoutes);
 
 
 function handle404(req, res, _) {
