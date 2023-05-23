@@ -101,7 +101,9 @@ app.use(reviewRoutes);
 app.use(historyRoutes);
 
 
-function handle404(req, res, _) {
+async function handle404(req, res, _) {
+  const user = await findUser({ email: req.session.email });
+  user ? res.locals.user = user : res.locals.user = null;
   res.status(404).render("404.ejs");
 }
 
