@@ -21,8 +21,9 @@
             </div>
             <div>
 
-                    <textarea class="form-control mt-1 mb-3 posting-content" rows="4"
-                        placeholder="Share your experience with us!" id="reviewBody"><%= typeof generatedReview !=='undefined' ? generatedReview.reviewContent : '' %></textarea>
+                <textarea class="form-control mt-1 mb-3 posting-content" rows="4"
+                    placeholder="Share your experience with us!"
+                    id="reviewBody"><%= typeof generatedReview !=='undefined' ? generatedReview.reviewContent : '' %></textarea>
             </div>
             <div id="drop-area" class="py-5">
                 <h4>Drop images here, or click below!</h4>
@@ -33,10 +34,14 @@
             <div id="pendingUploadImages" class="d-flex flex-row flex-wrap">
             </div>
             <div class="btn-danger text-center rounded py-1 d-none mt-3" id="errorMessage"></div>
-            <button class="btn btn-primary w-100 mt-3" type="submit" onclick="uploadReviews()">Submit
-                Review</button>
+            <button class="button w-100 mt-5" id="submitButton" type="submit" onclick="uploadReviews()">
+                <span>Submit Review</span>
+                <svg viewBox="0 0 15 13">
+                    <polyline points="2 6.5 6 10.5 13 2.5"></polyline>
+                </svg>
+            </button>
         </div>
     </div>
     <div class="modal-backdrop fade show d-none" id="backdrop"></div>
-    <script src="/script/uploadPhoto.js"></script>
+    <script src="/script/writeReview.js"></script>
     <%- include('partials/footer.ejs') %>
