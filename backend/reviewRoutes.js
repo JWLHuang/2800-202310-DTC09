@@ -102,7 +102,7 @@ router.get("/SmartReview/:id/:errorMessage?", async (req, res) => {
         } else if (req.params.errorMessage === "invalidAspect") {
             return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Filled aspect must be within 2 to 40 characters." });
         } else if (req.params.errorMessage === "errorGenerateReview") {
-            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Error generating review. Please try again later." });
+            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Error generating review. Please try again." });
         } else {
             return res.render("smartReview", { user: user, restaurant: restaurant });
         }
@@ -150,6 +150,7 @@ router.post("/generateSmartReview/", async (req, res) => {
         try {
             const user = await findUser({ email: req.session.email });
             const restaurant = await restaurantModel.findOne({ _id: req.body.restaurantID });
+            pageId = req.body.restaurantID;
             req.body.restaurantID = restaurant.Name;
             const prompt = `Generate a restaurant review based on given aspect and tone from the information below, 
             and return a review title in 20 words or less and review paragraph with 100 words to 150 words. 
@@ -160,7 +161,7 @@ router.post("/generateSmartReview/", async (req, res) => {
             const generatedReview = JSON.parse(result);
             res.render("writeReview", { user: user, restaurant: restaurant, generatedReview: generatedReview });
         } catch (err) {
-            res.redirect("/SmartReview/" + req.body.restaurantID + "/errorGenerateReview")
+            res.redirect("/SmartReview/" + pageId + "/errorGenerateReview")
         }
     } catch (err) {
         console.log(err)

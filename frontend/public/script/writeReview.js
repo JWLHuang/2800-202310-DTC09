@@ -1,3 +1,4 @@
+// Handle the file upload event
 function handleDrop(event) {
     event.preventDefault();
 
@@ -11,6 +12,7 @@ function handleDrop(event) {
     }
 }
 
+// Pushing the files to an array
 function handleButton(event) {
     event.preventDefault();
 
@@ -24,6 +26,7 @@ function handleButton(event) {
     }
 }
 
+// Display the images on the page
 function handleFileRead(event) {
     var text = document.getElementById('photoUplaodText');
     text.classList.remove('d-none');
@@ -42,10 +45,12 @@ function handleFileRead(event) {
     container.appendChild(img);
 }
 
+// Prevent default drag behaviors
 function handleDragOver(event) {
     event.preventDefault();
 }
 
+// Hand the upload button click
 var uploadButton = document.getElementById('uploadButton');
 uploadButton.addEventListener('click', function () {
     var fileInput = document.createElement('input');
@@ -59,6 +64,7 @@ uploadButton.addEventListener('click', function () {
     fileInput.click();
 });
 
+// Upload reviews to the server
 function uploadReviews() {
     const pendingUploadMap = {
         userID: document.getElementById('userID').value,
@@ -73,7 +79,6 @@ function uploadReviews() {
     formData.append('reviewTitle', pendingUploadMap.reviewTitle);
     formData.append('reviewBody', pendingUploadMap.reviewBody);
 
-    // Assuming fileArray contains the file objects
     fileArray.forEach((file) => {
         formData.append('files', file);
     });
@@ -84,14 +89,14 @@ function uploadReviews() {
     })
         .then(response => response.json())
         .then(data => {
-            // var returnMessage = document.getElementById('returnMessage');
-            // returnMessage.innerHTML = data.message;
-            // returnMessage.classList.remove('d-none');
             var backdrop = document.getElementById('backdrop');
             if (data.status == "error") {
                 var errorMessage = document.getElementById('errorMessage');
                 errorMessage.innerHTML = data.message;
                 errorMessage.classList.remove('d-none');
+                $("#submitButton").removeClass('processing');
+                $("#submitButton").removeClass('mt-5');
+                $("#submitButton").addClass('mt-3');
 
             }
             if (data.status == "success") {
@@ -106,6 +111,14 @@ function uploadReviews() {
             console.error('Error:', error);
         });
 }
+
+// Handle the submission animation
+document.querySelectorAll('#submitButton').forEach(button => {
+    button.addEventListener('click', e => {
+        button.classList.add('processing');
+        e.preventDefault();
+    });
+});
 
 var numberofImages = 0;
 var pendingUploadMap = {};

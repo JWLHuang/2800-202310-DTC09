@@ -56,9 +56,15 @@
                 </div>
                 <% } %>
                     <div class="btn-danger text-center rounded py-1 d-none mt-3" id="errorMessage"></div>
-                    <button class="btn btn-primary w-100 mt-3" type="submit">Generate Review</button>
+                    <!-- <button class="btn btn-primary w-100 mt-3" type="submit">Generate Review</button> -->
+                    <button type="submit" class="button w-100 mt-3" id="submitButton">
+                        <span>Generate Review</span>
+                        <svg viewBox="0 0 15 13">
+                            <polyline points="2 6.5 6 10.5 13 2.5"></polyline>
+                        </svg>
+                    </button>
         </form>
     </div>
     <div class="modal-backdrop fade show d-none" id="backdrop"></div>
-    <script src="/script/uploadPhoto.js"></script>
+    <script src="/script/generateReview.js"></script>
     <%- include('partials/footer.ejs') %>
