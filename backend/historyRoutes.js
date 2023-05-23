@@ -9,10 +9,11 @@ const mongo = require("mongodb");
 
 router.get("/history", async (req, res) => {
     const user = await findUser({ email: req.session.email });
-    const restaurantHistory = await user.history;
+    const history = await user.history;
+    const restaurantHistory = history.reverse();
     let historyList = []
     const restaurantInfo = async () => {
-        for (let i = 0; i < restaurantHistory.length; i++) {
+        for (let i = 0; i < Math.min(restaurantHistory.length, 20); i++) {
             restaurant = await restaurantModel.find({ _id: new mongo.ObjectId(restaurantHistory[i]) })
             historyList = historyList.concat(restaurant)
         }
