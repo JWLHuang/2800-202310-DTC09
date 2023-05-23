@@ -8,11 +8,10 @@ router.get('/contact', async (req, res) => {
     delete req.session.error;
     try {
         const user = await findUser({ email: req.session.email });
-        // console.log(user)
         res.render('contact.ejs', user ? { user: user } : { user: null });
     } catch (err) {
         console.log(err);
-        res.render('contact.ejs', { user: null, errorMsg: "Error loading contact page" });
+        res.render('contact.ejs', { user: null, errorMsg: errorMsg });
     }
 });
 
