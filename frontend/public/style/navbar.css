@@ -5,9 +5,9 @@
 body {
     padding-top: 100px;
     background-color: #f5f2ea !important;
-    font-family: "Baloo 2";
+    /* font-family: "Baloo 2"; */
     font-size: 16px;
-    color: #ffffff;
+    /* color: #ffffff; */
     text-rendering: optimizeLegibility;
     font-weight: initial;
 }
