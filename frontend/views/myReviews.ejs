@@ -1,53 +1,68 @@
 <link rel="stylesheet" href="style/myReviews.css" />
+<link rel="stylesheet" href="/style/restaurantThumbnail.css">
+<link rel="stylesheet" href="/style/restaurantCard.css">
 <%- include('partials/header.ejs') %>
-<%- include("svgIcons") %>
-    <div class="container">
-        <h2 class="text-center">My Reviews</h2>
-        <div class="row">
-            <div class="col-lg-7 mx-auto">
-                <% if (reviews.length !==0) { %>
-                    <!-- Timeline -->
-                <ul class="timeline">
-                    <% reviews.forEach(review=> { %>
-                    <li class="timeline-item rounded ml-3 pt-4 pb-2 px-4 shadow">
-                        <div class="timeline-arrow"></div>
-                        <h2 class="h6 mb-0"><%= review.reviewTitle %></h2>
-                        <span class="small text-gray">
-                            <i class="fa fa-clock-o"></i>
-                            <%=review.TimeStamp.toLocaleDateString(undefined, { year: 'numeric' , month: 'long' , day: 'numeric' , hour: 'numeric' ,
-                                minute: 'numeric' , second: 'numeric' })%>
-                        </span>
-                            <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
-                                review.image01Buffer.toString('base64') : undefined; %>
-                            <% if (typeof imageOneUrl !=='undefined' ) {%>
-                                <div class="carousel-inner mt-3">
-                                    <div class="carousel-item active">
-                                        <div class="w-100 folded partialImage hideImage<%=review._id%>">
-                                            <img src='<%= imageOneUrl %>' class="d-block w-100 rounded" alt="imageOne">
+    <%- include("svgIcons") %>
+
+        <div class="container">
+            <h2 class="text-center mb-4">My Reviews</h2>
+            <% reviews.forEach(review=> { %>
+                <article class="postcard light red">
+                    <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
+                        review.image01Buffer.toString('base64') : undefined; %>
+                        <% if (typeof imageOneUrl !=='undefined' ) {%>
+                            <a class="postcard__img_link">
+                                <img class="postcard__img" src="<%= imageOneUrl %>" alt="">
+                            </a>
+                            <% } else {%>
+                                <a class="postcard__img_link">
+                                    <svg class="postcard__img" width="250" height="250">
+                                        <use xlink:href="#no-image"></use>
+                                    </svg>
+                                </a>
+                                <% } %>
+                                    <div class="postcard__text t-dark">
+                                        <a href="/restaurant/<%=review.restaurantID%>">
+                                        <h2 class="postcard__title red">
+                                            <%= review.reviewTitle %>
+                                        </h2>
+                                        <div class="postcard__subtitle small">
+                                            <%=review.restaurantName%>
                                         </div>
-                                        <div class="showImage" id="hideImage<%=review._id%>"><b>Show Image</b></div>
+                                        </a>
+                                        <div class="postcard__bar"></div>
+                                        <div class="postcard__preview-txt folded" id="<%=review._id%>">
+                                            <%= review.reviewBody %>
+                                        </div>
+                                        <ul class="postcard__tagbox">
+                                            <% if (review.positiveTag) { %>
+                                                <li class="tag__item bg-success text-white">
+                                                    <%=review.positiveTag%>
+                                                </li>
+                                                <% } %>
+                                                    <% if (review.negativeTag) { %>
+                                                        <li class="tag__item bg-danger text-white">
+                                                            <%=review.negativeTag%>
+                                                        </li>
+                                                        <% } %>
+                                        </ul>
+                                        <div class="d-flex flex-row justify-content-end">
+                                            <div class="unfold" tag="<%=review._id%>"
+                                                id="show<%=review._id%>">
+                                                <span class="small">Show More</span>
+                                                <svg class="bi" width="20" height="20">
+                                                    <use xlink:href="#arrow-up-circle"></use>
+                                                </svg>
+                                            </div>
+                                            <div tag="<%=review._id%>" class="fold d-none" id="hide<%=review._id%>">
+                                                <span class="small">Hide</span>
+                                                <svg class="bi" width="20" height="20">
+                                                    <use xlink:href="#arrow-up-circle"></use>
+                                                </svg>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            <% } %>
-                        <p class="text-small mt-2 font-weight-light folded" id="<%=review._id%>"><%= review.reviewBody %><a href="/restaurant/<%=review.restaurantID%>"><button class="btn btn-info btn-sm mt-2 d-block">Visit Restaurant Page</button></a></p>
-                        <div class="d-flex flex-row justify-content-between">
-                            <button class="btn btn-info btn-sm unfold" tag="<%=review._id%>" id="show<%=review._id%>">See More</button>
-                            <div tag="<%=review._id%>" class="fold d-none" id="hide<%=review._id%>">
-                                <span class="small">Hide</span>
-                                <svg class="bi" width="20" height="20">
-                                    <use xlink:href="#arrow-up-circle"></use>
-                                </svg>
-                            </div>
-                        </div>
-                    </li>
-                    <% }) %>
-                </ul>
-                <h6 class="text-center">End of content</h6>
-                <% } else { %>
-                    <h6 class="text-center">You have not written any reviews yet.</h6>
-                <% } %>
-            </div>
-        </div>
-    </div>
-    <script src="script/myReviews.js"></script>
-    <%- include('partials/footer.ejs') %>
+                </article>
+                <% }) %>
+                    <script src="script/myReviews.js"></script>
+                    <%- include('partials/footer.ejs') %>

@@ -86,6 +86,9 @@
                     </select>
                   </div>
                 </div>
+                <% if (typeof embedded !=="undefined" ) { %>
+                  <input type="hidden" name="embedded" value="true">
+                <% } %>
                 <% if (typeof errorMessage !=='undefined' ) { %>
                   <div class="btn-danger text-center rounded py-1">
                     <%= errorMessage %>

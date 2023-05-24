@@ -204,9 +204,15 @@ const getSearchQuery = async (filterData, preferences) => {
 router.get('/planmyday', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
-    const filterParam = req.query.filter; // Get the filter data from the query parameter
-    if (!filterParam) return res.redirect("/filterRestaurants/error"); // If there is no filter data, redirect to the filter page with an error message
     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
+    embeddedTab = filterData.embedded;
+    delete filterData.embedded;
+    if (Object.keys(filterData).length === 0 || filterData === undefined || filterData.location === undefined) {
+        if (embeddedTab === "true") {
+            return res.redirect("/filterRestaurants/embeddedError");
+        }
+        return res.redirect("/filterRestaurants/error");
+    } 
     try {
         const user = await findUser({ email: req.session.email });
 

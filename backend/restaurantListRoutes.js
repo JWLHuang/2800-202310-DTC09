@@ -240,14 +240,14 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         await restaurantInfo()
 
         if (req.params.message === "error") {
-            return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg, menuOpen: true });
-            // return res.redirect("/");
+            return res.render("filterRestaurants.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg});
         }
 
-        // if (req.params.message === "error") {
-        //     return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
-        // }
-        res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
+        if (req.params.message === "embeddedError") {
+            return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg, menuOpen: true});
+        }
+
+        return res.render("filterRestaurants.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
     }
@@ -255,8 +255,14 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
 
 router.post("/filterRestaurantsResults", async (req, res) => {
     let filterData = req.body;
+    embeddedTab = filterData.embedded;
+    delete filterData.embedded;
+    console.log(filterData);
 
-    if (Object.keys(filterData).length === 0 || filterData === undefined) {
+    if (Object.keys(filterData).length === 0 || filterData === undefined || filterData.location === undefined) {
+        if (embeddedTab === "true") {
+            return res.redirect("/filterRestaurants/embeddedError");
+        }
         return res.redirect("/filterRestaurants/error");
     }
 
