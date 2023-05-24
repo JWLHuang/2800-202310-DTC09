@@ -56,13 +56,12 @@ app.use(
 );
 
 app.get("/", async (req, res) => {
-
+  const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: {$not: /^C.*/}}).limit(3);
   // Check if user is logged in
   if (req.session.authenticated) {
     const user = await findUser({ email: req.session.email });
     const history = await user.history;
     const restaurantHistory = history.reverse().slice(0, 3);
-  const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: {$not: /^C.*/}}).limit(3);
     const location = await restaurantModel.distinct("Location");
     const cuisine = await restaurantModel.distinct("Cuisine");
     const price = await restaurantModel.distinct("Price");
@@ -83,7 +82,7 @@ app.get("/", async (req, res) => {
     await restaurantInfo()
     return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award });
   }
-  return res.render("index.ejs", { user: null });
+  return res.render("index.ejs", { user: null, featuredRestaurant: featuredRestaurants });
 });
 
 const signupRoutes = require("./signupRoutes");
