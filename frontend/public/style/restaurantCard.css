@@ -51,9 +51,9 @@ a:hover {
 }
 
 .postcard .postcard__img {
-    max-height: 300px;
+    max-height: 180px;
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
     position: relative;
 }
 
