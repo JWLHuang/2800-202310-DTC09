@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
-const Joi = require("joi");
 const mongo = require("mongodb");
-const bcrypt = require("bcrypt");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
@@ -35,6 +33,7 @@ app.use("/", (req, res, next) => {
   next();
 });
 
+// Setup the MongoStore for storing session data
 var dbStore = MongoStore.create({
   mongoUrl: `${process.env.MONGODB_PROTOCOL}://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DATABASE}`,
   collection: "sessions",
@@ -43,6 +42,7 @@ var dbStore = MongoStore.create({
   },
 });
 
+// Setup the session middleware
 app.use(
   session({
     secret: process.env.NODE_SESSION_SECRET,
@@ -55,6 +55,7 @@ app.use(
   })
 );
 
+// Handle the index route
 app.get("/", async (req, res) => {
   const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: {$not: /^C.*/}}).limit(3);
   // Check if user is logged in
@@ -82,42 +83,53 @@ app.get("/", async (req, res) => {
     await restaurantInfo()
     return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award });
   }
-  return res.render("index.ejs", { user: null, featuredRestaurant: featuredRestaurants });
+  return res.render("index.ejs", { featuredRestaurant: featuredRestaurants });
 });
 
+
+// Dempose the server into seperate files
+
+// Authentication routes
 const signupRoutes = require("./signupRoutes");
 const authorizationRoutes = require("./authorizationRoutes");
-const profileRoutes = require("./profileRoutes");
-const restaurantListRoutes = require("./restaurantListRoutes");
-const resetPasswordRoutes = require('./resetPasswordRoutes');
-const extAuthRoutes = require('./extAuthRoutes');
-const forgotPasswordRoutes = require('./forgotPasswordRoutes');
-const reviewRoutes = require('./reviewRoutes');
-const planMyDayRoutes = require('./planMyDayRoutes');
-const historyRoutes = require('./historyRoutes');
-const mapRoutes = require('./mapRoutes');
-
 
 app.use(signupRoutes);
 app.use(authorizationRoutes);
+
+
+// User routes
+const profileRoutes = require("./profileRoutes");
+const forgotPasswordRoutes = require('./forgotPasswordRoutes');
+const resetPasswordRoutes = require('./resetPasswordRoutes');
+const extAuthRoutes = require('./extAuthRoutes');
+const historyRoutes = require('./historyRoutes');
+
 app.use(profileRoutes);
-app.use(restaurantListRoutes);
+app.use(forgotPasswordRoutes);
 app.use(resetPasswordRoutes);
 app.use(extAuthRoutes);
-app.use(planMyDayRoutes);
-app.use(mapRoutes);
-
-app.use(forgotPasswordRoutes);
-app.use(reviewRoutes);
 app.use(historyRoutes);
 
+// Restaurant routes
+const restaurantListRoutes = require("./restaurantListRoutes");
+const planMyDayRoutes = require('./planMyDayRoutes');
+const reviewRoutes = require('./reviewRoutes');
+const mapRoutes = require('./mapRoutes');
 
-async function handle404(req, res, _) {
-  const user = await findUser({ email: req.session.email });
-  user ? res.locals.user = user : res.locals.user = null;
+
+app.use(restaurantListRoutes);
+app.use(planMyDayRoutes);
+app.use(reviewRoutes);
+app.use(mapRoutes);
+
+
+// Error 404 handling
+async function handle404(_, res, _) {
   res.status(404).render("404.ejs");
 }
 
 app.use(handle404);
 
+
+// Express error handling middleware
 module.exports = app;
