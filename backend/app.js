@@ -81,7 +81,7 @@ app.get("/", async (req, res) => {
       }
     }
     await restaurantInfo()
-    return res.render("index.ejs", { user: user, featuredRestaurants: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award });
+    return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award });
   }
   return res.render("index.ejs", { user: null });
 });
