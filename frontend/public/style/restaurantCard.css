@@ -1,29 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
 
-:root {
-    --main-green: #79dd09;
-    --main-green-rgb-015: rgba(121, 221, 9, 0.1);
-    --main-yellow: #bdbb49;
-    --main-yellow-rgb-015: rgba(189, 187, 73, 0.1);
-    --main-red: #bd150b;
-    --main-red-rgb-015: rgba(189, 21, 11, 0.1);
-    --main-blue: #0076bd;
-    --main-blue-rgb-015: rgba(0, 118, 189, 0.1);
-}
-
-/* This pen */
-body {
-    font-family: "Baloo 2", cursive;
-    font-size: 16px;
-    color: #ffffff;
-    text-rendering: optimizeLegibility;
-    font-weight: initial;
-}
-
-.light {
-    background: #f5f2ea;
-}
-
 a,
 a:hover {
     text-decoration: none;
@@ -196,12 +172,12 @@ a:hover {
         }
 
         &:nth-child(2n+1) .postcard__text::before {
-            left: -12px !important;
+            left: -15px !important;
             transform: rotate(4deg);
         }
 
         &:nth-child(2n+0) .postcard__text::before {
-            right: -12px !important;
+            right: -15px !important;
             transform: rotate(-4deg);
         }
     }
@@ -237,17 +213,17 @@ a:hover {
 
 /* COLORS */
 .postcard .postcard__tagbox .red.play:hover {
-    background: #bd150b;
+    background: #9c202a;
     ;
 }
 
 .red .postcard__title:hover {
-    color: #bd150b;
+    color: #9c202a;
     ;
 }
 
 .red .postcard__bar {
-    background-color: #bd150b;
+    background-color: #9c202a;
     ;
 }
 
