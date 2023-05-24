@@ -226,7 +226,7 @@ router.get('/myReviews', async (req, res) => {
         const reviews = await reviewModel.find({ userID: user._id }, { image03Buffer: 0, image03Type: 0, image02Buffer: 0, image02Type: 0 }).sort({ TimeStamp: -1 });
         for (const review of reviews) {
             const restaurant = await restaurantModel.findOne({ _id: review.restaurantID }, { Name: 1 });
-            review.restaurantID = restaurant.Name;
+            review.restaurantName = restaurant.Name;
         };
         res.render("myReviews", { user: user, reviews: reviews });
     } catch (err) {

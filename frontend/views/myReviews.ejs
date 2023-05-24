@@ -5,7 +5,7 @@
     <%- include("svgIcons") %>
 
         <div class="container">
-            <h2 class="text-center">My Reviews</h2>
+            <h2 class="text-center mb-4">My Reviews</h2>
             <% reviews.forEach(review=> { %>
                 <article class="postcard light red">
                     <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
@@ -14,38 +14,55 @@
                             <a class="postcard__img_link">
                                 <img class="postcard__img" src="<%= imageOneUrl %>" alt="">
                             </a>
-                        <% } else {%>
-                            <a class="postcard__img_link">
-                                <svg class="postcard__img" width="250" height="250">
-                                    <use xlink:href="#no-image"></use>
-                                </svg>
-                            </a>
-                        <% } %>
-                        <div class="postcard__text t-dark">
-                            <h1 class="postcard__title red"><a href="">
-                                    <%= review.reviewTitle %>
-                                </a></h1>
-                            <div class="postcard__subtitle small">
-                                <%=review.restaurantID%>
-                            </div>
-                            <div class="postcard__bar"></div>
-                            <div class="postcard__preview-txt">
-                                <%= review.reviewBody %>
-                            </div>
-                            <ul class="postcard__tagbox">
-                                <% if (review.positiveTag) { %>
-                                <li class="tag__item bg-success text-white">
-                                    <%=review.positiveTag%>
-                                </li>
+                            <% } else {%>
+                                <a class="postcard__img_link">
+                                    <svg class="postcard__img" width="250" height="250">
+                                        <use xlink:href="#no-image"></use>
+                                    </svg>
+                                </a>
                                 <% } %>
-                                <% if (review.negativeTag) { %>
-                                    <li class="tag__item bg-danger text-white">
-                                        <%=review.negativeTag%>
-                                    </li>
-                                    <% } %>
-                            </ul>
-                        </div>
+                                    <div class="postcard__text t-dark">
+                                        <a href="/restaurant/<%=review.restaurantID%>">
+                                        <h2 class="postcard__title red">
+                                            <%= review.reviewTitle %>
+                                        </h2>
+                                        <div class="postcard__subtitle small">
+                                            <%=review.restaurantName%>
+                                        </div>
+                                        </a>
+                                        <div class="postcard__bar"></div>
+                                        <div class="postcard__preview-txt folded" id="<%=review._id%>">
+                                            <%= review.reviewBody %>
+                                        </div>
+                                        <ul class="postcard__tagbox">
+                                            <% if (review.positiveTag) { %>
+                                                <li class="tag__item bg-success text-white">
+                                                    <%=review.positiveTag%>
+                                                </li>
+                                                <% } %>
+                                                    <% if (review.negativeTag) { %>
+                                                        <li class="tag__item bg-danger text-white">
+                                                            <%=review.negativeTag%>
+                                                        </li>
+                                                        <% } %>
+                                        </ul>
+                                        <div class="d-flex flex-row justify-content-end">
+                                            <div class="unfold" tag="<%=review._id%>"
+                                                id="show<%=review._id%>">
+                                                <span class="small">Show More</span>
+                                                <svg class="bi" width="20" height="20">
+                                                    <use xlink:href="#arrow-up-circle"></use>
+                                                </svg>
+                                            </div>
+                                            <div tag="<%=review._id%>" class="fold d-none" id="hide<%=review._id%>">
+                                                <span class="small">Hide</span>
+                                                <svg class="bi" width="20" height="20">
+                                                    <use xlink:href="#arrow-up-circle"></use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
                 </article>
                 <% }) %>
-                <script src="script/myReviews.js"></script>
-                <%- include('partials/footer.ejs') %>
+                    <script src="script/myReviews.js"></script>
+                    <%- include('partials/footer.ejs') %>
