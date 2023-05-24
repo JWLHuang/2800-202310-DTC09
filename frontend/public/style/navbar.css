@@ -86,7 +86,8 @@ body {
 
 .btn-outline-primary:not(.nav-link),
 a:not(.nav-link, .extAuthBtn),
-a.text-primary:not(.nav-link, .extAuthBtn) {
+a.text-primary:not(.nav-link, .extAuthBtn),
+.nav-pills a.text-primary {
     color: #9c202a !important;
     transition: all 0.1s;
 }
