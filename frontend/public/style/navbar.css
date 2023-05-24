@@ -4,10 +4,11 @@
 
 body {
     padding-top: 100px;
+    background-color: #f5f2ea !important;
 }
 
 .offcanvas-header {
-    padding-bottom: .5rem;
+    padding: 1.5rem 1rem;
     border-bottom: 1px solid #e5e5e5;
     background-color: #313344;
     color: white;
@@ -16,12 +17,9 @@ body {
 .offcanvas-body {
     background-color: #f5f2ea;
     color: #313344;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
-
-/* .menu-link .active {
-    color: #a6a5a7 !important;
-} */
-
 
 .menu-link {
     color: #313344 !important;
@@ -29,12 +27,16 @@ body {
     margin-bottom: 15px;
 }
 
-.active-link {
+.menu-link i {
+    padding-left: 10px;
+}
+
+.menu-link .active-link {
     color: #9c202a !important;
 }
 
 .offcanvas-body .nav-link:hover {
-    color: #a6a5a7 !important;
+    background-color: #a6a5a7 !important;
 }
 
 .offcanvas-backdrop.show {
