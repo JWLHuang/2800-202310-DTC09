@@ -4,7 +4,6 @@ const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 const aiFilter = require("./aiFilter");
 const mongo = require("mongodb");
-
 const reviewModel = require("./models/reviewModel");
 const usersModel = require("./models/usersModel");
 
@@ -183,9 +182,11 @@ router.get('/restaurants', async (req, res) => {
     }
 });
 
+// Get individual restaurant page.
 router.get('/restaurant/:id?', async (req, res) => {
     const user = await findUser({ email: req.session.email });
     try {
+        // Get restaurant reviews.
         const restaurant = await restaurantModel.findOne({ _id: req.params.id });
         const reviews = await reviewModel.find({ restaurantID: req.params.id }).sort({ TimeStamp: -1 });
         for (let i = 0; i < reviews.length; i++) {
@@ -193,11 +194,13 @@ router.get('/restaurant/:id?', async (req, res) => {
             reviews[i].userID = author.name;
         }
         if (restaurant && user) {
+            // Get restaurant object, add to users history, and render page.
             await usersModel.updateOne(
                 { email: req.session.email },
                 { $push: { history: restaurant._id } });
             return res.render("restaurant", { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews });
         } else if (restaurant && !user) {
+            // Get restaurant object and render page.
             return res.render("restaurant", { restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews });
         } else {
             req.session.error = "Restaurant not found";
@@ -205,6 +208,7 @@ router.get('/restaurant/:id?', async (req, res) => {
         }
 
     } catch (error) {
+        // If id is invalid, return to filter page and show error.
         console.log(error)
         req.session.error = "Restaurant not found";
         res.redirect("/filterRestaurants")
@@ -240,11 +244,11 @@ router.get("/filterRestaurants/:message?", async (req, res) => {
         await restaurantInfo()
 
         if (req.params.message === "error") {
-            return res.render("filterRestaurants.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg});
+            return res.render("filterRestaurants.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg });
         }
 
         if (req.params.message === "embeddedError") {
-            return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg, menuOpen: true});
+            return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg, menuOpen: true });
         }
 
         return res.render("filterRestaurants.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
@@ -266,6 +270,7 @@ router.post("/filterRestaurantsResults", async (req, res) => {
         return res.redirect("/filterRestaurants/error");
     }
 
+    // Trigger easter egg if "Chris don't select this" is selected.
     if (filterData["Location"] === "Chris" &&
         filterData["Cuisine"] === "Don't" &&
         filterData["Price"] === "Select" &&
