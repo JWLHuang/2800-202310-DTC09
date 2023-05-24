@@ -1,19 +1,23 @@
 <%- include('partials/header') %>
-<div class="container">
-    <div class="row mt-3">
-        <div class="col">
-            <h3>Previously viewed restaurants</h3>
-            <% if (restaurants.length == 0) { %>
-                <p>You have not viewed any restaurants yet.</p>
-            <% } else { %>
-                <div class="container-fluid">
-                    <% for (i=0; i < Math.min(restaurants.length, 15); i++) { %>
-                    <%- include('partials/restaurantCard.ejs', {restaurant: restaurants[i]}) %>
-                    <% } %>
-                </div>
-            <% } %>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col">
+                <!-- <h3>Previously viewed restaurants</h3> -->
+                <% if (restaurants.length==0) { %>
+                    <p>You have not viewed any restaurants yet.</p>
+                    <% } else { %>
+                        <section class="light">
+                            <div class="container-fluid py-2">
+                                <div class="h1 text-center text-dark" id="pageHeaderTitle">Previously viewed restaurants
+                                </div>
+                                <% for (i=0; i < Math.min(restaurants.length, 15); i++) { %>
+                                    <%- include('partials/restaurantCard.ejs', {restaurant: restaurants[i]}) %>
+                                        <% } %>
+                            </div>
+                        </section>
+                        <% } %>
+            </div>
         </div>
     </div>
-</div>
 
-<%- include('partials/footer') %>
+    <%- include('partials/footer') %>

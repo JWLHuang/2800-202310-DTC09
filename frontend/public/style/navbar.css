@@ -5,6 +5,15 @@
 body {
     padding-top: 100px;
     background-color: #f5f2ea !important;
+    font-family: "Baloo 2", cursive;
+    font-size: 16px;
+    color: #ffffff;
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+}
+
+.light {
+    background: #f5f2ea;
 }
 
 .offcanvas-header {
