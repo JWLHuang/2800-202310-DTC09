@@ -85,7 +85,7 @@ body {
 }
 
 .btn-outline-primary:not(.nav-link),
-a:not(.nav-link, .extAuthBtn),
+a:not(.nav-link, .extAuthBtn, .postcard_title, .restaurant-info-button),
 a.text-primary:not(.nav-link, .extAuthBtn) {
     color: #9c202a !important;
     transition: all 0.1s;
@@ -97,7 +97,9 @@ a.btn-primary {
     transition: all 0.1s;
 }
 
-a:hover:not(.nav-link, .extAuthBtn),
+a:hover:not(.nav-link, .extAuthBtn,
+.postcard_title,
+.restaurant-info-button),
 a.text-primary:hover:not(.extAuthBtn) {
     color: #c02230 !important;
     transition: all 0.1s;
@@ -109,7 +111,7 @@ a.text-primary:hover:not(.extAuthBtn) {
     transition: all 0.1s;
 }
 
-a:hover:not(.nav-link, .extAuthBtn),
+a:hover:not(.nav-link, .extAuthBtn, .postcard_title, .restaurant-info-button),
 a.text-primary:hover:not(.nav-link, .extAuthBtn) {
     text-decoration: underline #c02230 !important;
     transition: all 0.1s;

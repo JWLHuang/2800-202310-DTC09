@@ -1,7 +1,7 @@
 const navProfile = [
     { id: 'resetPassword', heading: null },
     { id: 'email', heading: 'Registered Email' },
-    { id: 'about_me', heading: 'About me' },
+    { id: 'about_me', heading: 'About Me' },
 ]
 
 const navPreferences = [

@@ -10,3 +10,11 @@
     background-color: #9c202a;
     color: #ffffff;
 }
+
+
+
+@media screen and (min-width: 769px) {
+    .postcard {
+        max-height: 220px;
+    }
+}

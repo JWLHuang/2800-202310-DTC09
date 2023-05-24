@@ -5,14 +5,14 @@
     <div>
         <% for (const key in diningCriteria) { %>
             <% if (typeof user[diningCriteria[key]] === "undefined") {%>
-                <p class="btn-success btn w-100 mt-3 mb-5">Rank your Dining Criteria to enjoy our service!</p>
+                <p class="text-center w-100 mt-3 mb-5 btn-no-preference">Rank your Dining Criteria to enjoy our service!</p>
                 <% break; %>
                     <% } %>
                         <div class="d-flex justify-content-between mb-2 text-uppercase">
-                            <span class="btn-success btn-sm text-center" style="width: min(45%,150px)">
+                            <span class="btn-success btn-sm text-left" style="width: min(45%,150px)">
                                 <%=diningCriteria[key]%>
                             </span>
-                            <span class="btn-info btn-sm w-20 mx-3">
+                            <span class="btn-info btn-sm w-30 mx-3 text-white px-3">
                                 <%=user[diningCriteria[key]]%>
                             </span>
                         </div>

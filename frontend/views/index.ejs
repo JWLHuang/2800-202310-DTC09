@@ -14,13 +14,13 @@
   <!-- start landing page layout  -->
   <div class="container mb-2" id="welcome">
     <% if (typeof user !=='undefined' ) { %>
-      <h2 class="mb-3">Welcome back, <%= user.name %>
+      <h2 class="mb-3">Welcome back, <span class="text-capitalize"> <%= user.name %></span>
       </h2>
       <!-- Filter Restaurants Accordion -->
       <div class="accordion" id="accordionExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
-            <button id="acc-color" class="accordion-button <%- menuOpen ? 'collapsed':''%> d-block text-center" type="button" data-bs-toggle="collapse"
+            <button id="acc-color" class="text-uppercase accordion-button <%- menuOpen ? 'collapsed':''%> d-block text-center" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               Get Started
             </button>
@@ -86,7 +86,7 @@
   <% if (typeof user !=='undefined' ) { %>
     <% if (restaurantHistory.length> 0) { %>
       <div class="container">
-      <h4 class="mt-5">Previously Viewed Restaurants:</h4>
+      <h4 class="mt-5 mb-3">Previously Viewed Restaurants:</h4>
       <% for (i=0; i < Math.min(3, restaurantHistory.length); i++) { %>
         <!-- Restaurant history card slide -->
         <article class="postcard light red">

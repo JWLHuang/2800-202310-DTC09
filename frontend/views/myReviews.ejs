@@ -22,13 +22,13 @@
                                 </a>
                                 <% } %>
                                     <div class="postcard__text t-dark">
-                                        <a href="/restaurant/<%=review.restaurantID%>">
-                                        <h2 class="postcard__title red">
-                                            <%= review.reviewTitle %>
-                                        </h2>
-                                        <div class="postcard__subtitle small">
-                                            <%=review.restaurantName%>
-                                        </div>
+                                        <a class="postcard_title" href="/restaurant/<%=review.restaurantID%>">
+                                            <h2 class="postcard__title red">
+                                                <%= review.reviewTitle %>
+                                            </h2>
+                                            <div class="postcard__subtitle small">
+                                                <%=review.restaurantName%>
+                                            </div>
                                         </a>
                                         <div class="postcard__bar"></div>
                                         <div class="postcard__preview-txt folded" id="<%=review._id%>">
@@ -47,8 +47,7 @@
                                                         <% } %>
                                         </ul>
                                         <div class="d-flex flex-row justify-content-end">
-                                            <div class="unfold" tag="<%=review._id%>"
-                                                id="show<%=review._id%>">
+                                            <div class="unfold" tag="<%=review._id%>" id="show<%=review._id%>">
                                                 <span class="small">Show More</span>
                                                 <svg class="bi" width="20" height="20">
                                                     <use xlink:href="#arrow-up-circle"></use>
@@ -64,5 +63,6 @@
                                     </div>
                 </article>
                 <% }) %>
-                    <script src="script/myReviews.js"></script>
-                    <%- include('partials/footer.ejs') %>
+        </div>
+        <script src="script/myReviews.js"></script>
+        <%- include('partials/footer.ejs') %>

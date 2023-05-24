@@ -1,0 +1,50 @@
+<% reviews.forEach(review=> { %>
+    <article class="postcard light red">
+        <% imageOneUrl=review.image01Buffer ? "data:" + review.image01Type + ";base64, " +
+            review.image01Buffer.toString('base64') : undefined; %>
+        <% imageTwoUrl=review.image02Buffer ? "data:" + review.image02Type + ";base64, " +
+            review.image02Buffer.toString('base64') : undefined; %>
+        <% imageThreeUrl=review.image03Buffer ? "data:" + review.image03Type + ";base64, " +
+            review.image03Buffer.toString('base64') : undefined; %>
+            <% if (typeof imageOneUrl !=='undefined' ) {%>
+                <a class="postcard__img_link">
+                    <img class="postcard__img d-none" src="<%= imageOneUrl %>" alt="" id="<%= review._id %>_Image01">
+                    <% if (typeof imageTwoUrl !=='undefined' ) {%>
+                    <img class="postcard__img" src="<%= imageTwoUrl %>" alt="" id="<%= review._id %>_Image02">
+                    <% } %>
+                    <% if (typeof imageThreeUrl !=='undefined' ) {%>
+                        <img class="postcard__img d-none" src="<%= imageThreeUrl %>" alt="" id="<%= review._id %>_Image03">
+                    <% } %>
+                    <!-- <button class="carousel-control-next" type="button" data-bs-target="#<%= review._id %>" data-bs-slide="next"></button> -->
+                </a>
+                <% } else {%>
+                    <a class="postcard__img_link">
+                        <svg class="postcard__img" width="250" height="250">
+                            <use xlink:href="#no-image"></use>
+                        </svg>
+                    </a>
+                    <% } %>
+                    <div class="postcard__text t-dark">
+                        <h4 class="postcard__title red"
+                            style="font-size: 1.5rem!important;">
+                            <%= review.reviewTitle %>
+                        </h4>
+                        <div class="postcard__bar"></div>
+                        <ul class="postcard__tagbox my-1 mx-0 justify-content-start">
+                            <% if (review.positiveTag) { %>
+                                <li class="tag__item bg-success text-white">
+                                    <%=review.positiveTag%>
+                                </li>
+                                <% } %>
+                                    <% if (review.negativeTag) { %>
+                                        <li class="tag__item bg-danger text-white">
+                                            <%=review.negativeTag%>
+                                        </li>
+                                        <% } %>
+                        </ul>
+                        <div class="postcard__preview-txt folded" id="<%=review._id%>">
+                            <%= review.reviewBody %>
+                        </div>
+                    </div>
+    </article>
+    <% }) %>
