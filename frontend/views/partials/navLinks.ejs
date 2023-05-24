@@ -1,12 +1,12 @@
 <li class="nav-item">
     <!-- Highlight current active page for user in menu -->
     <% if (link.link===currentURL) { %>
-        <a href="<%= link.link %>" class="nav-link active" aria-current="page">
+        <a href="<%= link.link %>" class="nav-link menu-link active-link" aria-current="page">
             <i class="<%=link.icon%>"></i>
             <%= link.name %>
         </a>
         <% } else { %>
-            <a href="<%= link.link %>" class="nav-link">
+            <a href="<%= link.link %>" class="nav-link menu-link">
                 <i class="<%=link.icon%>"></i>
                 <%= link.name %>
             </a>
