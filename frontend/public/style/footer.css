@@ -1,0 +1,31 @@
+body {
+    padding-bottom: 0 !important;
+}
+
+.desktop-footer {
+    background-color: #ECEFF1;
+}
+
+.section-header {
+    background-color: #313344;
+}
+
+.desktop-footer-links {
+    text-decoration: none;
+    color: #9c202a;
+    transition: all ease-in-out 0.3s;
+}
+
+.desktop-footer-links:hover {
+    color: #313344;
+    transition: all ease-in-out 0.3s;
+    text-decoration: none;
+    font-size: larger;
+    font-weight: bold;
+}
+
+hr {
+    width: 60px;
+    height: 2px;
+    background-color: #9c202a;
+}
