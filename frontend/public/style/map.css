@@ -12,3 +12,7 @@ body {
     height: calc(100vh - 125px);
     /* height: 100%; */
 }
+
+#mapContainer {
+    padding: 0px;
+}

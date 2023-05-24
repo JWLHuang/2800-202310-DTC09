@@ -6,71 +6,73 @@
     </div>
     <% } %>
 
-  <!-- Register Form -->
-  <form action="/signup" method="POST">
-    <!-- username input -->
-    <div class="form-outline mb-2">
-      <label class="form-label font-weight-bold text-secondary diplayLabel" for="username"
-        id="registerUsernameLabel">Username</label>
-      <input type="text" id="registerName" class="form-control" placeholder="Username" name="signupName">
-    </div>
+      <!-- Register Form -->
+      <form action="/signup" method="POST">
+        <!-- username input -->
+        <div class="form-outline mb-2">
+          <label class="form-label font-weight-bold text-secondary diplayLabel" for="username"
+            id="registerUsernameLabel">Username</label>
+          <input type="text" id="registerName" class="form-control" placeholder="Username" name="signupName">
+        </div>
 
-    <!-- Email input -->
-    <div class="form-outline mb-2">
-      <label class="form-label font-weight-bold text-secondary diplayLabel" for="email"
-        id="registerEmailLabel">Email</label>
-      <input type="email" id="registerEmail" class="form-control" placeholder="Email" name="signupEmail">
-    </div>
+        <!-- Email input -->
+        <div class="form-outline mb-2">
+          <label class="form-label font-weight-bold text-secondary diplayLabel" for="email"
+            id="registerEmailLabel">Email</label>
+          <input type="email" id="registerEmail" class="form-control" placeholder="Email" name="signupEmail">
+        </div>
 
 
-    <!-- Password input -->
-    <div class="form-outline mb-4">
-      <label class="form-label font-weight-bold text-secondary diplayLabel" for="password"
-        id="registerpasswordLabel">Password</label>
-      <input type="password" id="registerPassword" class="form-control" placeholder="Password" name="signupPassword">
-    </div>
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <label class="form-label font-weight-bold text-secondary diplayLabel" for="password"
+            id="registerpasswordLabel">Password</label>
+          <input type="password" id="registerPassword" class="form-control" placeholder="Password"
+            name="signupPassword">
+        </div>
 
-    <!-- Security Questions -->
-    <div class="form-outline mb-2">
-      <label class="form-label font-weight-bold text-secondary mx-1" for="question"
-        id="registerSecurityQuestionLabel">Security Question</label>
-      <select class="form-select" aria-label="Default select example" name="securityQuestion"
-        id="registerSecurityQuestion">
-        <option selected disabled>Please select a security question</option>
-        <option value="questionOne">What is your mother's maiden name?</option>
-        <option value="questionTwo">What was the name of your first pet?</option>
-        <option value="questionThree">What is your favourite colour?</option>
-        <option value="questionFour">In which city were you born?</option>
-      </select>
-    </div>
+        <!-- Security Questions -->
+        <div class="form-outline mb-2">
+          <label class="form-label font-weight-bold text-secondary mx-1" for="question"
+            id="registerSecurityQuestionLabel">Security Question</label>
+          <select class="form-select" aria-label="Default select example" name="securityQuestion"
+            id="registerSecurityQuestion">
+            <option selected disabled>Please select a security question</option>
+            <option value="questionOne">What is your mother's maiden name?</option>
+            <option value="questionTwo">What was the name of your first pet?</option>
+            <option value="questionThree">What is your favourite colour?</option>
+            <option value="questionFour">In which city were you born?</option>
+          </select>
+        </div>
 
-    <!-- Security Answer -->
-    <div class="form-outline mb-5">
-      <input type="text" id="registerSecurityAnswer" class="form-control" placeholder="Answer" name="securityAnswer">
-    </div>
+        <!-- Security Answer -->
+        <div class="form-outline mb-5">
+          <input type="text" id="registerSecurityAnswer" class="form-control" placeholder="Answer"
+            name="securityAnswer">
+        </div>
 
-    <!-- Submit button -->
-    <button class="button w-100 mt-3" id="signUpButton" type="submit">
-      <span>Register</span>
-      <svg viewBox="0 0 15 13">
-        <polyline points="2 6.5 6 10.5 13 2.5"></polyline>
-      </svg>
-    </button>
+        <!-- Submit button -->
+        <button class="button w-100 mt-3" id="signUpButton" type="submit">
+          <span>Register</span>
+          <svg viewBox="0 0 15 13">
+            <polyline points="2 6.5 6 10.5 13 2.5"></polyline>
+          </svg>
+        </button>
 
-    <!-- Already a user -->
-    <div class="text-center">
-      <p>Already a user? <a href="/login">Login</a></p>
-    </div>
-  </form>
+        <!-- Already a user -->
+        <div class="text-center">
+          <p>Already a user? <a href="/login">Login</a></p>
+        </div>
+      </form>
 
-  <!-- External Authorization -->
-  <div class="d-flex align-items-center my-4 justify-content-center">
-    <hr class="flex-grow-1" style="opacity: 1;">
-    <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
-    <hr class="flex-grow-1" style="opacity: 1;">
-  </div>
-  <a class="btn btn-primary btn-lg btn-block" style="background-color: #EA4335; border-color:unset!important"
-    href="/auth/google" role="button">
-    <i class="me-2"></i>Sign up with Google
-  </a>
+      <!-- External Authorization -->
+      <div class="d-flex align-items-center my-4 justify-content-center">
+        <hr class="flex-grow-1" style="opacity: 1;">
+        <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+        <hr class="flex-grow-1" style="opacity: 1;">
+      </div>
+      <a class="btn btn-primary btn-lg btn-block extAuthBtn"
+        style="background-color: #EA4335; border-color:unset!important" href="/auth/google" role="button">
+        <i class="me-2"></i>Sign up with Google
+      </a>
 </div>
