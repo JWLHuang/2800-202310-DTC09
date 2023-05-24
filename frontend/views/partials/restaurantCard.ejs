@@ -16,7 +16,6 @@
         </div>
         <div class="postcard__bar"></div>
         <div class="postcard__preview-txt">
-
           <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
             <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
               <% } else { %>
@@ -79,8 +78,11 @@
             </a></h1>
           <div class="postcard__bar"></div>
           <div class="postcard__preview-txt">
-            It seems we were unable to find any restaurants that match your search criteria. We apologize for the
-            inconvenience. <a href="/">Please try again.</a>
+            <p>
+              It seems we were unable to find any restaurants that matched your search criteria. We apologize for the
+              inconvenience.
+            </p>
+            <a id="home__link" href="/">Click here to try again.</a>
           </div>
         </div>
       </article>

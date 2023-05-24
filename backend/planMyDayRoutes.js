@@ -127,6 +127,7 @@ const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
 
                 const response = await getTopThree(choicesList)
                 var restaurantResults = response.data.choices[0].text
+                // var restaurantResults = []
                 // console.log("Attempt 2: " + restaurantResults)
 
                 // var restaurantResults = '{"Breakfast":"645bdf114c5057693bcac787a","Lunch":"645bdf114c5057693bcac78d","Dinner":"645bdf114c5057693bcac78f"}'
