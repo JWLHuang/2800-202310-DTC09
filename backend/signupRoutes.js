@@ -1,61 +1,55 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Joi = require("joi");
 const usersModel = require("./models/usersModel");
-const { findUser } = require("./findUser");
+const signupSchema = require("./schema/signupSchema");
 
-const signupSchema = Joi.object(
-    {
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ca", "co"] } }).required(),
-        name: Joi.string().alphanum().max(20).required(),
-        password: Joi.string().max(20).required(),
-        question: Joi.string().max(20).required(),
-        answer: Joi.string().max(20).required(),
-        type: Joi.boolean(),
-    });
+// Use urlencoded middleware to parse the body of incoming requests
+router.use(express.urlencoded({ extended: false }))
 
+
+// Display signup route
 router.get('/signup', async (req, res) => {
-    const user = await findUser({ email: req.session.email });
-    user ? res.locals.user = user : res.locals.user = null;
-    if (user) {
+    // If the user is already logged in, redirect to home page
+    if (req.session.authenticated) {
         res.redirect("/");
     } else {
-        res.render('signup.ejs');
+        // Otherwise, display the signup page
+        res.render('authentication.ejs', { target: "signup"});
     }
 });
 
-router.use(express.urlencoded({ extended: false }))
+// Handle signup route POST request
 router.post("/signup", async (req, res) => {
+    // Validate the request body against the signup schema
     const validationResult = signupSchema.validate(req.body);
+
+    // If there are validation errors, display them
     if (validationResult.error != null) {
-        const user = await findUser({ email: req.session.email });
-        user ? res.locals.user = user : res.locals.user = null;
-        res.render('signup.ejs', { errorMsg: validationResult.error.details[0].message });
+        errorRegMsg = validationResult.error.details[0].message
+        return res.render('authentication.ejs', { errorRegMsg: errorRegMsg, target: "signup" });
     } else if (await usersModel.findOne({ email: req.body.email, })) {
-        const user = await findUser({ email: req.session.email });
-        user ? res.locals.user = user : res.locals.user = null;
-        res.render('signup.ejs', { errorMsg: "Email already exists" });
+        errorRegMsg = "Email already exists"
+        return res.render('authentication.ejs', { errorRegMsg: errorRegMsg, target: "signup" });
     } else {
-        console.log(req.body.question)
-        console.log(req.body.answer)
+        // Otherwise, create a new user
         newUser = {
-            email: req.body.email,
-            name: req.body.name,
-            password: bcrypt.hashSync(req.body.password, 10),
-            question: req.body.question,
-            answer: bcrypt.hashSync(req.body.answer, 10),
+            email: req.body.signupEmail,
+            name: req.body.signupName,
+            password: bcrypt.hashSync(req.body.signupPassword, 10),
+            question: req.body.securityQuestion,
+            answer: bcrypt.hashSync(req.body.securityAnswer, 10),
             type: "user",
             extAuth: false,
         };
-        await usersModel.create(newUser).then(() => {
-            console.log("User created");
-            req.session.authenticated = true;
-            req.session.email = req.body.email;
-            res.redirect("/");
-        }
-        );
+        await usersModel.create(newUser)
+        console.log("User created");
+        req.session.authenticated = true;
+        req.session.email = req.body.signupEmail;
+        req.session.name = req.body.signupName;
+        return res.redirect("/");
     };
 });
 
+// Export router
 module.exports = router;
