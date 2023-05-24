@@ -104,6 +104,7 @@ const resetPasswordRoutes = require('./resetPasswordRoutes');
 const extAuthRoutes = require('./extAuthRoutes');
 const historyRoutes = require('./historyRoutes');
 const contactRoutes = require('./contactRoutes');
+const aboutRoutes = require('./aboutUsRoutes')
 
 
 app.use(profileRoutes);
@@ -112,6 +113,7 @@ app.use(resetPasswordRoutes);
 app.use(extAuthRoutes);
 app.use(historyRoutes);
 app.use(contactRoutes);
+app.use(aboutRoutes);
 
 // Restaurant routes
 const restaurantListRoutes = require("./restaurantListRoutes");
