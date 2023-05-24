@@ -103,7 +103,6 @@ const forgotPasswordRoutes = require('./forgotPasswordRoutes');
 const resetPasswordRoutes = require('./resetPasswordRoutes');
 const extAuthRoutes = require('./extAuthRoutes');
 const historyRoutes = require('./historyRoutes');
-const mapRoutes = require('./mapRoutes');
 const contactRoutes = require('./contactRoutes');
 
 
@@ -112,6 +111,7 @@ app.use(forgotPasswordRoutes);
 app.use(resetPasswordRoutes);
 app.use(extAuthRoutes);
 app.use(historyRoutes);
+app.use(contactRoutes);
 
 // Restaurant routes
 const restaurantListRoutes = require("./restaurantListRoutes");
@@ -125,7 +125,6 @@ app.use(planMyDayRoutes);
 app.use(reviewRoutes);
 app.use(mapRoutes);
 
-app.use(contactRoutes);
 
 // Error 404 handling
 async function handle404(req, res, _) {
