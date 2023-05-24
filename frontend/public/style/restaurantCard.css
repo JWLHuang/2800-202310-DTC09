@@ -11,13 +11,6 @@ a:hover {
     color: #9c202a;
 }
 
-#pageHeaderTitle {
-    margin: 2rem 0;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 2.5rem;
-}
-
 /* Cards */
 .postcard {
     flex-wrap: wrap;

@@ -5,11 +5,18 @@
 body {
     padding-top: 100px;
     background-color: #f5f2ea !important;
-    font-family: "Baloo 2", cursive;
+    font-family: "Baloo 2";
     font-size: 16px;
     color: #ffffff;
     text-rendering: optimizeLegibility;
     font-weight: initial;
+}
+
+#pageHeaderTitle {
+    margin: 2rem 0;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 2.5rem;
 }
 
 .light {
