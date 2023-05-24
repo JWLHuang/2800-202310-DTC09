@@ -12,6 +12,11 @@
             <%=restaurant._doc.Name%>
           </a></h1>
         <div class="postcard__subtitle small">
+          <%=restaurant._doc.Address%>
+        </div>
+        <div class="postcard__bar"></div>
+        <div class="postcard__preview-txt">
+
           <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
             <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
               <% } else { %>
@@ -19,10 +24,6 @@
                   <%= restaurant._doc.Award %>
                 </p>
                 <% } %>
-        </div>
-        <div class="postcard__bar"></div>
-        <div class="postcard__preview-txt">
-          <%=restaurant._doc.Address%>
         </div>
         <div class="postcard__preview-txt">
           <%=restaurant._doc.Price%>
