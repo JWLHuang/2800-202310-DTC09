@@ -1,0 +1,17 @@
+input#email, input#password {
+    padding-left: 15px!important;
+}
+
+#tab-login, #tab-register {
+    transition: all 0.5s ease-in-out;
+}
+
+#emailLabel, #passwordLabel {
+    opacity: 1;
+    transition: all 0.5s ease-in-out;
+}
+
+.diplayLabel {
+    opacity: 0!important;
+    transition: all 0.5s ease-in-out;
+}

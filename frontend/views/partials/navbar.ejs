@@ -16,7 +16,7 @@
             <!-- Side Menu Header -->
             <div class="offcanvas-header">
                 <!-- Change depending on if user is logged in -->
-                <% if (user) { %>
+                <% if (typeof user !== 'undefined' && user !== null) { %>
                     <a href='/profile'><img src="/images/profile_pics/stockphoto.jpg"
                             class="rounded-circle align-middle" style="width:30px; height: 30px;" /></a>
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
@@ -34,7 +34,7 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <!-- Show different links if user is not logged in -->
-                    <% if (!user) { %>
+                    <% if (typeof user === 'undefined') { %>
                         <% locals.beforeLoginNav.forEach(function(link) { %>
                             <!-- Highlight current active page for user in menu -->
                             <%- include ('navLinks', {link: link, currentURL: currentURL}) %>

@@ -4,16 +4,7 @@ const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const usersModel = require("./models/usersModel");
 const { findUser } = require("./findUser");
-
-const signupSchema = Joi.object(
-    {
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ca", "co"] } }).required(),
-        name: Joi.string().alphanum().max(20).required(),
-        password: Joi.string().max(20).required(),
-        question: Joi.string().max(20).required(),
-        answer: Joi.string().max(20).required(),
-        type: Joi.boolean(),
-    });
+const signupSchema = require("./schema/signupSchema");
 
 router.get('/signup', async (req, res) => {
     const user = await findUser({ email: req.session.email });
