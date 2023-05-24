@@ -12,7 +12,7 @@ const signupSchema = Joi.object(
             'string.max': 'Username must be less than 20 characters',
             'string.empty': 'Please enter a valid username',
         }),
-        signupPassword: Joi.string().max(20).required().messages({
+        signupPassword: Joi.string().min(5).max(20).required().messages({
             'string.alphanum': 'Password must only contain alphanumeric characters',
             'string.empty': 'Please enter a valid password',
             'string.max': 'Password must be less than 20 characters',

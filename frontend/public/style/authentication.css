@@ -21,3 +21,14 @@ input#password {
     opacity: 0 !important;
     transition: all 0.5s ease-in-out;
 }
+
+.extAuthBtn {
+    background-color: #EA4335 !important;
+    border-color: unset !important;
+    color: #FFFFFF !important;
+}
+
+.extAuthBtn:hover {
+    background-color: #f34e3f !important;
+    transition: all 0.1s;
+}

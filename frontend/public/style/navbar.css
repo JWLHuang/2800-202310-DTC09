@@ -67,38 +67,50 @@ body {
     --background: #9c202a;
 }
 
+.button:hover {
+    --background: #c02230;
+}
+
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link,
-.btn-primary,
-.btn-outline-primary:hover,
-.btn-outline-primary:active {
+.btn-primary:not(.nav-link, .extAuthBtn),
+.btn-outline-primary:active:not(.nav-link) {
     background-color: #9c202a !important;
-    transition: all 0.2s;
+    transition: all 0.1s;
 }
 
-.btn {
+.btn:not(.nav-link, .extAuthBtn) {
     border-color: #9c202a !important;
+    transition: all 0.1s;
 }
 
-.btn-outline-primary {
+.btn-outline-primary:not(.nav-link),
+a:not(.nav-link, .extAuthBtn),
+a.text-primary:not(.nav-link, .extAuthBtn) {
     color: #9c202a !important;
+    transition: all 0.1s;
 }
 
-.btn-outline-primary:hover {
+.btn-outline-primary:hover:not(.nav-link),
+a.btn-primary {
     color: #ffffff !important;
-    transition: all 0.2s;
+    transition: all 0.1s;
 }
 
-a,
-a:hover {
-    color: #9c202a;
+a:hover:not(.nav-link, .extAuthBtn),
+a.text-primary:hover:not(.extAuthBtn) {
+    color: #c02230 !important;
+    transition: all 0.1s;
 }
 
-a.text-primary,
-a.text-primary:hover {
-    color: #9c202a !important;
+.btn-primary:hover:not(.nav-link, .extAuthBtn),
+.btn-outline-primary:hover {
+    background-color: #c02230 !important;
+    transition: all 0.1s;
 }
 
-a {
-    text-decoration: none !important;
+a:hover:not(.nav-link, .extAuthBtn),
+a.text-primary:hover:not(.nav-link, .extAuthBtn) {
+    text-decoration: underline #c02230 !important;
+    transition: all 0.1s;
 }
