@@ -11,6 +11,7 @@ body {
 
 .contact-header h1 {
     color: #ffffff;
+    text-transform: uppercase;
 }
 
 .contact-header p {
@@ -32,4 +33,10 @@ body {
     text-align: center;
     margin: 50px 0px;
     color: #313344;
+}
+
+@media screen and (max-width: 769px) {
+    .contact-header {
+        padding: 20px !important;
+    }
 }
