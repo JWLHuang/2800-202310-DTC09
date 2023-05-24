@@ -34,54 +34,73 @@
         </div>
       </div>
       <% } else { %>
-        <h2>Welcome to TableTrek!</h2>
-        <% } %>
-  </div>
-  <div class="container mt-5 mb-3">
-    <h4>Featured Restaurants:</h4>
-  </div>
-  <!-- Featured restaurant carousel -->
-  <div class="container">
-    <div id="carouselExampleCaptions" class="carousel slide restaurantCarousel" data-bs-ride="false">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-        <% for (i=0; i < featuredRestaurant.length; i++) { %>
-          <div class="carousel-item <%- i === 0? 'active': '' %>">
-            <a href="/restaurant/<%= featuredRestaurant[i]._id %>"><img src="<%= featuredRestaurant[i].ImgUrl %>"
-                class="d-block w-100" alt="restaurantImage" id="restaurantImg"></a>
-            <div class="carousel-caption">
-              <h5>
-                <%= featuredRestaurant[i].Name %>
-              </h5>
-              <p>
-                <%= featuredRestaurant[i].Cuisine %>
-              </p>
-              <p>
-                <%= featuredRestaurant[i].Award %>
-              </p>
+        <div class="we-are-block">
+          <div id="restaurant-section">
+            <div class="restaurant-image">
+                <img src="/images/site_resources/restaurant02.jpg" width="951" height="471" alt="Plate Picture">
+            </div>
+            <div class="restaurant-info">
+                <h2 id="pageHeaderTitle">Looking for a restaurant?</h2>
+                <p>Discover exceptional dining experiences with TableTrek! Our extensive database of top-rated
+                    restaurants, curated by
+                    passionate food connoisseurs, allows you to effortlessly navigate through a realm of gastronomic
+                    adventures. Empowering
+                    you with comprehensive information, including expert reviews, menus, reservations, and exclusive
+                    tips, TableTrek unlocks
+                    a world of extraordinary flavors. Join us on this culinary expedition today!</p>
+                <a href="/login">Get Started</a>
             </div>
           </div>
-          <% } %>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-              data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-              data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+        </div>
+        <% } %>
+  </div>
+  <% if (typeof user !=='undefined') { %>
+    <div class="container mt-5 mb-3">
+      <h4>Featured Restaurants:</h4>
+    </div>
+    <!-- Featured restaurant carousel shows when logged in-->
+    <div class="container">
+      <div id="carouselExampleCaptions" class="carousel slide restaurantCarousel" data-bs-ride="false">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <% for (i=0; i < featuredRestaurant.length; i++) { %>
+            <div class="carousel-item <%- i === 0? 'active': '' %>">
+              <a href="/restaurant/<%= featuredRestaurant[i]._id %>"><img src="<%= featuredRestaurant[i].ImgUrl %>"
+                  class="d-block w-100" alt="restaurantImage" id="restaurantImg"></a>
+              <div class="carousel-caption">
+                <h5>
+                  <%= featuredRestaurant[i].Name %>
+                </h5>
+                <p>
+                  <%= featuredRestaurant[i].Cuisine %>
+                </p>
+                <p>
+                  <%= featuredRestaurant[i].Award %>
+                </p>
+              </div>
+            </div>
+            <% } %>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+        </div>
       </div>
     </div>
-  </div>
+    <% } %>
   <!-- Only shows history if user is logged in -->
   <% if (typeof user !=='undefined' ) { %>
     <% if (restaurantHistory.length> 0) { %>
