@@ -6,27 +6,31 @@ const { findUser } = require("./findUser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
+// Define tokens for external authentication library.
 var userProfile;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
+// Initialize passport and session for external authentication.
 router.use(passport.initialize());
 router.use(passport.session());
 
 router.get("/ExtAuthSuccess", async (req, res) => {
     try {
-        const email = userProfile.emails[0].value
-
+        // Check if user exists in database.
+        const email = userProfile.emails[0].value;
         const user = await findUser({ email: email });
-
         if (user && user.extAuth === true) {
+            // If user exists and was created using external authentication, log them in.
             req.session.authenticated = true;
             req.session.email = email
             console.log("User logged in");
             res.redirect("/");
         } else if (user && user.extAuth !== true) {
+            // If user exists, but was created on website and not with external authentication, redirect to login page.
             res.render("login.ejs", { errorMsg: "Your account was not created with external authentication. Please use the login form instead." });
         } else {
+            // If user does not exist, create a new user with external authentication.
             const username = userProfile.displayName
             newUser = {
                 email: email,
@@ -48,6 +52,8 @@ router.get("/ExtAuthSuccess", async (req, res) => {
     }
 });
 
+
+// Get profile details from Google.
 passport.serializeUser(function (user, cb) {
     cb(null, user);
 });
@@ -55,6 +61,7 @@ passport.serializeUser(function (user, cb) {
 passport.deserializeUser(function (obj, cb) {
     cb(null, obj);
 });
+
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
@@ -67,9 +74,11 @@ passport.use(new GoogleStrategy({
     }
 ));
 
+// Redirect to Google login page.
 router.get("/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] }));
 
+// Return to site after Google login, whether successful or not.
 router.get("/auth/google/callback",
     passport.authenticate("google", {
         failureRedirect: "/loginError",

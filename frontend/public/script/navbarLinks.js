@@ -58,11 +58,6 @@ const afterLogin = [
         icon: 'bi bi-clock-history'
     },
     {
-        name: 'Settings',
-        link: '/settings',
-        icon: 'bi bi-gear-fill'
-    },
-    {
         name: 'Contact Us',
         link: '/contact',
         icon: 'bi bi-telephone-fill'
