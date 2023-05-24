@@ -1,0 +1,31 @@
+<form class="contact_form" method="POST">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="firstName" class="form-label">First Name <span class="required-label">(Required)</span></label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+        </div>
+        <div class="col-md-6">
+            <label for="lastName" class="form-label">Last Name <span class="required-label">(Required)</span></label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">Email <span class="required-label">(Required)</span></label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="col-md-6">
+            <label for="subject" class="form-label">Your Subject <span class="required-label">(Required)</span></label>
+            <input type="text" class="form-control" id="subject" name="subject">
+        </div>
+        <div class="col-12">
+            <label for="message" class="form-label">Your Message <span class="required-label">(Required)</span></label>
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
