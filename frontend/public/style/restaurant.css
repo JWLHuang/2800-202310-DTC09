@@ -26,12 +26,12 @@
 
 #restaurantDetails {
     padding: 10px;
-    background-color: #e3f6f5;
+    background-color: rgba(0, 0, 0, 0.1);
     margin: 10px 0px 0px 10px;
 }
 
-#restaurantWebsiteContainer {    
-    background-color: #e3f6f5;
+#restaurantWebsiteContainer {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 #restaurantWebsiteContainer {
@@ -49,7 +49,8 @@
     margin: 0px 0px 10px 0px;
 }
 
-#restaurantDetails div, #restaurantInfo div {
+#restaurantDetails div,
+#restaurantInfo div {
     padding-top: 5px;
     padding-bottom: 5px;
 }
