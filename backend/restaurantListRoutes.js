@@ -259,7 +259,7 @@ router.post("/filterRestaurantsResults", async (req, res) => {
     delete filterData.embedded;
     console.log(filterData);
 
-    if (Object.keys(filterData).length === 0 || filterData === undefined) {
+    if (Object.keys(filterData).length === 0 || filterData === undefined || filterData.location === undefined) {
         if (embeddedTab === "true") {
             return res.redirect("/filterRestaurants/embeddedError");
         }
