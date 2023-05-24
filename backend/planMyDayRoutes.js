@@ -207,7 +207,7 @@ router.get('/planmyday', async (req, res) => {
     const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
     embeddedTab = filterData.embedded;
     delete filterData.embedded;
-    if (Object.keys(filterData).length === 0 || filterData === undefined || filterData.location === undefined) {
+    if (Object.keys(filterData).length === 0 || filterData === undefined || filterData.Location === undefined) {
         if (embeddedTab === "true") {
             return res.redirect("/filterRestaurants/embeddedError");
         }
