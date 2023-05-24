@@ -21,7 +21,7 @@ router.get('/signup', async (req, res) => {
     if (user) {
         res.redirect("/");
     } else {
-        res.render('signup.ejs');
+        res.render('authentication.ejs', { errorMsg: null, target: "signup"});
     }
 });
 
@@ -31,11 +31,11 @@ router.post("/signup", async (req, res) => {
     if (validationResult.error != null) {
         const user = await findUser({ email: req.session.email });
         user ? res.locals.user = user : res.locals.user = null;
-        res.render('signup.ejs', { errorMsg: validationResult.error.details[0].message });
+        res.render('authentication.ejs', { errorMsg: validationResult.error.details[0].message, target: "signup"});
     } else if (await usersModel.findOne({ email: req.body.email, })) {
         const user = await findUser({ email: req.session.email });
         user ? res.locals.user = user : res.locals.user = null;
-        res.render('signup.ejs', { errorMsg: "Email already exists" });
+        res.render('authentication.ejs', { errorMsg: "Email already exists", target: "signup" });
     } else {
         console.log(req.body.question)
         console.log(req.body.answer)

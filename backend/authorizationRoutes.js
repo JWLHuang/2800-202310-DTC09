@@ -14,7 +14,7 @@ router.get("/login", async (req, res) => {
     if (user) {
         res.redirect("/");
     } else {
-        res.render("login.ejs", { errorMsg: errorMsg });
+        res.render("authentication.ejs", { errorMsg: errorMsg, target: "login"});
     }
 });
 
@@ -30,14 +30,14 @@ router.post("/login", async (req, res) => {
     if (validationResult.error != null) {
         const user = await findUser({ email: req.session.email });
         user ? res.locals.user = user : res.locals.user = null;
-        res.render("login.ejs", { errorMsg: validationResult.error.details[0].message });
+        res.render("authentication.ejs", { errorMsg: validationResult.error.details[0].message });
     } else {
         const user = await usersModel.findOne({
             email: req.body.email,
         })
         if (user && user.extAuth === true) {
             user ? res.locals.user = user : res.locals.user = null;
-            res.render("login.ejs", { errorMsg: "Please use external authentication instead." });
+            res.render("authentication.ejs", { errorMsg: "Please use external authentication instead.", target: "login" });
         } else if (user && bcrypt.compareSync(req.body.password, user.password)) {
             req.session.authenticated = true;
             req.session.email = req.body.email;
@@ -45,7 +45,7 @@ router.post("/login", async (req, res) => {
             res.redirect("/");
         } else {
             user ? res.locals.user = user : res.locals.user = null;
-            res.render("login.ejs", { errorMsg: "Invalid email/password combination." });
+            res.render("authentication.ejs", { errorMsg: "Invalid email/password combination.", target: "login" });
         }
     };
 });

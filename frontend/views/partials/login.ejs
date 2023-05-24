@@ -1,0 +1,37 @@
+<div class="tab-pane show <%= target === 'login'? 'active' : null %>" id="loginBox">
+  <form>
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+      <input type="email" id="loginName" class="form-control" placeholder="Username">
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+      <input type="password" id="loginPassword" class="form-control" placeholder="Password">
+    </div>
+
+    <!-- Forget Password -->
+    <div class="row mb-4">
+      <div class="col-md-6 d-flex justify-content-center">
+        <a href="/resetPassword">Forgot password?</a>
+      </div>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+    <!-- Register buttons -->
+    <div class="text-center">
+      <p>Not a member? <a href="/signup">Register</a></p>
+    </div>
+  </form>
+  <div class="d-flex align-items-center my-4 justify-content-center">
+    <hr class="flex-grow-1" style="opacity: 1;">
+    <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+    <hr class="flex-grow-1" style="opacity: 1;">
+  </div>
+  <a class="btn btn-primary btn-lg btn-block" style="background-color: #EA4335; border-color:unset!important" href="/auth/google"
+    role="button">
+
+    <i class="me-2"></i>Continue with Google</a>
+</div>
