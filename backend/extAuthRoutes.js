@@ -25,7 +25,7 @@ router.get("/ExtAuthSuccess", async (req, res) => {
             console.log("User logged in");
             res.redirect("/");
         } else if (user && user.extAuth !== true) {
-            res.render("login.ejs", { user: null, errorMsg: "Your account was not created with external authentication. Please use the login form instead." });
+            res.render("login.ejs", { errorMsg: "Your account was not created with external authentication. Please use the login form instead." });
         } else {
             const username = userProfile.displayName
             newUser = {
@@ -44,7 +44,7 @@ router.get("/ExtAuthSuccess", async (req, res) => {
             });
         }
     } catch {
-        return res.render("login.ejs", { user: null, errorMsg: "Authentication error. Please try again." });
+        return res.render("login.ejs", { errorMsg: "Authentication error. Please try again." });
     }
 });
 
