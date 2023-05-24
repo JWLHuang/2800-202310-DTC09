@@ -1,109 +1,76 @@
 <div class="tab-pane show <%= target === 'signup' ? 'active' : null %>" id="registerBox">
-  <form>
+  <!-- Error Message -->
+  <% if (locals.errorRegMsg) { %>
+    <div class="alert alert-danger text-center mb-0" role="alert">
+      <%= errorRegMsg %>
+    </div>
+    <% } %>
+
+  <!-- Register Form -->
+  <form action="/signup" method="POST">
     <!-- username input -->
-    <div class="form-outline mb-4">
-      <input type="text" id="registerName" class="form-control" placeholder="Username">
+    <div class="form-outline mb-2">
+      <label class="form-label font-weight-bold text-secondary diplayLabel" for="username"
+        id="registerUsernameLabel">Username</label>
+      <input type="text" id="registerName" class="form-control" placeholder="Username" name="signupName">
     </div>
 
     <!-- Email input -->
-    <div class="form-outline mb-4">
-      <input type="email" id="registerEmail" class="form-control" placeholder="Email">
+    <div class="form-outline mb-2">
+      <label class="form-label font-weight-bold text-secondary diplayLabel" for="email"
+        id="registerEmailLabel">Email</label>
+      <input type="email" id="registerEmail" class="form-control" placeholder="Email" name="signupEmail">
     </div>
+
 
     <!-- Password input -->
     <div class="form-outline mb-4">
-      <input type="password" id="registerPassword" class="form-control" placeholder="Password">
+      <label class="form-label font-weight-bold text-secondary diplayLabel" for="password"
+        id="registerpasswordLabel">Password</label>
+      <input type="password" id="registerPassword" class="form-control" placeholder="Password" name="signupPassword">
     </div>
 
-    <!-- Repeat Password input -->
-    <div class="form-outline mb-4">
-      <input type="password" id="registerRepeatPassword" class="form-control" placeholder="Repeat password">
+    <!-- Security Questions -->
+    <div class="form-outline mb-2">
+      <label class="form-label font-weight-bold text-secondary mx-1" for="question"
+        id="registerSecurityQuestionLabel">Security Question</label>
+      <select class="form-select" aria-label="Default select example" name="securityQuestion"
+        id="registerSecurityQuestion">
+        <option selected disabled>Please select a security question</option>
+        <option value="questionOne">What is your mother's maiden name?</option>
+        <option value="questionTwo">What was the name of your first pet?</option>
+        <option value="questionThree">What is your favourite colour?</option>
+        <option value="questionFour">In which city were you born?</option>
+      </select>
+    </div>
+
+    <!-- Security Answer -->
+    <div class="form-outline mb-5">
+      <input type="text" id="registerSecurityAnswer" class="form-control" placeholder="Answer" name="securityAnswer">
     </div>
 
     <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block mb-3">Register</button>
-    
+    <button class="button w-100 mt-3" id="signUpButton" type="submit">
+      <span>Register</span>
+      <svg viewBox="0 0 15 13">
+        <polyline points="2 6.5 6 10.5 13 2.5"></polyline>
+      </svg>
+    </button>
+
     <!-- Already a user -->
     <div class="text-center">
       <p>Already a user? <a href="/login">Login</a></p>
     </div>
   </form>
+
+  <!-- External Authorization -->
   <div class="d-flex align-items-center my-4 justify-content-center">
     <hr class="flex-grow-1" style="opacity: 1;">
     <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
     <hr class="flex-grow-1" style="opacity: 1;">
   </div>
-  <a class="btn btn-primary btn-lg btn-block" style="background-color: #EA4335; border-color:unset!important" href="/auth/google"
-    role="button">
-    <i class="me-2"></i>Sign up with Google</a>
-
-
-</div>
-</div>
-</div>
-<div class="container d-none">
-  <% if (locals.errorMsg) { %>
-    <div class="alert alert-danger mb-5 mt-0" role="alert">
-      <%= errorMsg %>
-    </div>
-    <% } %>
-      <div class="row">
-        <div class="col text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24">
-            <path
-              d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 22c-3.123 0-5.914-1.441-7.749-3.69.259-.588.783-.995 1.867-1.246 2.244-.518 4.459-.981 3.393-2.945-3.155-5.82-.899-9.119 2.489-9.119 3.322 0 5.634 3.177 2.489 9.119-1.035 1.952 1.1 2.416 3.393 2.945 1.082.25 1.61.655 1.871 1.241-1.836 2.253-4.628 3.695-7.753 3.695z" />
-          </svg>
-        </div>
-      </div>
-      <div class="row mt-4 mb-4">
-        <div id="title" class="col text-center">
-          <h1>Log in</h1>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col">
-          <form action="/login" method="post">
-            <div class="row mt-3">
-              <div class="col">
-                <div class="form-floating mb-3">
-                  <input type="email" name="email" class="form-control rounded-pill" id="email"
-                    placeholder="name@example.com" />
-                  <label for="email">Email</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <div class="form-floating mb-3">
-                  <input type="password" name="password" class="form-control rounded-pill" id="password"
-                    placeholder="password" />
-                  <label for="password">Password</label>
-                </div>
-              </div>
-            </div>
-            <a href="/forgotPassword" style="text-decoration: none">Forgot password?</a>
-            <!-- <div class="row text-right me-1">
-          <div class="col" id="passwordReset"><a href="/resetPassword">Forgot password?</a></div>
-        </div> -->
-            <div class="row text-center mt-3">
-              <div class="col"><button class="btn btn-primary rounded-pill" id="submit" type="submit">Login</button>
-              </div>
-            </div>
-          </form>
-          <div class="row">
-            <div class="col">
-              <div class="row text-center mt-5 border-top">
-                <div class="col mt-5">
-                  <div id="extAuthMsg" class="mb-4">
-                    <p><strong>OR</strong></p>
-                  </div>
-                  <div id="extAuth"><a href="/auth/google"><button class="btn rounded-pill" id="extAuthBtn">Sign up
-                        with Google</button></a></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <a class="btn btn-primary btn-lg btn-block" style="background-color: #EA4335; border-color:unset!important"
+    href="/auth/google" role="button">
+    <i class="me-2"></i>Sign up with Google
+  </a>
 </div>

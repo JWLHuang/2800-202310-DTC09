@@ -59,10 +59,50 @@ const setup = () => {
         $('#password').attr('placeholder', 'Password');
     })
 
+    // Handle the registration of email and password 
+    $("body").on("focus", "#registerName", function () {
+        $("#registerUsernameLabel").removeClass("diplayLabel");
+        $('#registerName').removeAttr('placeholder');
+    })
+
+    $("body").on("blur", "#registerName", function () {
+        $("#registerUsernameLabel").addClass("diplayLabel");
+        $('#registerName').attr('placeholder', 'Username');
+    })
+
+    $("body").on("focus", "#registerEmail", function () {
+        $("#registerEmailLabel").removeClass("diplayLabel");
+        $('#registerEmail').removeAttr('placeholder');
+    })
+
+    $("body").on("blur", "#registerEmail", function () {
+        $("#registerEmailLabel").addClass("diplayLabel");
+        $('#registerEmail').attr('placeholder', 'Email');
+    })
+
+    $("body").on("focus", "#registerPassword", function () {
+        $("#registerpasswordLabel").removeClass("diplayLabel");
+        $('#registerPassword').removeAttr('placeholder');
+    })
+
+    $("body").on("blur", "#registerPassword", function () {
+        $("#registerpasswordLabel").addClass("diplayLabel");
+        $('#registerPassword').attr('placeholder', 'Password');
+    })
+
     // Handle the submission animation
     document.querySelectorAll('#signInButton').forEach(button => {
         button.addEventListener('click', e => {
             if (validateEmail(document.getElementById("email").value)) {
+                button.classList.add('processing');
+            }
+        });
+    });
+
+    // Handle the submission animation
+    document.querySelectorAll('#signUpButton').forEach(button => {
+        button.addEventListener('click', e => {
+            if (validateEmail(document.getElementById("registerEmail").value)) {
                 button.classList.add('processing');
             }
         });
