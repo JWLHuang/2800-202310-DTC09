@@ -31,7 +31,7 @@ body {
     padding-left: 10px;
 }
 
-.menu-link .active-link {
+.active-link {
     color: #9c202a !important;
 }
 
