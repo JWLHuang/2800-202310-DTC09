@@ -57,7 +57,7 @@ app.use(
 
 // Handle the index route
 app.get("/", async (req, res) => {
-  const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: {$not: /^C.*/}}).limit(3);
+  const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: { $not: /^C.*/ } }).limit(3);
   // Check if user is logged in
   if (req.session.authenticated) {
     const user = await findUser({ email: req.session.email });
@@ -71,7 +71,7 @@ app.get("/", async (req, res) => {
     cuisine.push("Don't")
     price.push("Select")
     award.push("This")
-    
+
 
     let historyList = []
     const restaurantInfo = async () => {
@@ -124,8 +124,12 @@ app.use(mapRoutes);
 
 
 // Error 404 handling
-async function handle404(_, res, _) {
-  res.status(404).render("404.ejs");
+async function handle404(req, res, _) {
+  if (req.session.authenticated) {
+    res.status(404).render("404.ejs", { user: req.session });
+  } else {
+    res.status(404).render("404.ejs");
+  }
 }
 
 app.use(handle404);
