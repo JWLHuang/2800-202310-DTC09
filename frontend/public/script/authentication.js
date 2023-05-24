@@ -16,6 +16,7 @@ function displayLoginTab() {
     $("#tab-login").addClass("text-white");
     $("#loginBox").addClass("active");
     $("#registerBox").removeClass("active");
+    history.pushState({}, "", "/login");
 }
 
 // Display the register tab
@@ -28,6 +29,7 @@ function displayRegisterTab() {
     $("#tab-register").addClass("text-white");
     $("#loginBox").removeClass("active");
     $("#registerBox").addClass("active");
+    history.pushState({}, "", "/signup");
 }
 
 // Setup the event handlers
