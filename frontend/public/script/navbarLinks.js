@@ -63,15 +63,20 @@ const afterLogin = [
         icon: 'bi bi-gear-fill'
     },
     {
+        name: 'Contact Us',
+        link: '/contact',
+        icon: 'bi bi-telephone-fill'
+    },
+    {
+        name: 'About Us',
+        link: '/about',
+        icon: 'bi bi-info-circle-fill'
+    },
+    {
         name: 'Sign Out',
         link: '/logout',
         icon: 'bi bi-box-arrow-left'
     },
-    {
-        name: 'Contact Us',
-        link: '/contact',
-        icon: 'bi bi-telephone-fill'
-    }
 
 
 ]
