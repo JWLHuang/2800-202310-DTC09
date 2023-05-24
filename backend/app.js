@@ -57,6 +57,8 @@ app.use(
 
 // Handle the index route
 app.get("/", async (req, res) => {
+  const errorMsg = req.session.error ? req.session.error : null;
+  delete req.session.error;
   const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: { $not: /^C.*/ } }).limit(3);
   // Check if user is logged in
   if (req.session.authenticated) {
@@ -81,7 +83,8 @@ app.get("/", async (req, res) => {
       }
     }
     await restaurantInfo()
-    return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award });
+
+    return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award , menuOpen: false});
   }
   return res.render("index.ejs", { featuredRestaurant: featuredRestaurants });
 });

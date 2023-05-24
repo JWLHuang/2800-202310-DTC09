@@ -3,6 +3,7 @@ const router = express.Router();
 const restaurantModel = require("./models/restaurantModel");
 const { findUser } = require("./findUser");
 const aiFilter = require("./aiFilter");
+const mongo = require("mongodb");
 
 const reviewModel = require("./models/reviewModel");
 const usersModel = require("./models/usersModel");
@@ -213,29 +214,40 @@ router.get('/restaurant/:id?', async (req, res) => {
 router.get("/filterRestaurants/:message?", async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
+    const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: { $not: /^C.*/ } }).limit(3);
     try {
         if (!req.session.authenticated) {
             return res.redirect('/login');
         }
         const user = await findUser({ email: req.session.email });
+        const history = await user.history;
+        const restaurantHistory = history.reverse().slice(0, 3);
         const cuisine = await restaurantModel.distinct("Cuisine");
         const price = await restaurantModel.distinct("Price");
         const award = await restaurantModel.distinct("Award");
         const location = await restaurantModel.distinct("Location");
-
         location.push("Chris")
         cuisine.push("Don't")
         price.push("Select")
         award.push("This")
+        let historyList = []
+        const restaurantInfo = async () => {
+            for (let i = 0; i < restaurantHistory.length; i++) {
+                restaurant = await restaurantModel.find({ _id: new mongo.ObjectId(restaurantHistory[i]) })
+                historyList = historyList.concat(restaurant)
+            }
+        }
+        await restaurantInfo()
 
         if (req.params.message === "error") {
-            return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg });
+            return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "Location filter must be selected", errorMsg: errorMsg, menuOpen: true });
+            // return res.redirect("/");
         }
 
         // if (req.params.message === "error") {
         //     return res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMessage: "At least one filter must be selected", errorMsg: errorMsg });
         // }
-        res.render("filterRestaurants.ejs", { user: user, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
+        res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, cuisine: cuisine, price: price, award: award, location: location, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
     }

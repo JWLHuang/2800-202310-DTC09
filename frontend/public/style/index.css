@@ -5,3 +5,8 @@
     border-radius: 20px;
     object-position: center;
 }
+
+#acc-color {
+    background-color: #9c202a;
+    color: #ffffff;
+}

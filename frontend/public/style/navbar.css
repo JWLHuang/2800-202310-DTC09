@@ -62,3 +62,43 @@ body {
 .fade.show {
     opacity: .5;
 }
+
+.button {
+    --background: #9c202a;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link,
+.btn-primary,
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+    background-color: #9c202a !important;
+    transition: all 0.2s;
+}
+
+.btn {
+    border-color: #9c202a !important;
+}
+
+.btn-outline-primary {
+    color: #9c202a !important;
+}
+
+.btn-outline-primary:hover {
+    color: #ffffff !important;
+    transition: all 0.2s;
+}
+
+a,
+a:hover {
+    color: #9c202a;
+}
+
+a.text-primary,
+a.text-primary:hover {
+    color: #9c202a !important;
+}
+
+a {
+    text-decoration: none !important;
+}
