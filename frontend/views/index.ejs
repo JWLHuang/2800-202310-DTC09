@@ -7,6 +7,8 @@
     <!-- import bootstrap 5.0.0-alpha1 javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/style/index.css">
+    <link rel="stylesheet" href="/style/restaurantThumbnail.css">
+    <link rel="stylesheet" href="/style/restaurantCard.css">
 
   </main>
   <!-- start landing page layout  -->
@@ -18,7 +20,7 @@
       <div class="accordion" id="accordionExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button <%- menuOpen ? 'collapsed':''%>" type="button" data-bs-toggle="collapse"
+            <button id="acc-color" class="accordion-button <%- menuOpen ? 'collapsed':''%> d-block text-center" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               Get Started
             </button>
@@ -83,37 +85,23 @@
   <!-- Only shows history if user is logged in -->
   <% if (typeof user !=='undefined' ) { %>
     <% if (restaurantHistory.length> 0) { %>
-      <!-- Restaurant history card slide -->
       <div class="container">
-        <h4 class="mt-5">Previously Viewed Restaurants:</h4>
-        <% for (i=0; i < Math.min(3, restaurantHistory.length); i++) { %>
-          <a href="/restaurant/<%= restaurantHistory[i]._doc._id %>">
-            <div class="row justify-content-center px-2 restaurantCarousel">
-              <div class="card mb-3 px-md-0">
-                <div class="row g-0">
-                  <div class="col-md-2 p-0">
-                    <img src="<%= restaurantHistory[i]._doc.ImgUrl %>"
-                      class="img-fluid rounded-start restaurant-thumbnail" alt="<%= restaurantHistory[i]._doc.Name%>">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">
-                        <%= restaurantHistory[i]._doc.Name %>
-                      </h5>
-                      <p class="card-text">
-                        <%= restaurantHistory[i]._doc.Address %>
-                      </p>
-                      <p class="card-text">
-                        <%= restaurantHistory[i]._doc.Cuisine %>, <strong>
-                            <%= restaurantHistory[i]._doc.DietaryRestrictions.toUpperCase() %>
-                          </strong>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <h4 class="mt-5">Previously Viewed Restaurants:</h4>
+      <% for (i=0; i < Math.min(3, restaurantHistory.length); i++) { %>
+        <!-- Restaurant history card slide -->
+        <article class="postcard light red">
+          <a class="postcard__img_link" href="restaurant/<%=restaurantHistory[i]._doc._id%>">
+            <img class="postcard__img" src="<%=restaurantHistory[i]._doc.ImgUrl%>" alt="<%=restaurantHistory[i]._doc.Name%>" />
           </a>
+          <div class="postcard__text t-dark">
+            <h1 class="postcard__title red"><a href="restaurant/<%=restaurantHistory[i]._doc._id%>">
+                <%=restaurantHistory[i]._doc.Name%>
+              </a></h1>
+            <div class="postcard__subtitle small">
+              <%=restaurantHistory[i]._doc.Address%>
+            </div>
+            <div class="postcard__bar"></div>
+        </article>
           <% } %>
       </div>
       <% } %>
