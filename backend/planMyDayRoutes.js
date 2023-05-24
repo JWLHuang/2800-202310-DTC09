@@ -92,48 +92,36 @@ const calculateRestaurantRating = (reviews) => {
 };
 
 const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
-    // console.log(req)
     try {
         var restaurants = await restaurantModel.find(searchQuery);
         var restaurantsList = [];
         var dayToday = new Date().getDay();
         var results = {};
 
-        // console.log(restaurants)
-
+        // Get the ratings for each restaurant.
         restaurants = await getRestaurantRatings(user, restaurants);
-        // console.log(restaurants)
-
 
         restaurants.forEach((restaurant) => {
             restaurantsList.push(`${restaurant._doc["_id"]} - ${restaurant._doc["Location"]} - ${restaurant._doc["Name"]} at open ${JSON.parse(restaurant._doc["OpenHours"])[String(dayToday)]})`)
         })
-        choicesList = restaurantsList.sort(() => Math.random() - Math.random()).slice(0, 10)
 
+        // Get top 10 to pass to OpenAI.
+        choicesList = restaurantsList.slice(0, 10)
 
         try {
-            // console.log(choicesList)
-
+            // Pass restaurant information to OpenAI and parse response.
             const response = await getTopThree(choicesList)
             var restaurantResults = response.data.choices[0].text
-            // console.log("Attempt 1: " + restaurantResults)
-
-            // var restaurantResults = '{"Breakfast":"645bdf114c5057693bcac787a","Lunch":"645bdf114c5057693bcac78d","Dinner":"645bdf114c5057693bcac78f"}'
             restaurantResults = JSON.parse(restaurantResults)
         } catch (err) {
             try {
+                // Try again if OpenAI fails to return an apporpriate response.
                 console.log(`Attempt 1: ${err}`)
-                // console.log(choicesList)
-
                 const response = await getTopThree(choicesList)
                 var restaurantResults = response.data.choices[0].text
-                // var restaurantResults = []
-                // console.log("Attempt 2: " + restaurantResults)
-
-                // var restaurantResults = '{"Breakfast":"645bdf114c5057693bcac787a","Lunch":"645bdf114c5057693bcac78d","Dinner":"645bdf114c5057693bcac78f"}'
                 restaurantResults = JSON.parse(restaurantResults)
-
             } catch {
+                // Display error message if OpenAI fails to return an appropriate response twice.
                 console.log(`Attempt 2: ${err}`)
                 req.session.error = "Error. Please try again.";
                 res.redirect("/filterRestaurants")
@@ -141,26 +129,22 @@ const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
             }
         }
 
+        // Build list of restaurants to display.
         for (var meal in restaurantResults) {
             const searchResults = restaurants.filter((restaurant) => String(restaurant._doc["_id"]) === restaurantResults[meal])[0]
-            // console.log(searchResults)
-
-            const genericRestaurant = { _doc: { _id: "646562b76644f1aa93bc2ba2" } }
-
-            const selectedRestaurant = searchResults ? searchResults : genericRestaurant
-
+            const selectedRestaurant = searchResults ? searchResults : { _doc: { _id: "646562b76644f1aa93bc2ba2" } }
             results[meal] = selectedRestaurant
         }
-
-        // console.log(results)
-
+        // Render page with restaurants
         res.render("planMyDay", results ? { user: user, results: results, errorMsg: errorMsg } : { user: user, restaurants: null, errorMsg: errorMsg });
     } catch (err) {
         console.log(err);
     }
 }
 
+// Build query for MongoDB based on user preferences.
 const getSearchQuery = async (filterData, preferences) => {
+    // If no preferences, just filter by user input.
     if (preferences.length === 0) {
         const query = {
             $and: Object.keys(filterData).map((field) => {
@@ -176,6 +160,7 @@ const getSearchQuery = async (filterData, preferences) => {
         }
         return query;
     } else {
+        // If preferences, filter by user input and preferences.
         const query = {
             $and: [
                 {
@@ -202,27 +187,28 @@ const getSearchQuery = async (filterData, preferences) => {
 }
 
 router.get('/planmyday', async (req, res) => {
+    // Get error message from session if it exists.
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
-    const filterData = JSON.parse(decodeURIComponent(req.query.filter)); // Decode and parse the filter data from the query parameter
+    // Decode and parse the filter data from the query parameter
+    const filterData = JSON.parse(decodeURIComponent(req.query.filter));
     embeddedTab = filterData.embedded;
     delete filterData.embedded;
+    // If no filter data, redirect to error page.
     if (Object.keys(filterData).length === 0 || filterData === undefined || filterData.Location === undefined) {
         if (embeddedTab === "true") {
             return res.redirect("/filterRestaurants/embeddedError");
         }
         return res.redirect("/filterRestaurants/error");
-    } 
+    }
     try {
+        // If user exists, get search query and feed to OpenAI API.
         const user = await findUser({ email: req.session.email });
-
         if (!user) {
             return res.redirect("/login")
 
         } else {
             const searchQuery = await getSearchQuery(filterData, user.dietary_preferences);
-            // console.log(searchQuery)
-
             planMyDay(user, searchQuery, req, res, errorMsg);
         }
     } catch (err) {
@@ -230,13 +216,12 @@ router.get('/planmyday', async (req, res) => {
     }
 });
 
+// Capture user's input for Plan My Day.
 router.post("/planmyday", async (req, res) => {
     let filterData = req.body;
-
     if (Object.keys(filterData).length === 0 || filterData === undefined) {
         return res.redirect("/filterRestaurants/error");
     }
-
     res.redirect(`/planmyday?filter=${encodeURIComponent(JSON.stringify(filterData))}`);
 })
 
