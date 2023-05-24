@@ -152,8 +152,6 @@ const getSearchQuery = async (filterData, preferences) => {
 }
 
 router.get("/snake", async (req, res) => {
-    const user = await findUser({ email: req.session.email });
-    user ? res.locals.user = user : res.locals.user = null;
     res.render("snake");
 });
 
@@ -193,14 +191,16 @@ router.get('/restaurant/:id?', async (req, res) => {
             const author = await findUser({ _id: reviews[i].userID }, { name: 1 });
             reviews[i].userID = author.name;
         }
-        if (restaurant) {
+        if (restaurant && user) {
             await usersModel.updateOne(
                 { email: req.session.email },
                 { $push: { history: restaurant._id } });
-            res.render("restaurant", restaurant ? { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews } : { user: user, restaurant: null });
+            return res.render("restaurant", { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews });
+        } else if (restaurant && !user) {
+            return res.render("restaurant", { restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews });
         } else {
             req.session.error = "Restaurant not found";
-            res.redirect("/filterRestaurants")
+            return res.redirect("/filterRestaurants")
         }
 
     } catch (error) {

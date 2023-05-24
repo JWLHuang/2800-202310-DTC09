@@ -72,6 +72,7 @@ router.get("/loginError", async (req, res) => {
 // Logout route - destroy session
 router.get("/logout", authenticatedOnly, (req, res) => {
     req.session.destroy();
+    console.log("User logged out");
     res.redirect("/");
 });
 
