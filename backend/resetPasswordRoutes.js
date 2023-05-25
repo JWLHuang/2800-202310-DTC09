@@ -1,50 +1,51 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const saltRounds = 12;
-const resetPasswordSchema = require("./schema/resetPasswordSchema");
-
 const router = express.Router();
 
-const { database } = require("./database");
+// Import schema and helper functions
+const resetPasswordSchema = require("./schema/resetPasswordSchema");
+const { database } = require("./helperFunctions/database");
+
+// Import the MongoDB client
 const mongodb_database = process.env.MONGODB_DATABASE;
 const userCollection = database.db(mongodb_database).collection("users");
 
+// Display the reset password page
 router.get("/resetPassword/:errorMessage?", (req, res) => {
+  // If the user is not logged in, redirect them to the login page
   if (req.params.errorMessage === 'error') {
-    return res.render("resetPassword.ejs", {
-      errorMessage: "Please fill out all fields with valid information.",
-      user: res.locals.user,
-    });
+    errorMessage = "Please fill out all fields with valid information."
+    // If the password is incorrect, display the error message
   } else if (req.params.errorMessage === "incorrectPassworderror") {
-    return res.render("resetPassword.ejs", {
-      errorMessage: "Incorrect password.",
-      user: res.locals.user,
-    });
+    errorMessage = "Incorrect password."
+    // If the passwords do not match, display the error message
   } else if (req.params.errorMessage === "notMatchError") {
-    return res.render("resetPassword.ejs", {
-      errorMessage: "Passwords do not match.",
-      user: res.locals.user,
-    });
+    errorMessage = "Passwords do not match."
+    // If the email does not match with the account, display the error message
   } else if (req.params.errorMessage === "resetError") {
-    return res.render("resetPassword.ejs", {
-      errorMessage: "You are trying to reset the password for a different account.",
-      user: res.locals.user,
-    });
+    errorMessage = "You are trying to reset the password for a different account."
+  } else {
+    // If everything passed, display no error message
+    errorMessage = undefined;
   }
-  res.render("resetPassword.ejs", { user: res.locals.user });
+  // Render the reset password page
+  return res.render("resetPassword.ejs", { user: res.locals.user, errorMessage: errorMessage });
 });
 
+// Handle the reset password form submission
 router.post("/resetPasswordSubmit", async (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
   var newPassword = req.body.newPassword;
   var newPasswordConfirm = req.body.newPasswordConfirm;
 
+  // Find the user in the database
   const result = await userCollection
     .find({ email: email })
     .project({ name: 1, password: 1, _id: 1, user: 1 })
     .toArray();
 
+  // Validate the form data
   const validation = resetPasswordSchema.validate({
     email,
     password,
@@ -69,28 +70,28 @@ router.post("/resetPasswordSubmit", async (req, res) => {
     return res.redirect("/resetPassword/error");
   }
 
+  // Check if the password is correct
   passwordCheck = await bcrypt.compare(password, result[0].password);
   console.log(passwordCheck);
 
   if (validation.error) {
     return res.redirect("/resetPassword/error");
   } else if (!(await bcrypt.compare(password, result[0].password))) {
-    console.log("password checks");
-
+    // If the password is incorrect, display the error message
     return res.redirect("/resetPassword/incorrectPassworderror");
   } else {
     if (newPassword !== newPasswordConfirm) {
+      // If the passwords do not match, display the error message
       return res.redirect("/resetPassword/notMatchError");
     } else {
-      const hashedNewPassword = await bcrypt.hash(
-        req.body.newPassword,
-        saltRounds
-      );
+      // If everything passed, update the password
+      const hashedNewPassword = await bcrypt.hash(req.body.newPassword, 10);
       await userCollection.updateOne(
         { email: email },
         { $set: { password: hashedNewPassword } }
       );
-      res.redirect("/login");
+      // Redirect the user to the login page
+      return res.redirect("/login");
     }
   }
 });
