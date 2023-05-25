@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const restaurantModel = require("./models/restaurantModel");
-const { findUser } = require("./findUser");
 
+// Import model
+const restaurantModel = require("./models/restaurantModel");
+
+// Display the map page
 router.get('/map', async (req, res) => {
     if (req.session.authenticated) {
         // Get list of restaurant objects from database
@@ -10,8 +12,10 @@ router.get('/map', async (req, res) => {
         // Render map with restaurants
         return res.render("map", { user: req.session, restaurants: JSON.stringify(restaurants) });
     } else {
+        // If the user is not logged in, redirect them to the login page
         return res.redirect("/login");
     }
 });
 
+// Export the router
 module.exports = router;
