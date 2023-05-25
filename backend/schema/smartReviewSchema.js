@@ -14,7 +14,7 @@ const smartReviewSchema = Joi.object({
     'food': Joi.string().min(2).max(100).trim().messages(
         {
             'string.min': `Comment on food must be at least 2 characters long`,
-            'string.max': `Comment on food cannot exceed 40 characters`
+            'string.max': `Comment on food cannot exceed 100 characters`
         }),
     'atmosphere': Joi.string().min(2).max(40).trim().messages(
         {

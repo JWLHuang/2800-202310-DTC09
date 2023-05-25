@@ -25,9 +25,10 @@
           <div class="col">
             <div id="restaurantImg">
               <% if (locals.restaurant.ImgUrl) { %>
-                <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>" <% } else { %> Image
-                not available <% } %>
-            </div>
+                <img src="<%= restaurant.ImgUrl %>" class="img-fluid" alt="<%= restaurant.Name %>"> 
+                <% } else { %> 
+                  Image not available 
+              <% } %>
           </div>
           <div class="row mt-3">
             <div class="col" id="restaurantDetails">
