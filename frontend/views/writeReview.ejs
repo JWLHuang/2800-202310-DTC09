@@ -1,6 +1,7 @@
 <%- include('partials/header.ejs') %>
     <link rel="stylesheet" href="/style/writeReview.css">
-    <div class="container">
+    <link rel="stylesheet" href="/style/buttons.css">
+    <div class="container mb-4">
         <div>
             <h1 class="mt-2">Write a review</h1>
         </div>
@@ -16,7 +17,7 @@
                 value="<%= typeof generatedReview !=='undefined' ? generatedReview.reviewTitle : '' %>">
             <div class="d-flex justify-content-between align-items-end mb-2">
                 <span>Review Content</span>
-                <a href="/SmartReview/<%= restaurant._id %>" class="btn-sm btn-success w-12" id="AIGenerate">Smart
+                <a href="/SmartReview/<%= restaurant._id %>" class="btn-sm w-12" id="AIGenerate" style="background-color: #17b48d; color: white!important; text-decoration: none!important;">Smart
                     Review</a>
             </div>
             <div>

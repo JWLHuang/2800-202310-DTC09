@@ -45,12 +45,6 @@
     margin-top: 50px;
 }
 
-@media screen and (max-width: 860px) {
-    .we-are-block {
-        height: 2200px;
-    }
-}
-
 @media screen and (max-width: 500px) {
     .we-are-block {
         height: 500px;
@@ -90,6 +84,11 @@
         width: 100%;
         height: 40%;
     }
+
+    .we-are-block {
+        justify-content: unset;
+        height: unset;
+    }
 }
 
 @media screen and (max-width: 747px) {
@@ -97,7 +96,7 @@
         height: 35%;
     }
 }
-    
+
 
 @media screen and (max-width: 644px) {
     .restaurant-image img {

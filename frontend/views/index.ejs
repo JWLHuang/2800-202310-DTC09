@@ -14,7 +14,7 @@
   <!-- start landing page layout  -->
   <div class="container mb-2" id="welcome">
     <% if (typeof user !=='undefined' ) { %>
-      <h2 class="mb-3">Welcome back, <span class="text-capitalize"> <%= user.name %></span>
+      <h2 class="mb-3">Welcome Back, <span class="text-capitalize"> <%= user.name %></span>
       </h2>
       <!-- Filter Restaurants Accordion -->
       <div class="accordion" id="accordionExample">
@@ -48,7 +48,7 @@
                     you with comprehensive information, including expert reviews, menus, reservations, and exclusive
                     tips, TableTrek unlocks
                     a world of extraordinary flavors. Join us on this culinary expedition today!</p>
-                <a href="/login">Get Started</a>
+                <a href="/login" class="restaurant-info-button">Get Started</a>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@
             <img class="postcard__img" src="<%=restaurantHistory[i]._doc.ImgUrl%>" alt="<%=restaurantHistory[i]._doc.Name%>" />
           </a>
           <div class="postcard__text t-dark">
-            <h1 class="postcard__title red"><a href="restaurant/<%=restaurantHistory[i]._doc._id%>">
+            <h1 class="postcard__title red"><a href="restaurant/<%=restaurantHistory[i]._doc._id%>" class="postcard_title">
                 <%=restaurantHistory[i]._doc.Name%>
               </a></h1>
             <div class="postcard__subtitle small">

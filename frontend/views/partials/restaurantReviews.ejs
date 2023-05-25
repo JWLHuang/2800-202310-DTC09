@@ -8,9 +8,9 @@
             review.image03Buffer.toString('base64') : undefined; %>
             <% if (typeof imageOneUrl !=='undefined' ) {%>
                 <a class="postcard__img_link">
-                    <img class="postcard__img d-none" src="<%= imageOneUrl %>" alt="" id="<%= review._id %>_Image01">
+                    <img class="postcard__img" src="<%= imageOneUrl %>" alt="" id="<%= review._id %>_Image01">
                     <% if (typeof imageTwoUrl !=='undefined' ) {%>
-                    <img class="postcard__img" src="<%= imageTwoUrl %>" alt="" id="<%= review._id %>_Image02">
+                    <img class="postcard__img d-none" src="<%= imageTwoUrl %>" alt="" id="<%= review._id %>_Image02">
                     <% } %>
                     <% if (typeof imageThreeUrl !=='undefined' ) {%>
                         <img class="postcard__img d-none" src="<%= imageThreeUrl %>" alt="" id="<%= review._id %>_Image03">

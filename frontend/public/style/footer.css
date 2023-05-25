@@ -29,3 +29,7 @@ hr {
     height: 2px;
     background-color: #9c202a;
 }
+
+.socialLinks {
+    text-decoration: none!important;
+}

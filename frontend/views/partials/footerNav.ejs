@@ -7,13 +7,13 @@
         <!-- Section: Social media -->
         <section class="d-flex justify-content-end p-4 text-white text-align-center section-header">
             <!-- Left -->
-            <div class="me-5">
+            <div class="me-5 align-self-center">
                 <span>Get connected with us on social networks:</span>
             </div>
             <!-- Right -->
             <div>
                 <% locals.socialLinks.forEach((link)=> { %>
-                    <a href="<%= link.url %>" style="text-decoration: none;">
+                    <a class="socialLinks">
                         <i class="<%=link.name%>"></i>
                     </a>
                     <% }) %>
@@ -46,7 +46,7 @@
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" />
                         <% locals.footerLinks.forEach((link)=> { %>
                             <p>
-                                <a class='desktop-footer-links' href="<%= link.link %>">
+                                <a class='desktop-footer-links restaurant-info-button' href="<%= link.link %>">
                                     <%= link.name %>
                                 </a>
                             </p>

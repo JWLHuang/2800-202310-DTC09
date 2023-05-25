@@ -99,7 +99,7 @@ a.btn-primary {
 }
 
 a:hover:not(.nav-link, .extAuthBtn,
-.postcard_title,
+.postcard_title, .btn,
 .restaurant-info-button),
 a.text-primary:hover:not(.extAuthBtn) {
     color: #c02230 !important;
@@ -112,7 +112,7 @@ a.text-primary:hover:not(.extAuthBtn) {
     transition: all 0.1s;
 }
 
-a:hover:not(.nav-link, .extAuthBtn, .postcard_title, .restaurant-info-button),
+a:hover:not(.nav-link, .extAuthBtn, .postcard_title, .restaurant-info-button, .socialLinks),
 a.text-primary:hover:not(.nav-link, .extAuthBtn) {
     text-decoration: underline #c02230 !important;
     transition: all 0.1s;

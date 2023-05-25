@@ -62,3 +62,12 @@
 #mapFrame {
     width: 100%;
 }
+
+@media screen and (max-width: 769px) {
+    .postcard .postcard__img {
+        max-height: 300px !important;
+        width: 100%;
+        object-fit: contain !important;
+        position: relative;
+    }
+}

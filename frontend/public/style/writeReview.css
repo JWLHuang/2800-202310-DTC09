@@ -7,12 +7,12 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    
+
 }
 
 .button {
     --color: #fff;
-    --background: #007bff;
+    --background: #9c202a !important;
     --height: 35px;
     --width: 100%;
     --icon: #fff;
