@@ -1,15 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { findUser } = require("./findUser");
-const restaurantModel = require("./models/restaurantModel");
+
+// Import multer for image upload
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
+
+// Import models
 const reviewModel = require("./models/reviewModel");
-const Joi = require("joi");
-const reviewAi = require("./ai_reviews");
+const restaurantModel = require("./models/restaurantModel");
+
+// Import helper functions
+const { findUser } = require("./helperFunctions/findUser");
+const reviewAi = require("./helperfunctions/aiReviews");
+
+// Import schemas
 const reviewSchema = require("./schema/reviewSchema");
 const smartReviewSchema = require("./schema/smartReviewSchema");
-
 
 // Express middleware
 router.use(express.json({ limit: '50mb' }));
@@ -75,7 +81,7 @@ router.post("/generateSmartReview/", async (req, res) => {
         if (inputChecking['tone'] === undefined) {
             return res.redirect("/SmartReview/" + req.body.restaurantID + "/missingTone");
         }
-        
+
         // Check if at least one aspect is filled
         delete inputChecking['tone'];
         delete inputChecking['restaurantID'];
@@ -95,7 +101,7 @@ router.post("/generateSmartReview/", async (req, res) => {
         if (error.details[0].type === "string.min" || error.details[0].type === "string.max") {
             return res.redirect("/SmartReview/" + req.body.restaurantID + "/invalidAspect");
         }
-        
+
         // Generate review
         try {
             const user = await findUser({ email: req.session.email });
@@ -216,25 +222,26 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }
 });
 
+// Route for viewing reviews on my reviews page
 router.get('/myReviews', async (req, res) => {
     // Check if user is logged in
     if (!req.session.authenticated) {
         return res.redirect('/login');
     }
     try {
+        // Find user and reviews
         const user = await findUser({ email: req.session.email });
         const reviews = await reviewModel.find({ userID: user._id }, { image03Buffer: 0, image03Type: 0, image02Buffer: 0, image02Type: 0 }).sort({ TimeStamp: -1 });
         for (const review of reviews) {
             const restaurant = await restaurantModel.findOne({ _id: review.restaurantID }, { Name: 1 });
             review.restaurantName = restaurant.Name;
         };
+        // Render page
         res.render("myReviews", { user: user, reviews: reviews });
     } catch (err) {
         console.log(err);
     }
 });
-
-
 
 // Export routes to server.js
 module.exports = router;

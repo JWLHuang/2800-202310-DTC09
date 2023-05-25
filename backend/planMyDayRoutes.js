@@ -1,96 +1,16 @@
 const express = require('express');
 const router = express.Router();
+
+// Import helper functions
+const { findUser } = require("./helperFunctions/findUser");
+const { getTopThree } = require("./helperFunctions/planMyDay");
+const { getRestaurantRatings } = require("./helperFunctions/getRestaurantRatings");
+const { getSearchQuery } = require("./helperFunctions/getSearchQuery");
+
+// Import models
 const restaurantModel = require("./models/restaurantModel");
-const { findUser } = require("./findUser");
-const { getTopThree } = require("./planMyDay");
-const reviewModel = require("./models/reviewModel");
 
-// get the individual rating of the user for a restaurant
-const getIndividualRating = async (weights, ratings) => {
-    const totalWeight = Object.values(weights).reduce((sum, weight) => sum + weight, 0);
-    const normalizedWeights = {};
-
-    for (const field in weights) {
-        normalizedWeights[field] = (weights[field] / totalWeight);
-    }
-    const weightedSum =
-        (normalizedWeights.service * ratings.service) +
-        (normalizedWeights.food * ratings.food) +
-        (normalizedWeights.atmosphere * ratings.atmosphere) +
-        (normalizedWeights.cleanliness * ratings.cleanliness) +
-        (normalizedWeights.price * ratings.price) +
-        (normalizedWeights.accessibility * ratings.accessibility);
-    const individualRating = Math.round(weightedSum * 100) / 100;
-    return individualRating;
-}
-
-// get the rating for each restaurant from reviews and user weights
-const getRestaurantRatings = async (user, restaurants) => {
-    try {
-        const restaurantRatings = [];
-        let restaurantRating = 0;
-        for (let i = 0; i < restaurants.length; i++) {
-            const restaurant = restaurants[i];
-            const reviews = await reviewModel.find({ restaurantID: restaurant._id });
-
-            const averageRating = reviews.length === 0 ? 0 : calculateRestaurantRating(reviews);
-            if (averageRating === 0) {
-                restaurantRatings.push({ ...restaurant, averageRating: 0 });
-                continue;
-            }
-            const userWeights = {
-                service: user.service,
-                food: user.food,
-                atmosphere: user.atmosphere,
-                cleanliness: user.cleanliness,
-                price: user.price,
-                accessibility: user.accessibility,
-            };
-            const individualRating = await getIndividualRating(userWeights, averageRating);
-            const totalAverageSum = Object.values(averageRating).reduce((sum, rating) => sum + rating, 0);
-            restaurantRating = Math.round((totalAverageSum / Object.keys(averageRating).length) * 100) / 100;
-            restaurantRatings.push({ ...restaurant, averageRating: restaurantRating, individualRating: individualRating });
-        }
-        return restaurantRatings;
-    } catch (err) {
-        console.log(err);
-        return [];
-    }
-};
-
-// Get the average rating of a restaurant based on reviews.
-const calculateRestaurantRating = (reviews) => {
-    let ratingSum = {
-        service: 0,
-        food: 0,
-        atmosphere: 0,
-        cleanliness: 0,
-        price: 0,
-        accessibility: 0,
-    };
-
-    for (let i = 0; i < reviews.length; i++) {
-        const review = reviews[i];
-        ratingSum.service += review.service ?? 0;
-        ratingSum.food += review.food ?? 0;
-        ratingSum.atmosphere += review.atmosphere ?? 0;
-        ratingSum.cleanliness += review.cleanliness ?? 0;
-        ratingSum.price += review.price ?? 0;
-        ratingSum.accessibility += review.accessibility ?? 0;
-    }
-
-    const averageRating = {
-        service: ratingSum.service / reviews.length,
-        food: ratingSum.food / reviews.length,
-        atmosphere: ratingSum.atmosphere / reviews.length,
-        cleanliness: ratingSum.cleanliness / reviews.length,
-        price: ratingSum.price / reviews.length,
-        accessibility: ratingSum.accessibility / reviews.length,
-    };
-
-    return averageRating;
-};
-
+// Display the planMyDay page
 const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
     try {
         var restaurants = await restaurantModel.find(searchQuery);
@@ -142,50 +62,7 @@ const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
     }
 }
 
-// Build query for MongoDB based on user preferences.
-const getSearchQuery = async (filterData, preferences) => {
-    // If no preferences, just filter by user input.
-    if (preferences.length === 0) {
-        const query = {
-            $and: Object.keys(filterData).map((field) => {
-                if (field === "Price") {
-                    return {
-                        [field]: filterData.Price,
-                    };
-                }
-                return {
-                    [field]: { $regex: filterData[field], $options: "i" },
-                };
-            }),
-        }
-        return query;
-    } else {
-        // If preferences, filter by user input and preferences.
-        const query = {
-            $and: [
-                {
-                    $or: preferences.map((term) => ({
-                        "DietaryRestrictions": { $regex: term, $options: "i" }
-                    }))
-                },
-                {
-                    $and: Object.keys(filterData).map((field) => {
-                        if (field === "Price") {
-                            return {
-                                [field]: filterData.Price,
-                            };
-                        }
-                        return {
-                            [field]: { $regex: filterData[field], $options: "i" },
-                        };
-                    }),
-                },
-            ],
-        };
-        return query;
-    }
-}
-
+// Display the planMyDay page
 router.get('/planmyday', async (req, res) => {
     // Get error message from session if it exists.
     const errorMsg = req.session.error ? req.session.error : null;
