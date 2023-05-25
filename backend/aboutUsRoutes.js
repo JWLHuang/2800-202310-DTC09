@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+// Use urlencoded middleware to parse the body of incoming requests
 router.use(express.urlencoded({ extended: false }))
+
+// Display about us route
 router.get('/about', async (req, res) => {
-    const message = req.params.message ? req.params.message : null;
-    const errorMsg = req.session.error ? req.session.error : null;
-    delete req.session.error;
-    res.render('about.ejs', { user: req.session });
+    return res.render('about.ejs', { user: req.session.authenticated ? req.session : undefined });
 });
 
+// Export the router
 module.exports = router;

@@ -1,21 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const { findUser } = require("./findUser");
 const profileLinks = require('../frontend/public/script/profileLinks');
+// Import models
 const usersModel = require("./models/usersModel");
 const criteriaModel = require("./models/criteriaModel");
+// Import schemas
 const profileSchema = require('./schema/profileSchema');
 const factorsSchema = require('./schema/factorSchema');
+// Import helper functions
+const { findUser } = require("./helperFunctions/findUser");
 
+// Display the profile page
 router.get('/profile/:message?', async (req, res) => {
+    // If user is not logged in, redirect to login page
     if (!req.session.authenticated) {
         return res.redirect('/login');
     }
+    // Find the user in the database
     const user = await findUser({ email: req.session.email });
     const dietaryPreferences = await criteriaModel.findOne({ 'category': 'Dietary Preferences' }, { category: 0, _id: 0 })
     const diningCriteria = await criteriaModel.findOne({ 'category': 'Dining Experience Factors' }, { category: 0, _id: 0 })
     const diningDict = diningCriteria.toObject()
     const dietaryDict = dietaryPreferences.toObject()
+    // Handle error messages
     if (req.params.message === "errorProfileEdit") {
         return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorProfileEdit: "Invalid Input for 'about me' section" });
     } else if (req.params.message === "errorDietaryPreferences") {
@@ -25,9 +32,11 @@ router.get('/profile/:message?', async (req, res) => {
     } else if (req.params.message === "errorRanking") {
         return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict, errorFactorEdit: "Cannot have duplicate rankings" });
     }
-    res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict });
+    // Render the profile page
+    return res.render('profile.ejs', { 'user': user, 'profileInfo': profileLinks, 'diningCriteria': diningDict, 'dietaryPreferences': dietaryDict });
 });
 
+// Update the user's profile
 router.post('/profileUpdate', async (req, res) => {
     const { error, value } = profileSchema.validate(req.body);
     if (error) {
@@ -43,11 +52,14 @@ router.post('/profileUpdate', async (req, res) => {
     }
 })
 
+// Update the user's dietary preferences
 router.post('/updateDietaryPreferences', async (req, res) => {
+    // Check if user has selected at least one dietary preference
     if (Object.keys(req.body).length === 0 || req.body === undefined) {
         return res.redirect("/profile/errorDietaryPreferences");
     }
     try {
+        // Update user's dietary preferences
         await usersModel.updateOne({ email: req.session.email }, { dietary_preferences: req.body.dietaryPreferences })
         res.redirect('/profile');
     } catch (err) {
@@ -55,8 +67,8 @@ router.post('/updateDietaryPreferences', async (req, res) => {
     }
 });
 
+// Update the user's dining criteria
 router.post('/updateDiningCriteria', async (req, res) => {
-
     // Check if all criteria are ranked
     ratings = {};
     for (const key in req.body) {
@@ -85,5 +97,5 @@ router.post('/updateDiningCriteria', async (req, res) => {
     }
 });
 
-
+// Export the router
 module.exports = router;

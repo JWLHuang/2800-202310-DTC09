@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { findUser } = require('./findUser');
+
+// Importing the contact schema
 const contactSchema = require('./schema/contactSchema')
 
 // Middleware to parse the request body as JSON
@@ -12,21 +13,23 @@ router.get('/contact/:message?', async (req, res) => {
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
     try {
-        const user = await findUser({ email: req.session.email });
-        res.render('contact.ejs', user ? { user: user, message: message } : { user: null, message: message });
+        // Render the contact page
+        return res.render('contact.ejs', { message: message, user: req.session.authenticated ? req.session : undefined });
     } catch (err) {
+        // If an error occurs, render the contact page with the error message
         console.log(err);
-        res.render('contact.ejs', { user: null, message: errorMsg });
+        return res.render('contact.ejs', { message: errorMsg, user: req.session.authenticated ? req.session : undefined });
     }
 });
 
 // POST route for the contact page
 router.post('/contact/:message?', async (req, res) => {
     const validationResult = contactSchema.validate(req.body);
+    // If the validation fails, redirect to the contact page with the error message
     if (validationResult.error != null) {
         res.redirect('/contact/' + validationResult.error.details[0].message);
     } else {
-        console.log('passed validation')
+        // If the validation succeeds, redirect to the contact page with the success message
         req.session.error = null;
         res.redirect('/contact/' + "Submission successfully sent! We will get back to you in 3-5 business days.");
     }
