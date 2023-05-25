@@ -17,16 +17,19 @@ const planMyDay = async (user, searchQuery, req, res, errorMsg) => {
         var restaurantsList = [];
         var dayToday = new Date().getDay();
         var results = {};
+        var choicesList = [];
 
         // Get the ratings for each restaurant.
         restaurants = await getRestaurantRatings(user, restaurants);
 
-        restaurants.forEach((restaurant) => {
-            restaurantsList.push(`${restaurant._doc["_id"]} - ${restaurant._doc["Location"]} - ${restaurant._doc["Name"]} at open ${JSON.parse(restaurant._doc["OpenHours"])[String(dayToday)]})`)
-        })
+        // Sort restaurant by average rating and get top 10 to pass to OpenAI.
+        restaurants.sort((a, b) => {
+            return b.averageRating - a.averageRating;
+        });
 
-        // Get top 10 to pass to OpenAI.
-        choicesList = restaurantsList.slice(0, 10)
+        restaurants.slice(0, 10).forEach((restaurant) => {
+            choicesList.push(`${restaurant._doc["_id"]} - ${restaurant._doc["Location"]} - ${restaurant._doc["Name"]} open ${JSON.parse(restaurant._doc["OpenHours"])[String(dayToday)]})`)
+        })
 
         try {
             // Pass restaurant information to OpenAI and parse response.
