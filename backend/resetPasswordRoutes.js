@@ -13,6 +13,10 @@ const userCollection = database.db(mongodb_database).collection("users");
 // Display the reset password page
 router.get("/resetPassword/:errorMessage?", (req, res) => {
   // If the user is not logged in, redirect them to the login page
+  if (!req.session.authenticated) {
+    return res.redirect('/login');
+  }
+  // If the user is not logged in, redirect them to the login page
   if (req.params.errorMessage === 'error') {
     errorMessage = "Please fill out all fields with valid information."
     // If the password is incorrect, display the error message
@@ -29,7 +33,7 @@ router.get("/resetPassword/:errorMessage?", (req, res) => {
     errorMessage = undefined;
   }
   // Render the reset password page
-  return res.render("resetPassword.ejs", { user: res.locals.user, errorMessage: errorMessage });
+  return res.render("resetPassword.ejs", { user: req.session, errorMessage: errorMessage });
 });
 
 // Handle the reset password form submission

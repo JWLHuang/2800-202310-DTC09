@@ -37,7 +37,7 @@ router.get("/forgotPassword/:error?", (req, res) => {
         errorMessage = undefined;
     }
     // Render the forgot password page
-    return res.render("forgotPassword.ejs", { user: res.locals.user, errorMessage: errorMessage });
+    return res.render("forgotPassword.ejs", { errorMessage: errorMessage });
 });
 
 
