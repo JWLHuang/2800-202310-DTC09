@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="/style/contact.css">
 
+<!-- Include Nav Bar -->
 <%- include('partials/header.ejs') %>
+    <!-- Contacy Us Header -->
     <div class="container-fluid contact-header">
         <div class="container">
             <div class="row">
@@ -11,20 +13,22 @@
             </div>
         </div>
     </div>
+    <!-- Contact Us Form -->
     <div class="container my-5">
-        <% if (message) { %>
         <div class="row justify-content-center">
-                <h5 class="message-header">
-                <div class="alert alert-danger text-center mb-0" role="alert">
-                        <%= message %>
-                    </div>
-                </h5>
-            </div>
-            <% } %>
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-lg-9 justify-content-center">
+                <% if (message) { %>
+                <div class="row justify-content-center">
+                    <h5 class="message-header">
+                    <div class="alert border border-warning text-center mb-0" role="alert">
+                            <%= message %>
+                        </div>
+                    </h5>
+                </div>
+                <% } %>
                 <%- include('partials/contactForm.ejs') %>
             </div>
         </div>
     </div>
+    <!-- Include Footer -->
     <%- include('partials/footer.ejs') %>
