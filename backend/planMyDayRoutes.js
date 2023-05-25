@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 // Import helper functions
-const { findUser } = require("../helperFunctions/findUser");
-const { getTopThree } = require("../helperFunctions/planMyDay");
-const { getRestaurantRatings } = require("../helperFunctions/getRestaurantRatings");
-const { getSearchQuery } = require("../helperFunctions/getSearchQuery");
+const { findUser } = require("./findUser");
+const { getTopThree } = require("./planMyDay");
+const { getRestaurantRatings } = require("./getRestaurantRatings");
+const { getSearchQuery } = require("./getSearchQuery");
 
 // Import models
 const restaurantModel = require("./models/restaurantModel");

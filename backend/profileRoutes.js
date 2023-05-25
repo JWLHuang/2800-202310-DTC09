@@ -8,7 +8,7 @@ const criteriaModel = require("./models/criteriaModel");
 const profileSchema = require('./schema/profileSchema');
 const factorsSchema = require('./schema/factorSchema');
 // Import helper functions
-const { findUser } = require("../helperFunctions/findUser");
+const { findUser } = require("./findUser");
 
 // Display the profile page
 router.get('/profile/:message?', async (req, res) => {

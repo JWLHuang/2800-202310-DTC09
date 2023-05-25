@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const usersModel = require("./models/usersModel");
-const { findUser } = require("../helperFunctions/findUser");
+const { findUser } = require("./findUser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 

@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 // Import model, schema and helper functions
 const usersModel = require("./models/usersModel");
 const loginSchema = require("./schema/loginSchema");
-const { authenticatedOnly } = require("../helperFunctions/authorizationMiddleware");
+const { authenticatedOnly } = require("./authorizationMiddleware");
 
 // Use urlencoded middleware to parse the body of incoming requests
 router.use(express.urlencoded({ extended: false }))

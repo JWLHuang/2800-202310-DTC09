@@ -10,8 +10,8 @@ const reviewModel = require("./models/reviewModel");
 const restaurantModel = require("./models/restaurantModel");
 
 // Import helper functions
-const { findUser } = require("../helperFunctions/findUser");
-const reviewAi = require("../helperfunctions/aiReviews");
+const { findUser } = require("./findUser");
+const reviewAi = require("./aiReviews");
 
 // Import schemas
 const reviewSchema = require("./schema/reviewSchema");

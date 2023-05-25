@@ -1,6 +1,6 @@
 const { getIndividualRating } = require("./getIndividualRating");
 const {calculateRestaurantRating} = require("./calculateRestaurantRating");
-const reviewModel = require("../models/reviewModel");
+const reviewModel = require("./models/reviewModel");
 
 // get the rating for each restaurant from reviews and user weights
 module.exports = {

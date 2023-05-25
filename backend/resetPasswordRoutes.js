@@ -4,7 +4,7 @@ const router = express.Router();
 
 // Import schema and helper functions
 const resetPasswordSchema = require("./schema/resetPasswordSchema");
-const { database } = require("../helperFunctions/database");
+const { database } = require("./database");
 
 // Import the MongoDB client
 const mongodb_database = process.env.MONGODB_DATABASE;
