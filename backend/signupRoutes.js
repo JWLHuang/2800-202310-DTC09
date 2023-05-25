@@ -21,6 +21,7 @@ router.get('/signup', async (req, res) => {
 
 // Handle signup route POST request
 router.post("/signup", async (req, res) => {
+    console.log(req.body)
     // Validate the request body against the signup schema
     const validationResult = signupSchema.validate(req.body);
 
@@ -28,7 +29,7 @@ router.post("/signup", async (req, res) => {
     if (validationResult.error != null) {
         errorRegMsg = validationResult.error.details[0].message
         return res.render('authentication.ejs', { errorRegMsg: errorRegMsg, target: "signup" });
-    } else if (await usersModel.findOne({ email: req.body.email, })) {
+    } else if (await usersModel.findOne({ email: req.body.signupEmail, })) {
         errorRegMsg = "Email already exists"
         return res.render('authentication.ejs', { errorRegMsg: errorRegMsg, target: "signup" });
     } else {

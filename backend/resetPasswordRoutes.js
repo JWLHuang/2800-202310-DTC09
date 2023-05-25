@@ -1,11 +1,7 @@
 const express = require("express");
-const app = express();
-const Joi = require("joi");
-const mongo = require("mongodb");
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const resetPasswordSchema = require("./schema/resetPasswordSchema");
 
 const router = express.Router();
 
@@ -13,7 +9,28 @@ const { database } = require("./database");
 const mongodb_database = process.env.MONGODB_DATABASE;
 const userCollection = database.db(mongodb_database).collection("users");
 
-router.get("/resetPassword", (req, res) => {
+router.get("/resetPassword/:errorMessage?", (req, res) => {
+  if (req.params.errorMessage === 'error') {
+    return res.render("resetPassword.ejs", {
+      errorMessage: "Please fill out all fields with valid information.",
+      user: res.locals.user,
+    });
+  } else if (req.params.errorMessage === "incorrectPassworderror") {
+    return res.render("resetPassword.ejs", {
+      errorMessage: "Incorrect password.",
+      user: res.locals.user,
+    });
+  } else if (req.params.errorMessage === "notMatchError") {
+    return res.render("resetPassword.ejs", {
+      errorMessage: "Passwords do not match.",
+      user: res.locals.user,
+    });
+  } else if (req.params.errorMessage === "resetError") {
+    return res.render("resetPassword.ejs", {
+      errorMessage: "You are trying to reset the password for a different account.",
+      user: res.locals.user,
+    });
+  }
   res.render("resetPassword.ejs", { user: res.locals.user });
 });
 
@@ -22,38 +39,48 @@ router.post("/resetPasswordSubmit", async (req, res) => {
   var password = req.body.password;
   var newPassword = req.body.newPassword;
   var newPasswordConfirm = req.body.newPasswordConfirm;
-  const schema = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().max(20).required(),
-    newPassword: Joi.string().max(20).required(),
-    newPasswordConfirm: Joi.string().max(20).required(),
-  });
+
   const result = await userCollection
     .find({ email: email })
     .project({ name: 1, password: 1, _id: 1, user: 1 })
     .toArray();
 
-  const validation = schema.validate({
+  const validation = resetPasswordSchema.validate({
     email,
     password,
     newPassword,
     newPasswordConfirm,
   });
+
+  // Check if user resets password for a different account
+  if (email !== req.session.email) {
+    return res.redirect("/resetPassword/resetError");
+  }
+
+  // Check if any fields are empty
+  flag = false;
+  Object.keys(req.body).forEach((item) => {
+    if (req.body[item] === "") {
+      flag = true;
+    }
+  })
+
+  if (flag === true) {
+    return res.redirect("/resetPassword/error");
+  }
+
   passwordCheck = await bcrypt.compare(password, result[0].password);
   console.log(passwordCheck);
 
   if (validation.error) {
-    return res.status(400).send(validation.error.details[0].message);
+    return res.redirect("/resetPassword/error");
   } else if (!(await bcrypt.compare(password, result[0].password))) {
     console.log("password checks");
-    console.log(password);
-    console.log(result[0].password);
-    return res.status(400).send("Incorrect password.");
-  } else {
-    // const hashedNewPasswordConfirm = await bcrypt.hash(req.body.newPasswordConfirm, saltRounds);
 
+    return res.redirect("/resetPassword/incorrectPassworderror");
+  } else {
     if (newPassword !== newPasswordConfirm) {
-      return res.status(400).send("Passwords do not match.");
+      return res.redirect("/resetPassword/notMatchError");
     } else {
       const hashedNewPassword = await bcrypt.hash(
         req.body.newPassword,
@@ -63,7 +90,6 @@ router.post("/resetPasswordSubmit", async (req, res) => {
         { email: email },
         { $set: { password: hashedNewPassword } }
       );
-      console.log("password updated");
       res.redirect("/login");
     }
   }
