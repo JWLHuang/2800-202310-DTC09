@@ -8,10 +8,10 @@ const reviewModel = require("./models/reviewModel");
 const usersModel = require("./models/usersModel");
 
 // Import helper functions
-const aiFilter = require("./helperFunctions/aiFilter");
-const { findUser } = require("./helperFunctions/findUser");
-const { getRestaurantRatings } = require("./helperFunctions/getRestaurantRatings");
-const { getSearchQuery } = require("./helperFunctions/getSearchQuery");
+const aiFilter = require("../helperFunctions/aiFilter");
+const { findUser } = require("../helperFunctions/findUser");
+const { getRestaurantRatings } = require("../helperFunctions/getRestaurantRatings");
+const { getSearchQuery } = require("../helperFunctions/getSearchQuery");
 
 // Display Easter egg routes
 router.get("/snake", async (req, res) => {

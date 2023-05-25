@@ -4,8 +4,8 @@ const mongo = require("mongodb");
 
 // Import helper functions and models
 const restaurantModel = require("./models/restaurantModel");
-const { findUser } = require("./helperFunctions/findUser");
-const { getRestaurantRatings } = require("./helperFunctions/getRestaurantRatings");
+const { findUser } = require("../helperFunctions/findUser");
+const { getRestaurantRatings } = require("../helperFunctions/getRestaurantRatings");
 
 // Display the history page
 router.get("/history", async (req, res) => {

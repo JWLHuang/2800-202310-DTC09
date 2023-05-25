@@ -8,7 +8,7 @@ const url = require('url');
 
 // Importing model and helper function
 const restaurantModel = require("./models/restaurantModel");
-const { findUser } = require("./helperFunctions/findUser");
+const { findUser } = require("../helperFunctions/findUser");
 
 // Setup the environment variables
 require("dotenv").config();

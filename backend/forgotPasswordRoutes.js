@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 
 // Import helper functions and schema
-const { database } = require("./helperFunctions/database");
+const { database } = require("../helperFunctions/database");
 const forgotPasswordSchema = require("./schema/forgotPasswordSchema");
 
 // Import the MongoDB client
