@@ -4,20 +4,8 @@ const { findUser } = require("./findUser");
 const profileLinks = require('../frontend/public/script/profileLinks');
 const usersModel = require("./models/usersModel");
 const criteriaModel = require("./models/criteriaModel");
-const Joi = require("joi");
-
-const profileSchema = Joi.object({
-    about_me: Joi.string().min(1).max(100).trim().required(),
-});
-
-const factorsSchema = Joi.object({
-    service: Joi.number().min(1).max(6).required(),
-    food: Joi.number().min(1).max(6).required(),
-    price: Joi.number().min(1).max(6).required(),
-    atmosphere: Joi.number().min(1).max(6).required(),
-    cleanliness: Joi.number().min(1).max(6).required(),
-    accessibility: Joi.number().min(1).max(6).required()
-});
+const profileSchema = require('./schema/profileSchema');
+const factorsSchema = require('./schema/factorSchema');
 
 router.get('/profile/:message?', async (req, res) => {
     if (!req.session.authenticated) {

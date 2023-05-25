@@ -157,7 +157,7 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }
 
     // Check Photo Upload Errors
-    uploadError = req.files.length > 3 ? "Maximum 3 images allowed." : undefined;       // Check if more than 3 images uploaded
+    uploadError = req.files.length > 1 ? "Maximum 1 image allowed." : undefined;       // Check if more than 1 image uploaded
     req.files.forEach(file => {
         if (file.size > 512000) {
             uploadError = "Maximum file size is 500KB."                             // Check if file size is more than 500KB
@@ -169,7 +169,7 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     if (uploadError) {
         return res.json({
             status: "error",
-            message: 'Maximum 3 images with size 500KB or less allowed.'
+            message: 'Maximum 1 image with size 500KB or less allowed.'
         })
     } else {
         // Evaluate review using AI

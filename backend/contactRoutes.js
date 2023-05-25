@@ -1,20 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { findUser } = require('./findUser');
-const Joi = require("joi");
+const contactSchema = require('./schema/contactSchema')
 
-const contactSchema = Joi.object({
-    firstName: Joi.string().min(3).max(30).required(),
-    lastName: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ca", "co"] } }).required(),
-    subject: Joi.string().min(3).max(30).required(),
-    message: Joi.string().min(3).max(100).required(),
-    type: Joi.boolean(),
-});
-
+// Middleware to parse the request body as JSON
 router.use(express.urlencoded({ extended: false }))
+
+// GET route for the contact page
 router.get('/contact/:message?', async (req, res) => {
-    console.log('contact route')
     const message = req.params.message ? req.params.message : null;
     const errorMsg = req.session.error ? req.session.error : null;
     delete req.session.error;
@@ -27,7 +20,8 @@ router.get('/contact/:message?', async (req, res) => {
     }
 });
 
-router.post('/contact', async (req, res) => {
+// POST route for the contact page
+router.post('/contact/:message?', async (req, res) => {
     const validationResult = contactSchema.validate(req.body);
     if (validationResult.error != null) {
         res.redirect('/contact/' + validationResult.error.details[0].message);
@@ -38,9 +32,5 @@ router.post('/contact', async (req, res) => {
     }
 });
 
-// router.get('/contactSubmitted', (req, res) => {
-//     return res.render('contactSubmitted.ejs', { message: "Message sent." });
-// });
-
-
+// Export the router
 module.exports = router;

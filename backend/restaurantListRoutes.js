@@ -195,9 +195,20 @@ router.get('/restaurant/:id?', async (req, res) => {
         }
         if (restaurant && user) {
             // Get restaurant object, add to users history, and render page.
-            await usersModel.updateOne(
-                { email: req.session.email },
-                { $push: { history: restaurant._id } });
+            if (!user.history.includes(restaurant._id)) {
+                await usersModel.updateOne(
+                    { email: req.session.email },
+                    { $push: { history: restaurant._id } });
+            } else {
+                await usersModel.updateOne(
+                    { email: req.session.email },
+                    { $pull: { history: restaurant._id } },
+                    { safe: true, multi: true });
+
+                await usersModel.updateOne(
+                    { email: req.session.email },
+                    { $push: { history: restaurant._id } });
+            }
             return res.render("restaurant", { user: user, restaurant: restaurant, userLatitude: 49.17555, userLongitude: -123.13254, reviews: reviews });
         } else if (restaurant && !user) {
             // Get restaurant object and render page.
