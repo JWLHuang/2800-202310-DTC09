@@ -95,7 +95,7 @@
                   <a target="_blank" href="<%= restaurant.WebsiteUrl %>"><button class="btn btn-primary w-100">Visit
                       website</button></a>
                   <% } else { %>
-                    <button class="btn btn-secondary w-100" disabled>Website not available</button>
+                    <button class="btn btn-secondary w-100" style="border: 0px" disabled>Website not available</button>
                     <% } %>
               </div>
             </div>
@@ -108,7 +108,8 @@
                       href="https://www.openstreetmap.org/directions?from=&to=<%= restaurant.Latitude %>%2C<%= restaurant.Longitude %>#map=12/<%= restaurant.Latitude %>/<%= restaurant.Longitude %>"><button
                         class="btn btn-primary w-100">Directions</button></a>
                     <% } else { %>
-                      <button class="btn btn-secondary w-100" disabled>Directions not available</button>
+                      <button class="btn btn-secondary w-100" style="border: 0px" disabled>Directions not
+                        available</button>
                       <% } %>
                 </div>
               </div>
