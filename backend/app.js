@@ -4,18 +4,19 @@ const mongo = require("mongodb");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
-const { findUser } = require("./findUser");
 const url = require('url');
+
+// Importing model and helper function
 const restaurantModel = require("./models/restaurantModel");
+const { findUser } = require("./helperFunctions/findUser");
 
-
+// Setup the environment variables
 require("dotenv").config();
 const port = process.env.PORT || 3000;
 
+// Setup the express app
 app.set('view engine', 'ejs');
 app.set('views', process.env.VIEW_PATH);
-// app.use(express.static(__dirname + '/../frontend/script'))
-// app.use(express.static(__dirname + '/../frontend/style'))
 app.use(express.static(__dirname + '/../frontend/public'))
 
 // importing static files for navigation links
@@ -57,7 +58,6 @@ app.use(
 
 // Handle the index route
 app.get("/", async (req, res) => {
-  const errorMsg = req.session.error ? req.session.error : null;
   delete req.session.error;
   const featuredRestaurants = await restaurantModel.find({ Location: 'Vancouver, Canada', Award: "1 MICHELIN Star", Cuisine: { $not: /^C.*/ } }).limit(3);
   // Check if user is logged in
@@ -74,7 +74,6 @@ app.get("/", async (req, res) => {
     price.push("Select")
     award.push("This")
 
-
     let historyList = []
     const restaurantInfo = async () => {
       for (let i = 0; i < restaurantHistory.length; i++) {
@@ -84,21 +83,18 @@ app.get("/", async (req, res) => {
     }
     await restaurantInfo()
 
-    return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award , menuOpen: false});
+    return res.render("index.ejs", { user: user, featuredRestaurant: featuredRestaurants, restaurantHistory: historyList, location: location, cuisine: cuisine, price: price, award: award, menuOpen: false });
   }
   return res.render("index.ejs", { featuredRestaurant: featuredRestaurants });
 });
 
-
 // Dempose the server into seperate files
-
 // Authentication routes
 const signupRoutes = require("./signupRoutes");
 const authorizationRoutes = require("./authorizationRoutes");
 
 app.use(signupRoutes);
 app.use(authorizationRoutes);
-
 
 // User routes
 const profileRoutes = require("./profileRoutes");
@@ -108,7 +104,6 @@ const extAuthRoutes = require('./extAuthRoutes');
 const historyRoutes = require('./historyRoutes');
 const contactRoutes = require('./contactRoutes');
 const aboutRoutes = require('./aboutUsRoutes')
-
 
 app.use(profileRoutes);
 app.use(forgotPasswordRoutes);
@@ -124,12 +119,10 @@ const planMyDayRoutes = require('./planMyDayRoutes');
 const reviewRoutes = require('./reviewRoutes');
 const mapRoutes = require('./mapRoutes');
 
-
 app.use(restaurantListRoutes);
 app.use(planMyDayRoutes);
 app.use(reviewRoutes);
 app.use(mapRoutes);
-
 
 // Error 404 handling
 async function handle404(req, res, _) {
@@ -141,7 +134,6 @@ async function handle404(req, res, _) {
 }
 
 app.use(handle404);
-
 
 // Express error handling middleware
 module.exports = app;
