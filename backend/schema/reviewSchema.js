@@ -6,7 +6,7 @@ const reviewSchema = Joi.object({
         {
             'string.empty': `Review Title cannot be empty`,
             'string.min': `Review Title must be at least 2 characters long`,
-            'string.max': `Review Title cannot exceed 100 characters`
+            'string.max': `Review Title cannot exceed 300 characters`
         }),
     reviewBody: Joi.string().min(20).max(1500).trim().required().messages(
         {
