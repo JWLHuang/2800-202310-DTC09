@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+
+// Import model, schema and helper functions
 const usersModel = require("./models/usersModel");
-const { authenticatedOnly } = require("./authorizationMiddleware");
 const loginSchema = require("./schema/loginSchema");
+const { authenticatedOnly } = require("./helperFunctions/authorizationMiddleware");
 
 // Use urlencoded middleware to parse the body of incoming requests
 router.use(express.urlencoded({ extended: false }))
@@ -50,7 +52,6 @@ router.post("/login", async (req, res) => {
             req.session.authenticated = true;
             req.session.email = req.body.email;
             req.session.name = user.name;
-            console.log("User logged in");
             return res.redirect("/");
             // If there is an unknown error, display an error message
         } else {
@@ -61,13 +62,11 @@ router.post("/login", async (req, res) => {
     return res.render("authentication.ejs", { errorMsg: errorMsg, target: "login" });
 });
 
-
 // Login error route for external authentication
 router.get("/loginError", async (req, res) => {
     req.session.error = "Authentication error. Please try again.";
     res.redirect("/login")
 });
-
 
 // Logout route - destroy session
 router.get("/logout", authenticatedOnly, (req, res) => {

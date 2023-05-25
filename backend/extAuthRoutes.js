@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const usersModel = require("./models/usersModel");
-const { findUser } = require("./findUser");
+const { findUser } = require("./helperFunctions/findUser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
@@ -15,6 +15,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 router.use(passport.initialize());
 router.use(passport.session());
 
+// Serialize and deserialize user for external authentication.
 router.get("/ExtAuthSuccess", async (req, res) => {
     try {
         // Check if user exists in database.
@@ -88,4 +89,5 @@ router.get("/auth/google/callback",
     });
 
 
+// Export the router.
 module.exports = router;
