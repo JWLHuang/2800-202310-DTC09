@@ -1,5 +1,6 @@
 const { Configuration, OpenAIApi } = require("azure-openai");
 
+// Create a configuration object for Azure OpenAI
 const configuration = new Configuration({
     apiKey: this.apiKey,
     endpoint: process.env.OPENAI_ENDPOINT,
@@ -10,9 +11,11 @@ const configuration = new Configuration({
     }
 });
 
+// Create an instance of the API class
 const openai = new OpenAIApi(configuration);
 
-const reviewRating = async (prompt, randomness) => {
+// Function to generate a review
+const reviewPrompt = async (prompt, randomness) => {
     try {
         const response = await openai.createCompletion({
             model: 'text-davinci-003',
@@ -21,12 +24,11 @@ const reviewRating = async (prompt, randomness) => {
             temperature: randomness,
             n: 1,
         });
-        // console.log(response.data.choices[0].text);
-        // console.log(response.data.usage)
         return response.data.choices[0].text;
     } catch (err) {
         console.log(err);
     }
 }
 
-module.exports = reviewRating;
+// Export the function
+module.exports = reviewPrompt;

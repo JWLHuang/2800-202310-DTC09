@@ -9,14 +9,14 @@
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#"><img src="/images/site_resources/nav_logo.png"
-                class="rounded-circle align-middle" style="width:30px; height: 30px;" /></a>
+        <a class="navbar-brand" href="/"><img src="/images/site_resources/nav_logo.png"
+                class="rounded-circle align-middle" style="width:30px; height: 30px;" alt="nav_logo"/></a>
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel">
             <!-- Side Menu Header -->
             <div class="offcanvas-header">
                 <!-- Change depending on if user is logged in -->
-                <% if (user) { %>
+                <% if (typeof user !== 'undefined' && user !== null) { %>
                     <a href='/profile'><img src="/images/profile_pics/stockphoto.jpg"
                             class="rounded-circle align-middle" style="width:30px; height: 30px;" /></a>
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
@@ -32,9 +32,9 @@
             </div>
             <!-- Side Menu Body -->
             <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <ul class="navbar-nav justify-content-end flex-grow-1">
                     <!-- Show different links if user is not logged in -->
-                    <% if (!user) { %>
+                    <% if (typeof user === 'undefined') { %>
                         <% locals.beforeLoginNav.forEach(function(link) { %>
                             <!-- Highlight current active page for user in menu -->
                             <%- include ('navLinks', {link: link, currentURL: currentURL}) %>

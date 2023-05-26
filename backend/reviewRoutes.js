@@ -1,69 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { findUser } = require("./findUser");
-const restaurantModel = require("./models/restaurantModel");
+
+// Import multer for image upload
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
+
+// Import models
 const reviewModel = require("./models/reviewModel");
-const Joi = require("joi");
-const reviewAi = require("./ai_reviews");
+const restaurantModel = require("./models/restaurantModel");
 
-// Joi schema for review
-const reviewSchema = Joi.object({
-    reviewTitle: Joi.string().min(2).max(300).trim().required().messages(
-        {
-            'string.empty': `Review Title cannot be empty`,
-            'string.min': `Review Title must be at least 2 characters long`,
-            'string.max': `Review Title cannot exceed 100 characters`
-        }),
-    reviewBody: Joi.string().min(20).max(1500).trim().required().messages(
-        {
-            'string.empty': `Review cannot be empty`,
-            'string.min': `Review must be at least 20 characters long`,
-            'string.max': `Review cannot exceed 1500 characters`
-        }),
-    restaurantID: Joi.string().min(1).max(100).trim().required(),
-    userID: Joi.string().min(1).max(100).trim().required()
-});
+// Import helper functions
+const { findUser } = require("./findUser");
+const reviewAi = require("./aiReviews");
 
-const smartReviewSchema = Joi.object({
-    'tone': Joi.string().valid('positive', 'neutral', 'critical', 'humorous').required().messages(
-        {
-            'any.only': `Tone must be selected`
-        }),
-    'service': Joi.string().min(2).max(40).trim().messages(
-        {
-            'string.min': `Comment on service must be at least 2 characters long`,
-            'string.max': `Comment on service cannot exceed 40 characters`
-        }),
-    'food': Joi.string().min(2).max(100).trim().messages(
-        {
-            'string.min': `Comment on food must be at least 2 characters long`,
-            'string.max': `Comment on food cannot exceed 40 characters`
-        }),
-    'atmosphere': Joi.string().min(2).max(40).trim().messages(
-        {
-            'string.min': `Comment on atmosphere must be at least 2 characters long`,
-            'string.max': `Comment on atmosphere cannot exceed 40 characters`
-        }),
-    'cleanliness': Joi.string().min(2).max(40).trim().messages(
-        {
-            'string.min': `Comment on cleanliness must be at least 2 characters long`,
-            'string.max': `Comment on cleanliness cannot exceed 40 characters`
-        }),
-    'price': Joi.string().min(2).max(40).trim().messages(
-        {
-            'string.min': `Comment on value for money must be at least 2 characters long`,
-            'string.max': `Comment on value for money cannot exceed 40 characters`
-        }),
-    'accessability': Joi.string().min(2).max(40).trim().messages(
-        {
-            'string.min': `Comment on accessability must be at least 2 characters long`,
-            'string.max': `Comment on accessability cannot exceed 40 characters`
-        }),
-    'restaurantID': Joi.string().min(1).max(100).trim().required()
-});
-
+// Import schemas
+const reviewSchema = require("./schema/reviewSchema");
+const smartReviewSchema = require("./schema/smartReviewSchema");
 
 // Express middleware
 router.use(express.json({ limit: '50mb' }));
@@ -75,7 +27,7 @@ router.get("/writeReview/:id/", async (req, res) => {
         return res.redirect('/login');
     }
 
-    // Reder the specific writeReview page
+    // Render the specific writeReview page
     const user = await findUser({ email: req.session.email });
     try {
         const restaurant = await restaurantModel.findOne({ _id: req.params.id });
@@ -86,6 +38,7 @@ router.get("/writeReview/:id/", async (req, res) => {
     }
 });
 
+// Routes for smart reviews
 router.get("/SmartReview/:id/:errorMessage?", async (req, res) => {
     // Check if user is logged in
     if (!req.session.authenticated) {
@@ -94,6 +47,7 @@ router.get("/SmartReview/:id/:errorMessage?", async (req, res) => {
     // Render the specific writeReview page
     const user = await findUser({ email: req.session.email });
     try {
+        // Handling error messages returned from generateSmartReview
         const restaurant = await restaurantModel.findOne({ _id: req.params.id });
         if (req.params.errorMessage === "missingTone") {
             return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Please select a valid tone." });
@@ -102,7 +56,7 @@ router.get("/SmartReview/:id/:errorMessage?", async (req, res) => {
         } else if (req.params.errorMessage === "invalidAspect") {
             return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Filled aspect must be within 2 to 40 characters." });
         } else if (req.params.errorMessage === "errorGenerateReview") {
-            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Error generating review. Please try again later." });
+            return res.render("smartReview", { user: user, restaurant: restaurant, errorMessage: "Error generating review. Please try again." });
         } else {
             return res.render("smartReview", { user: user, restaurant: restaurant });
         }
@@ -112,8 +66,10 @@ router.get("/SmartReview/:id/:errorMessage?", async (req, res) => {
     }
 });
 
+// Route for generating a review
 router.post("/generateSmartReview/", async (req, res) => {
     try {
+        // Convert req.body to JSON
         inputChecking = JSON.stringify(req.body)
         inputChecking = JSON.parse(inputChecking)
 
@@ -125,7 +81,7 @@ router.post("/generateSmartReview/", async (req, res) => {
         if (inputChecking['tone'] === undefined) {
             return res.redirect("/SmartReview/" + req.body.restaurantID + "/missingTone");
         }
-        
+
         // Check if at least one aspect is filled
         delete inputChecking['tone'];
         delete inputChecking['restaurantID'];
@@ -145,11 +101,12 @@ router.post("/generateSmartReview/", async (req, res) => {
         if (error.details[0].type === "string.min" || error.details[0].type === "string.max") {
             return res.redirect("/SmartReview/" + req.body.restaurantID + "/invalidAspect");
         }
-        
+
         // Generate review
         try {
             const user = await findUser({ email: req.session.email });
             const restaurant = await restaurantModel.findOne({ _id: req.body.restaurantID });
+            pageId = req.body.restaurantID;
             req.body.restaurantID = restaurant.Name;
             const prompt = `Generate a restaurant review based on given aspect and tone from the information below, 
             and return a review title in 20 words or less and review paragraph with 100 words to 150 words. 
@@ -160,7 +117,7 @@ router.post("/generateSmartReview/", async (req, res) => {
             const generatedReview = JSON.parse(result);
             res.render("writeReview", { user: user, restaurant: restaurant, generatedReview: generatedReview });
         } catch (err) {
-            res.redirect("/SmartReview/" + req.body.restaurantID + "/errorGenerateReview")
+            res.redirect("/SmartReview/" + pageId + "/errorGenerateReview")
         }
     } catch (err) {
         console.log(err)
@@ -171,7 +128,7 @@ router.post("/generateSmartReview/", async (req, res) => {
     }
 });
 
-// Route for processing reviews
+// Route for submitting reviews
 router.post("/processReview/", upload.array('files'), async (req, res) => {
     // Check if user is logged in
     if (!req.session.authenticated) {
@@ -206,7 +163,7 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }
 
     // Check Photo Upload Errors
-    uploadError = req.files.length > 3 ? "Maximum 3 images allowed." : undefined;       // Check if more than 3 images uploaded
+    uploadError = req.files.length > 1 ? "Maximum 1 image allowed." : undefined;       // Check if more than 1 image uploaded
     req.files.forEach(file => {
         if (file.size > 512000) {
             uploadError = "Maximum file size is 500KB."                             // Check if file size is more than 500KB
@@ -218,11 +175,12 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     if (uploadError) {
         return res.json({
             status: "error",
-            message: 'Maximum 3 images with size 500KB or less allowed.'
+            message: 'Maximum 1 image with size 500KB or less allowed.'
         })
     } else {
         // Evaluate review using AI
-        const prompt = `Give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case 
+        const prompt = `First, search for offensive word. If there's any, give me reponse in a JSON format starting with "{" with key "offensive_words" and value "true". 
+        Otherwise, give me a rating out of 5 in json format on service, food, atmosphere, cleanliness, price, accessibility in lower case 
         based on the review below. If the aspect is missing, make it 2.5. 
         Also, give me a positive comment with max 3 words and a negative comment with max 3 words on the review below.
         The response must be in a JSON format starting with "{" with key "service", "food", "atmosphere", "cleanliness", "price", "accessibility", "positiveTag", "negativeTag".
@@ -231,6 +189,12 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }`;
         result = await reviewAi(prompt, 0.5);
         const rating = JSON.parse(result);
+        if (rating.offensive_words) {
+            return res.json({
+                status: "error",
+                message: "Sorry, but offensive language is prohibited."
+            })
+        }
 
         // Create review object
         var index = 1;
@@ -258,21 +222,26 @@ router.post("/processReview/", upload.array('files'), async (req, res) => {
     }
 });
 
+// Route for viewing reviews on my reviews page
 router.get('/myReviews', async (req, res) => {
     // Check if user is logged in
     if (!req.session.authenticated) {
         return res.redirect('/login');
     }
     try {
+        // Find user and reviews
         const user = await findUser({ email: req.session.email });
         const reviews = await reviewModel.find({ userID: user._id }, { image03Buffer: 0, image03Type: 0, image02Buffer: 0, image02Type: 0 }).sort({ TimeStamp: -1 });
+        for (const review of reviews) {
+            const restaurant = await restaurantModel.findOne({ _id: review.restaurantID }, { Name: 1 });
+            review.restaurantName = restaurant.Name;
+        };
+        // Render page
         res.render("myReviews", { user: user, reviews: reviews });
     } catch (err) {
         console.log(err);
     }
 });
-
-
 
 // Export routes to server.js
 module.exports = router;

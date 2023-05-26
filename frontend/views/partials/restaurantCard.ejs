@@ -1,85 +1,89 @@
 <link rel="stylesheet" href="/style/restaurantThumbnail.css">
+<link rel="stylesheet" href="/style/restaurantCard.css">
 
 <%- include('restaurantFunctions') %>
-<% if (restaurant._doc._id != "646562b76644f1aa93bc2ba2") { %>
-<a href="/restaurant/<%= restaurant._doc._id %>">
-  <div class="row justify-content-center">
-    <div class="card mb-3">
-      <div class="row g-0">
-        <div class="col-md-2 p-0">
-          <img src="<%= restaurant._doc.ImgUrl %>" class="img-fluid rounded-start restaurant-thumbnail" alt="<%= restaurant._doc.Name%>">
+  <% if (restaurant._doc._id !="646562b76644f1aa93bc2ba2" ) { %>
+    <article class="postcard light red">
+      <a class="postcard__img_link" href="restaurant/<%=restaurant._doc._id%>">
+        <img class="postcard__img" src="<%=restaurant._doc.ImgUrl%>" alt="<%=restaurant._doc.Name%>" />
+      </a>
+      <div class="postcard__text t-dark">
+        <h1 class="postcard__title red"><a class="postcard_title" href="restaurant/<%=restaurant._doc._id%>">
+            <%=restaurant._doc.Name%>
+          </a></h1>
+        <div class="postcard__subtitle small">
+          <%=restaurant._doc.Address%>
         </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">
-              <%= restaurant._doc.Name %>
-            </h5>
-            <p class="card-text">
-              <%= restaurant._doc.Address %>
-            </p>
-            <p class="card-text">
-              <%= restaurant._doc.Cuisine %>, <strong>
-                <%= restaurant._doc.DietaryRestrictions.toUpperCase() %>
-              </strong>
-            </p>
-            <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
+        <div class="postcard__bar"></div>
+        <div class="postcard__preview-txt">
+          <% if (restaurant._doc.Award !=="Bib Gourmand" ) { %>
             <%= restaurant._doc.Award ? createStarRating(restaurant._doc.Award) : "Michelin rating not available" %>
-            <% } else { %>
-            <p>
-              <%= restaurant._doc.Award %>
-            </p>
-            <% } %>
-            <p class="card-text">
-              <%= restaurant._doc.Price %>
-            </p>
-            <% if (restaurant.averageRating===0) { %>
-            <p class="card-text">
-              No reviews yet
-            </p>
-            <% } else { %>
-            <p class="card-text">
+              <% } else { %>
+                <p>
+                  <%= restaurant._doc.Award %>
+                </p>
+                <% } %>
+        </div>
+        <div class="postcard__preview-txt">
+          <%=restaurant._doc.Price%>
+        </div>
+        <% if (restaurant.averageRating===0) { %>
+          <div class="postcard__preview-txt">
+            No reviews yet
+          </div>
+          <% } else { %>
+            <div class="postcard__preview-txt">
               <strong>Average Rating:
                 <%= restaurant.averageRating %>/5
               </strong>
-            </p>
+            </div>
             <% } %>
-            <% if (restaurant.averageRating===0 && !restaurant.individualRating) { %>
-            <p class="card-text">
-              No reviews to compare to your personal preferences yet.
+              <% if (restaurant.averageRating===0 && !restaurant.individualRating) { %>
+                <div class="postcard__preview-txt">
+                  No reviews to compare to your personal preferences yet.
+                </div>
+                <% } else if (restaurant.individualRating==="No Rating" ) { %>
+                  <div class="postcard__preview-txt">
+                    <strong>Please rank your preferences to view your personal rating.</strong>
+                  </div>
+                  <% } else { %>
+                    <div class="postcard__preview-txt">
+                      <strong>Personal Rating:
+                        <%= restaurant.individualRating %>/5
+                      </strong>
+                    </div>
+                    <% } %>
+                      <ul class="postcard__tagbox">
+                        <li class="tag__item">
+                          <%=restaurant._doc.DietaryRestrictions.toUpperCase()%>
+                        </li>
+                        <li class="tag__item">
+                          <%=restaurant._doc.Cuisine%>
+                        </li>
+                        <li class="tag__item">
+                          <%=restaurant._doc.Price%>
+                        </li>
+                      </ul>
+      </div>
+    </article>
+    <% } else { %>
+      <article class="postcard light red">
+        <a class="postcard__img_link" href="#">
+          <img class="postcard__img" src="https://images.pexels.com/photos/2228568/pexels-photo-2228568.jpeg"
+            alt="Sad Face" />
+        </a>
+        <div class="postcard__text t-dark">
+          <h1 class="postcard__title red"><a class="restaurant-info-button">
+              No Restaurants Found
+            </a></h1>
+          <div class="postcard__bar"></div>
+          <div class="postcard__preview-txt">
+            <p>
+              It seems we were unable to find any restaurants that matched your search criteria. We apologize for the
+              inconvenience.
             </p>
-            <% } else if (restaurant.individualRating === "No Rating") { %>
-            <p class="card-text">
-              <strong>Please rank your preferences to view your personal rating.</strong>
-            </p>
-            <% } else { %>
-              <p class="card-text">
-                <strong>Personal Rating:
-                  <%= restaurant.individualRating %>/5
-                </strong>
-            </p>
-            <% } %>
-
+            <a id="home__link" href="/filterRestaurants">Click here to try again.</a>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</a>
-<% } else { %>
-<div class="row justify-content-center">
-  <div class="card mb-3">
-    <div class="row g-0">
-      <div class="col-md-2 p-0">
-        <img src="https://images.pexels.com/photos/2228568/pexels-photo-2228568.jpeg" class="img-fluid rounded-start restaurant-thumbnail" alt="<%= restaurant._doc.Name%>">
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">
-            <em>No restaurants matched with current filters for this category</em>
-          </h5>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<% } %>
+      </article>
+      <% } %>

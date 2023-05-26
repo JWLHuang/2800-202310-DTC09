@@ -1,0 +1,42 @@
+body {
+    padding: 0px !important;
+}
+
+.contact-header {
+    margin-top: 50px;
+    padding: 100px 200px !important;
+    background-color: #313344;
+    /* color: #f5f2ea; */
+}
+
+.contact-header h1 {
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.contact-header p {
+    color: #9c9ca4;
+}
+
+.contact-title {
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.required-label {
+    color: red;
+    font-style: italic;
+}
+
+.message-header {
+    text-align: center;
+    margin: 50px 0px;
+    color: #313344;
+}
+
+@media screen and (max-width: 769px) {
+    .contact-header {
+        padding: 20px !important;
+    }
+}

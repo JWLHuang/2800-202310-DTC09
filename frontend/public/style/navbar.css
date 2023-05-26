@@ -1,32 +1,58 @@
 .navbar {
-    background-color: #2c698d;
+    background-color: #313344;
 }
 
 body {
     padding-top: 100px;
+    background-color: #f5f2ea !important;
+    /* font-family: "Baloo 2"; */
+    font-size: 16px;
+    /* color: #ffffff; */
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+}
+
+#pageHeaderTitle {
+    margin: 2rem 0;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.light {
+    background: #f5f2ea;
 }
 
 .offcanvas-header {
-    padding-bottom: .5rem;
+    padding: 1.5rem 1rem;
     border-bottom: 1px solid #e5e5e5;
-    background-color: #bae8e8;
+    background-color: #313344;
     color: white;
 }
 
 .offcanvas-body {
-    background-color: #272643;
+    background-color: #f5f2ea;
+    color: #313344;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-.nav-link .active {
-    color: #bae8e8 !important;
+.menu-link {
+    color: #313344 !important;
+    text-decoration: none;
+    margin-bottom: 15px;
 }
 
-.offcanvas-body .nav-link {
-    color: #272643;
+.menu-link i {
+    padding-left: 10px;
+}
+
+.active-link {
+    color: #9c202a !important;
 }
 
 .offcanvas-body .nav-link:hover {
-    color: #bae8e8 !important;
+    background-color: #a6a5a7 !important;
 }
 
 .offcanvas-backdrop.show {
@@ -35,4 +61,59 @@ body {
 
 .fade.show {
     opacity: .5;
+}
+
+.button {
+    --background: #9c202a;
+}
+
+.button:hover {
+    --background: #c02230;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link,
+.btn-primary:not(.nav-link, .extAuthBtn),
+.btn-outline-primary:active:not(.nav-link) {
+    background-color: #9c202a !important;
+    transition: all 0.1s;
+}
+
+.btn:not(.nav-link, .extAuthBtn) {
+    border-color: #9c202a !important;
+    transition: all 0.1s;
+}
+
+.btn-outline-primary:not(.nav-link),
+a:not(.nav-link, .extAuthBtn, .postcard_title, .restaurant-info-button),
+a.text-primary:not(.nav-link, .extAuthBtn),
+.nav-pills a.text-primary {
+    color: #9c202a !important;
+    transition: all 0.1s;
+}
+
+.btn-outline-primary:hover:not(.nav-link),
+a.btn-primary {
+    color: #ffffff !important;
+    transition: all 0.1s;
+}
+
+a:hover:not(.nav-link, .extAuthBtn,
+.postcard_title, .btn,
+.restaurant-info-button),
+a.text-primary:hover:not(.extAuthBtn) {
+    color: #c02230 !important;
+    transition: all 0.1s;
+}
+
+.btn-primary:hover:not(.nav-link, .extAuthBtn),
+.btn-outline-primary:hover {
+    background-color: #c02230 !important;
+    transition: all 0.1s;
+}
+
+a:hover:not(.nav-link, .extAuthBtn, .postcard_title, .restaurant-info-button, .socialLinks),
+a.text-primary:hover:not(.nav-link, .extAuthBtn) {
+    text-decoration: underline #c02230 !important;
+    transition: all 0.1s;
 }
